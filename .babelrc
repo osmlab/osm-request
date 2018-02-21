@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current",
+          "browsers": "> 1%"
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "stage-0"
+  ]
+}

@@ -17,7 +17,11 @@ $ npm install osm-request
 
 ## Usage
 
-TODO (Maybe we can use documentation.js ?)
+The full documentation of osm-request API is detailed in [the API documentation](API.md).
+
+### Example
+
+TODO
 
 
 ## Contribute
