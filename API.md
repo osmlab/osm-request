@@ -3,6 +3,7 @@
 ### Table of Contents
 
 -   [OsmRequest](#osmrequest)
+    -   [endpoint](#endpoint)
 
 ## OsmRequest
 
@@ -11,3 +12,9 @@ OSM API request handler
 **Parameters**
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Custom options to apply
+
+### endpoint
+
+Return the API endpoint to use for the requests
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL of the API endpoint
