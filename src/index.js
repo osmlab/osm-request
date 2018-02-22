@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import defaultOptions from './defaultOptions.json';
 
 /**
  * OSM API request handler
@@ -10,7 +11,16 @@ export default class OsmRequest {
    */
   constructor(options) {
     this._options = {
+      ...defaultOptions,
       ...options
     };
+  }
+
+  /**
+   * Return the API endpoint to use for the requests
+   * @return {string} URL of the API endpoint
+   */
+  get endpoint() {
+    return this._options.endpoint;
   }
 }
