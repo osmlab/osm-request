@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/github/release/osm-code/osm-request.svg)](https://github.com/osm-code/osm-request/releases)
-[![Build Status](https://api.travis-ci.org/osm-code/osm-request.svg?branch=develop)](http://travis-ci.org/osm-code/osm-request)
-[![Coverage Status](https://coveralls.io/repos/github/osm-code/osm-request/badge.svg?branch=develop)](https://coveralls.io/github/osm-code/osm-request?branch=develop)
+[![GitHub release](https://img.shields.io/github/release/osmlab/osm-request.svg)](https://github.com/osmlab/osm-request/releases)
+[![Build Status](https://api.travis-ci.org/osmlab/osm-request.svg?branch=develop)](http://travis-ci.org/osmlab/osm-request)
+[![Coverage Status](https://coveralls.io/repos/github/osmlab/osm-request/badge.svg?branch=develop)](https://coveralls.io/github/osmlab/osm-request?branch=develop)
 
 # OSM Request
 
@@ -27,7 +27,7 @@ TODO
 ## Contribute
 
 ```
-$ git clone git@github.com:osm-code/osm-request.git
+$ git clone git@github.com:osmlab/osm-request.git
 $ cd osm-request
 $ npm install
 $ npm run watch
