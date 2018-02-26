@@ -35,4 +35,10 @@ $ npm install
 $ npm run watch
 ```
 
-Pull requests are welcome, if you want to work on new features, please create a branch named `feature/yourFeatureName`, and propose to merge your pull request on `develop` branch.
+This project uses a specific work flow for branches:
+
+* `master` branch is dedicated to releases, managed by repo maintainers
+* `develop` branch is for currently developed version, managed by repo maintainers
+* `feature/...` branches are for all developers, working on a particular feature
+
+Pull requests are welcome, as the project is fully open-source. If you want to work on new features, please create a branch named `feature/yourFeatureName`. When work is done, open a pull request to merge your branch on `develop` branch. The code will be reviewed by one or several developers before being merged, in order to keep a good code quality.
