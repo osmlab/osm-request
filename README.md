@@ -7,6 +7,8 @@
 
 Request the [OSM API](https://wiki.openstreetmap.org/wiki/API) (v0.6) from Javascript, with promises :)
 
+**⚠ That project is in an heavy development phase. Do not use it until the first stable release.**
+
 
 ## Installation
 
