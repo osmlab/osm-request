@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OsmRequest createNodeElement Should return a new geoJSON element 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      1.234,
+      -0.456,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {
+    "aze": "rty",
+    "uio": "pqs",
+  },
+  "type": "Feature",
+}
+`;
+
+exports[`OsmRequest createNodeElement Should return a new geoJSON element 2`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      1.234,
+      -0.456,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {},
+  "type": "Feature",
+}
+`;

@@ -14,11 +14,15 @@
     "api"
   ],
   "main": "dist/OsmRequest.js",
+  "moduleRoots": [
+    "node_modules",
+    "src"
+  ],
   "scripts": {
-    "watch": "webpack -w --progress",
-    "build": "cross-env NODE_ENV=production webpack --progress",
+    "watch": "cross-env NODE_PATH=src webpack -w --progress",
+    "build": "cross-env NODE_ENV=production NODE_PATH=src webpack --progress",
     "precommit": "lint-staged",
-    "test": "jest --env=jsdom",
+    "test": "cross-env NODE_PATH=src jest --env=jsdom",
     "test-watch": "npm test -- --watch",
     "test-ci": "npm test -- --ci",
     "test-coverage": "npm run test-ci -- --coverage",
@@ -48,7 +52,7 @@
       "git add"
     ],
     "src/**/*.js": [
-      "jest --ci",
+      "npm run test-ci",
       "git add"
     ]
   },
@@ -74,6 +78,10 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "cross-fetch": "^2.0.0"
+    "cross-fetch": "^2.1.0",
+    "geojsontoosm": "0.0.2",
+    "osm-auth": "^1.0.2",
+    "osmtogeojson": "^3.0.0-beta.3",
+    "simple-xml-dom": "^1.0.0"
   }
 }
