@@ -52,7 +52,7 @@
       "git add"
     ],
     "src/**/*.js": [
-      "npm run test-ci",
+      "npm run test-ci -- --findRelatedTests",
       "git add"
     ]
   },
