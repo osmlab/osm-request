@@ -1,4 +1,9 @@
-import { removeTrailingSlash, realObjectCopy, isNodeId } from '../utils';
+import {
+  removeTrailingSlash,
+  realObjectCopy,
+  isNodeId,
+  buildQueryString
+} from '../utils';
 
 describe('Utils helpers', () => {
   describe('removeTrailingSlash', () => {
@@ -52,6 +57,20 @@ describe('Utils helpers', () => {
     it('Should tell if an OSM ID is a node one', () => {
       expect(isNodeId('node/12345')).toBe(true);
       expect(isNodeId('way/12345')).toBe(false);
+    });
+  });
+
+  describe('buildQueryString', () => {
+    it('Should return a valid query string', () => {
+      const params = {
+        param1: 'stuff',
+        'param-2': 'stuff 2',
+        param_3: 'stuff 3'
+      };
+
+      expect(buildQueryString(params)).toBe(
+        '?param1=stuff&param-2=stuff%202&param_3=stuff%203'
+      );
     });
   });
 });

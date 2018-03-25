@@ -22,3 +22,55 @@ export function buildChangesetXml(createdBy = '', comment = '') {
 
   return xmlSerialize(xmlParse(xmlString));
 }
+
+/**
+ * Convert an XML into a JSON object
+ * @param  {object} xml
+ * @return {object}
+ */
+export function xmlToJson(xml) {
+  let obj = {};
+
+  if (xml.nodeType === 1) {
+    for (let j = 0; j < xml.attributes.length; j++) {
+      const attribute = xml.attributes.item(j);
+      obj[attribute.nodeName] = attribute.nodeValue;
+    }
+  } else if (xml.nodeType === 3) {
+    // text
+    obj = xml.nodeValue.trim();
+  }
+
+  // do children
+  if (xml.hasChildNodes()) {
+    for (let i = 0; i < xml.childNodes.length; i++) {
+      const item = xml.childNodes.item(i);
+      const nodeName = item.nodeName;
+
+      if (typeof obj[nodeName] === 'undefined') {
+        const tmp = xmlToJson(item);
+
+        if (tmp !== '') {
+          if (tmp['#text']) {
+            obj[nodeName] = tmp['#text'];
+          } else {
+            obj[nodeName] = tmp;
+          }
+        }
+      } else {
+        if (typeof obj[nodeName].push === 'undefined') {
+          const old = obj[nodeName];
+          obj[nodeName] = [old];
+        }
+
+        const tmp = xmlToJson(item);
+
+        if (tmp !== '') {
+          obj[nodeName].push(tmp);
+        }
+      }
+    }
+  }
+
+  return obj;
+}

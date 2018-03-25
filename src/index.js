@@ -8,19 +8,20 @@ import {
 } from 'helpers/utils';
 import {
   fetchElementRequest,
+  fetchNotesRequest,
   createChangesetRequest,
   changesetCheckRequest
 } from './requests';
 
 /**
  * OSM API request handler
- * @type {Object}
+ * @type {object}
  */
 export default class OsmRequest {
   /**
    * @access public
-   * @param {Object} osmAuth Instance of osm-auth.
-   * @param {Object} [options] Custom options to apply
+   * @param {object} osmAuth Instance of osm-auth.
+   * @param {object} [options] Custom options to apply
    */
   constructor(options = {}) {
     this._options = {
@@ -72,6 +73,28 @@ export default class OsmRequest {
    */
   fetchElement(osmId) {
     return fetchElementRequest(this.endpoint, osmId);
+  }
+
+  /**
+   * Retrieve the OSM notes in given bounding box
+   * @param {number} left The minimal longitude (X)
+   * @param {number} bottom The minimal latitude (Y)
+   * @param {number} right The maximal longitude (X)
+   * @param {number} top The maximal latitude (Y)
+   * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+   * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+   * @return {Promise} Resolves on notes list
+   */
+  fetchNotes(left, bottom, right, top, limit, closedDays) {
+    return fetchNotesRequest(
+      this.endpoint,
+      left,
+      bottom,
+      right,
+      top,
+      limit,
+      closedDays
+    );
   }
 
   /**

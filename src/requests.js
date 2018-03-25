@@ -2,15 +2,15 @@ import fetch from 'cross-fetch';
 import osmtogeojson from 'osmtogeojson';
 // import geojsontoosm from 'geojsontoosm';
 import { parse as xmlParse } from 'simple-xml-dom';
-import { isNodeId } from 'helpers/utils';
-import { buildChangesetXml } from 'helpers/xml';
+import { isNodeId, buildQueryString } from 'helpers/utils';
+import { buildChangesetXml, xmlToJson } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
 /**
  * Request to fetch an OSM element
- * @param  {String} endpoint The API endpoint
- * @param  {Object} osmId
- * @return {Object}
+ * @param  {string} endpoint The API endpoint
+ * @param  {string} osmId
+ * @return {object}
  */
 export function fetchElementRequest(endpoint, osmId) {
   return fetch(`${endpoint}/${osmId}`)
@@ -24,6 +24,60 @@ export function fetchElementRequest(endpoint, osmId) {
 
       return response;
     });
+}
+
+/**
+ * Request to fetch OSM notes
+ * @param {string} endpoint The API endpoint
+ * @param {number} left The minimal longitude (X)
+ * @param {number} bottom The minimal latitude (Y)
+ * @param {number} right The maximal longitude (X)
+ * @param {number} top The maximal latitude (Y)
+ * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+ * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+ * @return {object}
+ */
+export function fetchNotesRequest(
+  endpoint,
+  left,
+  bottom,
+  right,
+  top,
+  limit,
+  closedDays
+) {
+  const params = {
+    bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
+  };
+
+  if (limit) {
+    params.limit = limit;
+  }
+
+  if (closedDays !== null && closedDays !== undefined) {
+    params.closed = closedDays;
+  }
+
+  return fetch(`${endpoint}/notes${buildQueryString(params)}`)
+    .then(response => {
+      if (response.status !== 200) {
+        return response.text().then(message => Promise.reject(message));
+      }
+
+      return response;
+    })
+    .catch(message => {
+      throw new RequestException(message);
+    })
+    .then(response => response.text())
+    .then(response => xmlParse(response))
+    .then(response => xmlToJson(response))
+    .then(response =>
+      response.osm.note.map(note => ({
+        ...note,
+        comments: note.comments.comment
+      }))
+    );
 }
 
 /**
