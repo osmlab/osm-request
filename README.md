@@ -73,3 +73,13 @@ This project uses a specific work flow for branches:
 * `feature/...` branches are for all developers, working on a particular feature
 
 Pull requests are welcome, as the project is fully open-source. If you want to work on new features, please create a branch named `feature/yourFeatureName`. When work is done, open a pull request to merge your branch on `develop` branch. The code will be reviewed by one or several developers before being merged, in order to keep a good code quality.
+
+
+## Make a release
+
+```sh
+$ npm version patch -m "release: %s"
+$ npm publish
+```
+
+`npm version` tests the code, build it and update the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commit the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.

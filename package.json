@@ -29,7 +29,9 @@
     "test-prettier": "prettier --single-quote --list-different 'src/**/*.{js,json}'",
     "lint": "eslint 'src/**/*.{js,json}'",
     "doc": "npm run doc:lint && documentation build ./src/* -f md > API.md",
-    "doc:lint": "documentation lint ./src/*"
+    "doc:lint": "documentation lint ./src/*",
+    "preversion": "npm test-ci && npm run build && npm run doc",
+    "postversion": "git push && git push --tags"
   },
   "jest": {
     "collectCoverageFrom": [
