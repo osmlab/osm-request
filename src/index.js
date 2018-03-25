@@ -123,7 +123,7 @@ export default class OsmRequest {
   }
 
   /**
-   * Replace the coordinates of the OSM node an return a copy of the element
+   * Replace the coordinates of the OSM node and return a copy of the element
    * @param {object} element
    * @param {number} lat
    * @param {number} lon
