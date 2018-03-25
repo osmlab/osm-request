@@ -29,12 +29,12 @@ export function fetchElementRequest(endpoint, osmId) {
 /**
  * Request to create OSM changesets
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} [author]
+ * @param {string} [createdBy]
  * @param {string} [comment]
  * @return {Promise}
  */
-export function createChangesetRequest(auth, author = '', comment = '') {
-  const changesetXml = buildChangesetXml(author, comment);
+export function createChangesetRequest(auth, createdBy = '', comment = '') {
+  const changesetXml = buildChangesetXml(createdBy, comment);
 
   return new Promise(resolve => {
     auth.xhr(

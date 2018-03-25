@@ -162,12 +162,12 @@ export default class OsmRequest {
 
   /**
    * Send a request to OSM to create a new changeset
-   * @param {string} [author]
+   * @param {string} [createdBy]
    * @param {string} [comment]
    * @return {Promise}
    */
-  createChangeset(author = '', comment = '') {
-    return createChangesetRequest(this._auth, author, comment);
+  createChangeset(createdBy = '', comment = '') {
+    return createChangesetRequest(this._auth, createdBy, comment);
   }
 
   /**

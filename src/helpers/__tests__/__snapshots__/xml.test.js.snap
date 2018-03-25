@@ -5,6 +5,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"me\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 0.0.0\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
       </changeset>
     </osm>"
@@ -15,6 +16,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 0.0.0\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
       </changeset>
     </osm>"
