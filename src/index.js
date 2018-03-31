@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
 import {
-  removeTrailingSlash,
+  removeTrailingSlashes,
   realObjectCopy,
   throwIfNotPoint
 } from 'helpers/utils';
@@ -29,7 +29,7 @@ export default class OsmRequest {
       ...options
     };
 
-    this._options.endpoint = removeTrailingSlash(this._options.endpoint);
+    this._options.endpoint = removeTrailingSlashes(this._options.endpoint);
 
     this._auth = osmAuth({
       url: this._options.endpoint,

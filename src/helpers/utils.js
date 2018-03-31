@@ -1,11 +1,11 @@
 import { WrongElementTypeException } from 'exceptions/element';
 
 /**
- * Remove the trailing slash from an URL and return it
+ * Remove the trailing slashes from an URL and return it
  * @param {string} url
  * @return {string} - The cleaned URL
  */
-export function removeTrailingSlash(url) {
+export function removeTrailingSlashes(url) {
   return url.replace(/\/*$/, '');
 }
 

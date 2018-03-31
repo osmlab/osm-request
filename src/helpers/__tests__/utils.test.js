@@ -1,25 +1,25 @@
 import {
-  removeTrailingSlash,
+  removeTrailingSlashes,
   realObjectCopy,
   isNodeId,
   buildQueryString
 } from '../utils';
 
 describe('Utils helpers', () => {
-  describe('removeTrailingSlash', () => {
+  describe('removeTrailingSlashes', () => {
     it('Should remove the trailing slash when it is present', () => {
-      expect(removeTrailingSlash('azertyuiop/')).toBe('azertyuiop');
-      expect(removeTrailingSlash('http://azertyuiop/')).toBe(
+      expect(removeTrailingSlashes('azertyuiop/')).toBe('azertyuiop');
+      expect(removeTrailingSlashes('http://azertyuiop/')).toBe(
         'http://azertyuiop'
       );
     });
 
     it('Should not remove anything when the trainling slash is not present', () => {
-      expect(removeTrailingSlash('azertyuiop')).toBe('azertyuiop');
-      expect(removeTrailingSlash('http://azertyuiop')).toBe(
+      expect(removeTrailingSlashes('azertyuiop')).toBe('azertyuiop');
+      expect(removeTrailingSlashes('http://azertyuiop')).toBe(
         'http://azertyuiop'
       );
-      expect(removeTrailingSlash('http://azertyuiop/azertyuiop')).toBe(
+      expect(removeTrailingSlashes('http://azertyuiop/azertyuiop')).toBe(
         'http://azertyuiop/azertyuiop'
       );
     });
