@@ -3,7 +3,7 @@ import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
 import {
   removeTrailingSlashes,
-  realObjectCopy,
+  simpleObjectDeepClone,
   throwIfNotPoint
 } from 'helpers/utils';
 import {
@@ -107,7 +107,7 @@ export default class OsmRequest {
   setProperty(element, propertyName, propertyValue) {
     throwIfNotPoint(element);
 
-    const newElement = realObjectCopy(element);
+    const newElement = simpleObjectDeepClone(element);
     newElement.properties[propertyName] = propertyValue;
     return newElement;
   }
@@ -121,8 +121,8 @@ export default class OsmRequest {
   setProperties(element, properties) {
     throwIfNotPoint(element);
 
-    const newElement = realObjectCopy(element);
-    const clonedProperties = realObjectCopy(properties);
+    const newElement = simpleObjectDeepClone(element);
+    const clonedProperties = simpleObjectDeepClone(properties);
 
     for (const propertyName of Object.keys(clonedProperties)) {
       newElement.properties[propertyName] = clonedProperties[propertyName];
@@ -140,7 +140,7 @@ export default class OsmRequest {
   removeProperty(element, propertyName) {
     throwIfNotPoint(element);
 
-    const newElement = realObjectCopy(element);
+    const newElement = simpleObjectDeepClone(element);
     delete newElement.properties[propertyName];
     return newElement;
   }
@@ -155,7 +155,7 @@ export default class OsmRequest {
   setCoordinates(element, lat, lon) {
     throwIfNotPoint(element);
 
-    const newElement = realObjectCopy(element);
+    const newElement = simpleObjectDeepClone(element);
     newElement.geometry.coordinates = [lon, lat];
     return newElement;
   }

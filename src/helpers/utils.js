@@ -10,16 +10,19 @@ export function removeTrailingSlashes(url) {
 }
 
 /**
- * Return a real copy of an object.
+ * Return a deep clone of an object.
+ *
+ * The object has to be a simple object notation. Not a Map, a Set or anything else.
+ *
  * Object.assign and the spread operators can not be used as they do not replace children objects
  * by copies of themselves.
  *
  * Eg: If you use Object.assign or the rest operator on that object: { items: [{ childrenItem: 1 }] }
  * All the objects contained in the items array will be references to the first objects
- * @param {object} object
+ * @param {object} object - A simple object notation. No Map, Set or anything
  * @return {object}
  */
-export function realObjectCopy(object) {
+export function simpleObjectDeepClone(object) {
   return JSON.parse(JSON.stringify(object));
 }
 

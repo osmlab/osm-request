@@ -1,6 +1,6 @@
 import {
   removeTrailingSlashes,
-  realObjectCopy,
+  simpleObjectDeepClone,
   isNodeId,
   buildQueryString
 } from '../utils';
@@ -25,7 +25,7 @@ describe('Utils helpers', () => {
     });
   });
 
-  describe('realObjectCopy', () => {
+  describe('simpleObjectDeepClone', () => {
     it('Should properly copy an object', () => {
       const sample = {
         item1: true,
@@ -33,7 +33,7 @@ describe('Utils helpers', () => {
         item3: ['aze', 'rty', 'uio'],
         item4: [{ aze: 1, rty: 2, uio: 3 }]
       };
-      const result = realObjectCopy(sample);
+      const result = simpleObjectDeepClone(sample);
       result.item1 = false;
       result.item2 = true;
       result.item3[0] = 'test';
