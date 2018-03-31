@@ -16,7 +16,7 @@ const plugins = [
 
 module.exports = {
   plugins,
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   entry: {
     OsmRequest: path.join(__dirname, 'src/index.js')
   },
@@ -25,6 +25,12 @@ module.exports = {
     libraryTarget: 'umd',
     filename: '[name].js',
     path: path.join(__dirname, 'dist')
+  },
+  resolve: {
+    modules: [
+      'node_modules',
+      process.env.NODE_PATH
+    ]
   },
   module: {
     rules: [
