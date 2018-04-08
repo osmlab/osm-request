@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 import osmtogeojson from 'osmtogeojson';
-// import geojsontoosm from 'geojsontoosm';
+import geojsontoosm from 'geojsontoosm';
 import { parse as xmlParse } from 'simple-xml-dom';
 import { isNodeId, buildQueryString } from 'helpers/utils';
 import { buildChangesetXml, xmlToJson } from 'helpers/xml';
@@ -24,6 +24,46 @@ export function fetchElementRequest(endpoint, osmId) {
 
       return response;
     });
+}
+
+/**
+ * Send an element to OSM
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {object} element
+ * @param {number} changesetId
+ * @return {Promise}
+ */
+export function sendElementRequest(auth, element, changesetId) {
+  element.properties.changeset = changesetId;
+
+  const elementId = element.properties.id;
+  const elementType = element.properties.type;
+  const elementXml = geojsontoosm(element);
+  const path = elementId
+    ? `/${elementType}/create`
+    : `/${elementType}/${elementId}`;
+
+  return new Promise(resolve => {
+    auth.xhr(
+      {
+        path,
+        method: 'PUT',
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        },
+        content: elementXml
+      },
+      (err, version) => {
+        if (err) {
+          throw new RequestException('Element sending request failed');
+        }
+
+        return resolve(parseInt(version, 10));
+      }
+    );
+  });
 }
 
 /**
