@@ -82,4 +82,4 @@ $ npm version patch -m "release: %s"
 $ npm publish
 ```
 
-`npm version` tests the code, build it and update the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commit the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.
+`npm version` tests the code, builds it and updates the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commits the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.
