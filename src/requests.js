@@ -10,7 +10,7 @@ import { RequestException } from 'exceptions/request';
  * Request to fetch an OSM element
  * @param  {string} endpoint The API endpoint
  * @param  {string} osmId
- * @return {object}
+ * @return {Object}
  */
 export function fetchElementRequest(endpoint, osmId) {
   return fetch(`${endpoint}/${osmId}`)
@@ -29,7 +29,7 @@ export function fetchElementRequest(endpoint, osmId) {
 /**
  * Send an element to OSM
  * @param {osmAuth} auth An instance of osm-auth
- * @param {object} element
+ * @param {Object} element
  * @param {number} changesetId
  * @return {Promise}
  */
@@ -75,7 +75,7 @@ export function sendElementRequest(auth, element, changesetId) {
  * @param {number} top The maximal latitude (Y)
  * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
  * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
- * @return {object}
+ * @return {Object}
  */
 export function fetchNotesRequest(
   endpoint,

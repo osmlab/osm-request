@@ -19,8 +19,8 @@ export function removeTrailingSlashes(url) {
  *
  * Eg: If you use Object.assign or the rest operator on that object: { items: [{ childrenItem: 1 }] }
  * All the objects contained in the items array will be references to the first objects
- * @param {object} object - A simple object notation. No Map, Set or anything
- * @return {object}
+ * @param {Object} object - A simple object notation. No Map, Set or anything
+ * @return {Object}
  */
 export function simpleObjectDeepClone(object) {
   return JSON.parse(JSON.stringify(object));
@@ -37,7 +37,7 @@ export function isNodeId(osmId) {
 
 /**
  * Throw an exception if the given element is not a Point
- * @param {object} element
+ * @param {Object} element
  */
 export function throwIfNotPoint(element) {
   if (!element.geometry || element.geometry.type !== 'Point') {
@@ -48,7 +48,7 @@ export function throwIfNotPoint(element) {
 }
 
 /**
- * @param {object} params
+ * @param {Object} params
  * @return {string}
  */
 export function buildQueryString(params) {

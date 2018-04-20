@@ -25,8 +25,8 @@ export function buildChangesetXml(createdBy = '', comment = '') {
 
 /**
  * Convert an XML into a JSON object
- * @param  {object} xml
- * @return {object}
+ * @param  {Object} xml
+ * @return {Object}
  */
 export function xmlToJson(xml) {
   let obj = {};

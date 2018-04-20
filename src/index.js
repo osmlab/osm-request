@@ -16,13 +16,12 @@ import {
 
 /**
  * OSM API request handler
- * @type {object}
+ * @type {Object}
  */
 export default class OsmRequest {
   /**
    * @access public
-   * @param {object} osmAuth Instance of osm-auth.
-   * @param {object} [options] Custom options to apply
+   * @param {Object} [options] Custom options to apply
    */
   constructor(options = {}) {
     this._options = {
@@ -95,7 +94,7 @@ export default class OsmRequest {
    * @param {number} lat
    * @param {number} lon
    * @param {[object]} [properties] Optional, initial properties
-   * @return {object}
+   * @return {Object}
    */
   createNodeElement(lat, lon, properties = {}) {
     return {
@@ -119,10 +118,10 @@ export default class OsmRequest {
 
   /**
    * Add or replace a property in a given element
-   * @param {object} element A geoJSON element
+   * @param {Object} element A geoJSON element
    * @param {string} propertyName
    * @param {string} propertyValue
-   * @return {object} A new version of the geoJSON element
+   * @return {Object} A new version of the geoJSON element
    */
   setProperty(element, propertyName, propertyValue) {
     throwIfNotPoint(element);
@@ -134,9 +133,9 @@ export default class OsmRequest {
 
   /**
    * Add or replace several properties in a given element
-   * @param {object} element A geoJSON element
-   * @param {object} properties
-   * @return {object} A new version of the geoJSON element
+   * @param {Object} element A geoJSON element
+   * @param {Object} properties
+   * @return {Object} A new version of the geoJSON element
    */
   setProperties(element, properties) {
     throwIfNotPoint(element);
@@ -153,9 +152,9 @@ export default class OsmRequest {
 
   /**
    * Remove a property from a given element
-   * @param {object} element A geoJSON element
+   * @param {Object} element A geoJSON element
    * @param {string} propertyName
-   * @return {object} A new version of the geoJSON element
+   * @return {Object} A new version of the geoJSON element
    */
   removeProperty(element, propertyName) {
     throwIfNotPoint(element);
@@ -167,10 +166,10 @@ export default class OsmRequest {
 
   /**
    * Replace the coordinates of the OSM node and return a copy of the element
-   * @param {object} element
+   * @param {Object} element
    * @param {number} lat
    * @param {number} lon
-   * @return {object} A new version of the geoJSON element
+   * @return {Object} A new version of the geoJSON element
    */
   setCoordinates(element, lat, lon) {
     throwIfNotPoint(element);
@@ -182,8 +181,8 @@ export default class OsmRequest {
 
   /**
    * Set the current UTC date to a given element
-   * @param {object} element
-   * @return {object} A new version of the geoJSON element
+   * @param {Object} element
+   * @return {Object} A new version of the geoJSON element
    */
   setTimestampToNow(element) {
     return this.setProperty(element, 'timestamp', new Date().toISOString());
@@ -191,8 +190,8 @@ export default class OsmRequest {
 
   /**
    * Increase the version number of an element
-   * @param {object} element
-   * @return {object} A new version of the geoJSON element
+   * @param {Object} element
+   * @return {Object} A new version of the geoJSON element
    */
   incrementVersion(element) {
     const currentVersion = parseInt(element.properties.version || 0, 10);
@@ -205,7 +204,7 @@ export default class OsmRequest {
 
   /**
    * Send an element to OSM
-   * @param {object} element
+   * @param {Object} element
    * @param {number} changesetId
    * @return {Promise}
    */
