@@ -2,8 +2,107 @@
 
 ### Table of Contents
 
--   [OsmRequest](#osmrequest)
-    -   [endpoint](#endpoint)
+-   [removeTrailingSlashes][1]
+-   [simpleObjectDeepClone][2]
+-   [isNodeId][3]
+-   [throwIfNotPoint][4]
+-   [buildQueryString][5]
+-   [buildChangesetXml][6]
+-   [xmlToJson][7]
+-   [OsmRequest][8]
+    -   [endpoint][9]
+    -   [fetchNotes][10]
+    -   [createChangeset][11]
+    -   [isChangesetStillOpen][12]
+    -   [createNodeElement][13]
+    -   [fetchElement][14]
+    -   [setProperty][15]
+    -   [setProperties][16]
+    -   [removeProperty][17]
+    -   [setCoordinates][18]
+    -   [setTimestampToNow][19]
+    -   [incrementVersion][20]
+    -   [sendElement][21]
+-   [fetchElementRequest][22]
+-   [sendElementRequest][23]
+-   [fetchNotesRequest][24]
+-   [createChangesetRequest][25]
+-   [changesetCheckRequest][26]
+
+## removeTrailingSlashes
+
+Remove the trailing slashes from an URL and return it
+
+**Parameters**
+
+-   `url` **[string][27]** 
+
+Returns **[string][27]** The cleaned URL
+
+## simpleObjectDeepClone
+
+Return a deep clone of an object.
+
+The object has to be a simple object notation. Not a Map, a Set or anything else.
+
+Object.assign and the spread operators can not be used as they do not replace children objects
+by copies of themselves.
+
+Eg: If you use Object.assign or the rest operator on that object: { items: [{ childrenItem: 1 }] }
+All the objects contained in the items array will be references to the first objects
+
+**Parameters**
+
+-   `object` **[Object][28]** A simple object notation. No Map, Set or anything
+
+Returns **[Object][28]** 
+
+## isNodeId
+
+Tells if an ID is one of an OSM node
+
+**Parameters**
+
+-   `osmId` **[string][27]** 
+
+Returns **[boolean][29]** 
+
+## throwIfNotPoint
+
+Throw an exception if the given element is not a Point
+
+**Parameters**
+
+-   `element` **[Object][28]** 
+
+## buildQueryString
+
+**Parameters**
+
+-   `params` **[Object][28]** 
+
+Returns **[string][27]** 
+
+## buildChangesetXml
+
+Build a stringified OSM changeset
+
+**Parameters**
+
+-   `createdBy` **[string][27]?**  (optional, default `''`)
+-   `comment` **[string][27]?**  (optional, default `''`)
+
+Returns **[string][27]** 
+
+## xmlToJson
+
+Convert an XML into a JSON object
+
+**Parameters**
+
+-   `xml` **[Object][28]** 
+
+Returns **[Object][28]** 
 
 ## OsmRequest
 
@@ -11,10 +110,269 @@ OSM API request handler
 
 **Parameters**
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Custom options to apply
+-   `options` **[Object][28]?** Custom options to apply (optional, default `{}`)
 
 ### endpoint
 
 Return the API endpoint to use for the requests
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL of the API endpoint
+Returns **[string][27]** URL of the API endpoint
+
+### fetchNotes
+
+Retrieve the OSM notes in given bounding box
+
+**Parameters**
+
+-   `left` **[number][30]** The minimal longitude (X)
+-   `bottom` **[number][30]** The minimal latitude (Y)
+-   `right` **[number][30]** The maximal longitude (X)
+-   `top` **[number][30]** The maximal latitude (Y)
+-   `limit` **[number][30]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+-   `closedDays` **[number][30]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+
+Returns **[Promise][31]** Resolves on notes list
+
+### createChangeset
+
+Send a request to OSM to create a new changeset
+
+**Parameters**
+
+-   `createdBy` **[string][27]?**  (optional, default `''`)
+-   `comment` **[string][27]?**  (optional, default `''`)
+
+Returns **[Promise][31]** 
+
+### isChangesetStillOpen
+
+Check if a changeset is still open
+
+**Parameters**
+
+-   `changesetId` **[number][30]** 
+
+Returns **[Promise][31]** 
+
+### createNodeElement
+
+Create a shiny new OSM node element, in a geoJSON format
+
+**Parameters**
+
+-   `lat` **[number][30]** 
+-   `lon` **[number][30]** 
+-   `properties` **\[[object][28]]?** Optional, initial properties (optional, default `{}`)
+
+Returns **[Object][28]** 
+
+### fetchElement
+
+Fetch an OSM element by its ID
+
+**Parameters**
+
+-   `osmId` **[string][27]** Eg: node/12345
+
+Returns **[Promise][31]** 
+
+### setProperty
+
+Add or replace a property in a given element
+
+**Parameters**
+
+-   `element` **[Object][28]** A geoJSON element
+-   `propertyName` **[string][27]** 
+-   `propertyValue` **[string][27]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### setProperties
+
+Add or replace several properties in a given element
+
+**Parameters**
+
+-   `element` **[Object][28]** A geoJSON element
+-   `properties` **[Object][28]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### removeProperty
+
+Remove a property from a given element
+
+**Parameters**
+
+-   `element` **[Object][28]** A geoJSON element
+-   `propertyName` **[string][27]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### setCoordinates
+
+Replace the coordinates of the OSM node and return a copy of the element
+
+**Parameters**
+
+-   `element` **[Object][28]** 
+-   `lat` **[number][30]** 
+-   `lon` **[number][30]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### setTimestampToNow
+
+Set the current UTC date to a given element
+
+**Parameters**
+
+-   `element` **[Object][28]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### incrementVersion
+
+Increase the version number of an element
+
+**Parameters**
+
+-   `element` **[Object][28]** 
+
+Returns **[Object][28]** A new version of the geoJSON element
+
+### sendElement
+
+Send an element to OSM
+
+**Parameters**
+
+-   `element` **[Object][28]** 
+-   `changesetId` **[number][30]** 
+
+Returns **[Promise][31]** 
+
+## fetchElementRequest
+
+Request to fetch an OSM element
+
+**Parameters**
+
+-   `endpoint` **[string][27]** The API endpoint
+-   `osmId` **[string][27]** 
+
+Returns **[Object][28]** 
+
+## sendElementRequest
+
+Send an element to OSM
+
+**Parameters**
+
+-   `auth` **osmAuth** An instance of osm-auth
+-   `element` **[Object][28]** 
+-   `changesetId` **[number][30]** 
+
+Returns **[Promise][31]** 
+
+## fetchNotesRequest
+
+Request to fetch OSM notes
+
+**Parameters**
+
+-   `endpoint` **[string][27]** The API endpoint
+-   `left` **[number][30]** The minimal longitude (X)
+-   `bottom` **[number][30]** The minimal latitude (Y)
+-   `right` **[number][30]** The maximal longitude (X)
+-   `top` **[number][30]** The maximal latitude (Y)
+-   `limit` **[number][30]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+-   `closedDays` **[number][30]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+
+Returns **[Object][28]** 
+
+## createChangesetRequest
+
+Request to create OSM changesets
+
+**Parameters**
+
+-   `auth` **osmAuth** An instance of osm-auth
+-   `createdBy` **[string][27]?**  (optional, default `''`)
+-   `comment` **[string][27]?**  (optional, default `''`)
+
+Returns **[Promise][31]** 
+
+## changesetCheckRequest
+
+Checks if a given changeset is still opened at OSM.
+
+**Parameters**
+
+-   `auth` **osmAuth** An instance of osm-auth
+-   `changesetId` **[number][30]** 
+
+Returns **[Promise][31]** 
+
+[1]: #removetrailingslashes
+
+[2]: #simpleobjectdeepclone
+
+[3]: #isnodeid
+
+[4]: #throwifnotpoint
+
+[5]: #buildquerystring
+
+[6]: #buildchangesetxml
+
+[7]: #xmltojson
+
+[8]: #osmrequest
+
+[9]: #endpoint
+
+[10]: #fetchnotes
+
+[11]: #createchangeset
+
+[12]: #ischangesetstillopen
+
+[13]: #createnodeelement
+
+[14]: #fetchelement
+
+[15]: #setproperty
+
+[16]: #setproperties
+
+[17]: #removeproperty
+
+[18]: #setcoordinates
+
+[19]: #settimestamptonow
+
+[20]: #incrementversion
+
+[21]: #sendelement
+
+[22]: #fetchelementrequest
+
+[23]: #sendelementrequest
+
+[24]: #fetchnotesrequest
+
+[25]: #createchangesetrequest
+
+[26]: #changesetcheckrequest
+
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
