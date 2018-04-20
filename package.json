@@ -14,6 +14,9 @@
     "api"
   ],
   "main": "dist/OsmRequest.js",
+  "files": [
+    "dist"
+  ],
   "moduleRoots": [
     "node_modules",
     "src"
