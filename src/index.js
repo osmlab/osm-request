@@ -8,6 +8,7 @@ import {
 } from 'helpers/utils';
 import {
   fetchElementRequest,
+  sendElementRequest,
   fetchNotesRequest,
   createChangesetRequest,
   changesetCheckRequest
@@ -49,6 +50,47 @@ export default class OsmRequest {
   }
 
   /**
+   * Retrieve the OSM notes in given bounding box
+   * @param {number} left The minimal longitude (X)
+   * @param {number} bottom The minimal latitude (Y)
+   * @param {number} right The maximal longitude (X)
+   * @param {number} top The maximal latitude (Y)
+   * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+   * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+   * @return {Promise} Resolves on notes list
+   */
+  fetchNotes(left, bottom, right, top, limit, closedDays) {
+    return fetchNotesRequest(
+      this.endpoint,
+      left,
+      bottom,
+      right,
+      top,
+      limit,
+      closedDays
+    );
+  }
+
+  /**
+   * Send a request to OSM to create a new changeset
+   * @param {string} [createdBy]
+   * @param {string} [comment]
+   * @return {Promise}
+   */
+  createChangeset(createdBy = '', comment = '') {
+    return createChangesetRequest(this._auth, createdBy, comment);
+  }
+
+  /**
+   * Check if a changeset is still open
+   * @param {number} changesetId
+   * @return {Promise}
+   */
+  isChangesetStillOpen(changesetId) {
+    return changesetCheckRequest(this._auth, changesetId);
+  }
+
+  /**
    * Create a shiny new OSM node element, in a geoJSON format
    * @param {number} lat
    * @param {number} lon
@@ -73,28 +115,6 @@ export default class OsmRequest {
    */
   fetchElement(osmId) {
     return fetchElementRequest(this.endpoint, osmId);
-  }
-
-  /**
-   * Retrieve the OSM notes in given bounding box
-   * @param {number} left The minimal longitude (X)
-   * @param {number} bottom The minimal latitude (Y)
-   * @param {number} right The maximal longitude (X)
-   * @param {number} top The maximal latitude (Y)
-   * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
-   * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
-   * @return {Promise} Resolves on notes list
-   */
-  fetchNotes(left, bottom, right, top, limit, closedDays) {
-    return fetchNotesRequest(
-      this.endpoint,
-      left,
-      bottom,
-      right,
-      top,
-      limit,
-      closedDays
-    );
   }
 
   /**
@@ -184,21 +204,12 @@ export default class OsmRequest {
   }
 
   /**
-   * Send a request to OSM to create a new changeset
-   * @param {string} [createdBy]
-   * @param {string} [comment]
-   * @return {Promise}
-   */
-  createChangeset(createdBy = '', comment = '') {
-    return createChangesetRequest(this._auth, createdBy, comment);
-  }
-
-  /**
-   * Check if a changeset is still open
+   * Send an element to OSM
+   * @param {object} element
    * @param {number} changesetId
    * @return {Promise}
    */
-  isChangesetStillOpen(changesetId) {
-    return changesetCheckRequest(this._auth, changesetId);
+  sendElement(element, changesetId) {
+    return sendElementRequest(this._auth, element, changesetId);
   }
 }

@@ -27,7 +27,7 @@ The full documentation of osm-request API is detailed in [the API documentation]
 import OsmRequest from 'osm-request';
 
 const osm = new OsmRequest({
-  endpoint: 'https://api.openstreetmap.org/api/0.6'
+  endpoint: 'https://api.openstreetmap.org/api/0.6',
   oauthConsumerKey: '...',
   oauthSecret: '...',
   oauthUserToken: '...',
@@ -42,18 +42,20 @@ async function start() {
     key2: 'value2',
     key3: 'value3',
   });
-  element = osm.removeProperty(element, 'key2'));
+  element = osm.removeProperty(element, 'key2');
   element = osm.setTimestampToNow(element);
   element = osm.incrementVersion(element);
   element = osm.setCoordinates(element, 1.234, 0.456);
 
   const changesetId = await osm.createChangeset('Created by me', 'My changeset comment');
-  const isChangesetStillOpen = await osm.isChangesetStillOpen(12345);
+  const isChangesetStillOpen = await osm.isChangesetStillOpen(changesetId);
+  const newElementVersion = await osm.sendElement(element, changesetId);
 }
 
 start();
 ```
 
+For the OSM dev instance, use that endpoint: https://api06.dev.openstreetmap.org/api/0.6 
 
 ## Contribute
 
