@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
 import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
