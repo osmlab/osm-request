@@ -1,32 +1,260 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OsmRequest createNodeElement Should return a new geoJSON element 1`] = `
+exports[`OsmRequest createNodeElement Should return a new element 1`] = `
 Object {
-  "geometry": Object {
-    "coordinates": Array [
-      1.234,
-      -0.456,
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "aze",
+              "v": "rty",
+            },
+          },
+          Object {
+            "$": Object {
+              "k": "uio",
+              "v": "pqs",
+            },
+          },
+        ],
+      },
     ],
-    "type": "Point",
   },
-  "properties": Object {
-    "aze": "rty",
-    "uio": "pqs",
-  },
-  "type": "Feature",
 }
 `;
 
-exports[`OsmRequest createNodeElement Should return a new geoJSON element 2`] = `
+exports[`OsmRequest createNodeElement Should return a new element 2`] = `
 Object {
-  "geometry": Object {
-    "coordinates": Array [
-      1.234,
-      -0.456,
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [],
+      },
     ],
-    "type": "Point",
   },
-  "properties": Object {},
-  "type": "Feature",
+}
+`;
+
+exports[`OsmRequest incrementVersion Should upgrade the version number of a node 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "2",
+          "visible": "true",
+        },
+        "tag": Array [],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest removeProperty Should remove a property from an element 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setCoordinates Should update the coordinates of a node 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "1.234",
+          "lon": "-0.456",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setProperties Should add a property to an element 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "weird_key",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setProperties Should modify an element property 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setProperty Should add a property to an element 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "weird_key",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setProperty Should modify an element property 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
 }
 `;

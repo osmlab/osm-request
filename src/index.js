@@ -1,11 +1,7 @@
 import 'babel-polyfill';
 import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
-import {
-  removeTrailingSlashes,
-  simpleObjectDeepClone,
-  throwIfNotPoint
-} from 'helpers/utils';
+import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
 import {
   fetchElementRequest,
   sendElementRequest,
@@ -90,21 +86,37 @@ export default class OsmRequest {
   }
 
   /**
-   * Create a shiny new OSM node element, in a geoJSON format
+   * Create a shiny new OSM node element, in a JSON format
    * @param {number} lat
    * @param {number} lon
    * @param {[object]} [properties] Optional, initial properties
    * @return {Object}
    */
   createNodeElement(lat, lon, properties = {}) {
-    return {
-      type: 'Feature',
-      properties: { ...properties },
-      geometry: {
-        type: 'Point',
-        coordinates: [lat, lon]
-      }
+    const element = {
+      osm: {
+        $: {},
+        node: [
+          {
+            $: {
+              visible: 'true',
+              version: '1'
+            },
+            tag: []
+          }
+        ]
+      },
+      _type: 'node'
     };
+
+    element.osm.node[0].tag = Object.keys(properties).map(propertyName => ({
+      $: {
+        k: propertyName.toString(),
+        v: properties[propertyName].toString()
+      }
+    }));
+
+    return element;
   }
 
   /**
@@ -118,49 +130,76 @@ export default class OsmRequest {
 
   /**
    * Add or replace a property in a given element
-   * @param {Object} element A geoJSON element
+   * @param {Object} element
    * @param {string} propertyName
    * @param {string} propertyValue
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   setProperty(element, propertyName, propertyValue) {
-    throwIfNotPoint(element);
-
+    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    newElement.properties[propertyName] = propertyValue;
+    const innerElement = newElement.osm[elementType][0];
+    const filteredTags = innerElement.tag.filter(
+      tag => tag.$.k !== propertyName.toString()
+    );
+
+    innerElement.tag = [
+      ...filteredTags,
+      {
+        $: {
+          k: propertyName.toString(),
+          v: propertyValue.toString()
+        }
+      }
+    ];
+
     return newElement;
   }
 
   /**
    * Add or replace several properties in a given element
-   * @param {Object} element A geoJSON element
+   * @param {Object} element
    * @param {Object} properties
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   setProperties(element, properties) {
-    throwIfNotPoint(element);
-
     const newElement = simpleObjectDeepClone(element);
     const clonedProperties = simpleObjectDeepClone(properties);
+    const propertiesName = Object.keys(clonedProperties);
 
-    for (const propertyName of Object.keys(clonedProperties)) {
-      newElement.properties[propertyName] = clonedProperties[propertyName];
-    }
+    const elementType = element._type;
+    const innerElement = newElement.osm[elementType][0];
+    const filteredTags = innerElement.tag.filter(
+      tag => !propertiesName.includes(tag.$.k)
+    );
+    const formattedProperties = propertiesName.map(propertyName => ({
+      $: {
+        k: propertyName.toString(),
+        v: clonedProperties[propertyName].toString()
+      }
+    }));
+
+    innerElement.tag = [...filteredTags, ...formattedProperties];
 
     return newElement;
   }
 
   /**
    * Remove a property from a given element
-   * @param {Object} element A geoJSON element
+   * @param {Object} element
    * @param {string} propertyName
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   removeProperty(element, propertyName) {
-    throwIfNotPoint(element);
-
+    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    delete newElement.properties[propertyName];
+    const innerElement = newElement.osm[elementType][0];
+    const filteredTags = innerElement.tag.filter(
+      tag => tag.$.k !== propertyName
+    );
+
+    innerElement.tag = filteredTags;
+
     return newElement;
   }
 
@@ -169,37 +208,44 @@ export default class OsmRequest {
    * @param {Object} element
    * @param {number} lat
    * @param {number} lon
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   setCoordinates(element, lat, lon) {
-    throwIfNotPoint(element);
-
+    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    newElement.geometry.coordinates = [lon, lat];
+    newElement.osm[elementType][0].$.lat = lat.toString();
+    newElement.osm[elementType][0].$.lon = lon.toString();
+
     return newElement;
   }
 
   /**
    * Set the current UTC date to a given element
    * @param {Object} element
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   setTimestampToNow(element) {
-    return this.setProperty(element, 'timestamp', new Date().toISOString());
+    const elementType = element._type;
+    const newElement = simpleObjectDeepClone(element);
+    newElement.osm[elementType][0].$.timestamp = new Date().toISOString();
+
+    return newElement;
   }
 
   /**
    * Increase the version number of an element
    * @param {Object} element
-   * @return {Object} A new version of the geoJSON element
+   * @return {Object} A new version of the element
    */
   incrementVersion(element) {
-    const currentVersion = parseInt(element.properties.version || 0, 10);
-    return this.setProperty(
-      element,
-      'version',
-      (currentVersion + 1).toString()
-    );
+    const elementType = element._type;
+    const newElement = simpleObjectDeepClone(element);
+    const innerElement = newElement.osm[elementType][0];
+    innerElement.$.version = (
+      parseInt(innerElement.$.version || 0, 10) + 1
+    ).toString();
+
+    return newElement;
   }
 
   /**

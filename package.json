@@ -84,9 +84,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cross-fetch": "^2.1.0",
-    "geojsontoosm": "0.0.2",
     "osm-auth": "^1.0.2",
-    "osmtogeojson": "^3.0.0-beta.3",
-    "simple-xml-dom": "^1.0.0"
+    "xml2js": "^0.4.19"
   }
 }

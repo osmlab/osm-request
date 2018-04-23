@@ -1,9 +1,11 @@
 import fetch from 'cross-fetch';
-import osmtogeojson from 'osmtogeojson';
-import geojsontoosm from 'geojsontoosm';
-import { parse as xmlParse } from 'simple-xml-dom';
-import { isNodeId, buildQueryString } from 'helpers/utils';
-import { buildChangesetXml, xmlToJson } from 'helpers/xml';
+import {
+  buildQueryString,
+  findElementType,
+  findElementId,
+  simpleObjectDeepClone
+} from 'helpers/utils';
+import { buildChangesetXml, xmlToJson, jsonToXml } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
 /**
@@ -13,17 +15,17 @@ import { RequestException } from 'exceptions/request';
  * @return {Object}
  */
 export function fetchElementRequest(endpoint, osmId) {
+  const elementType = findElementType(osmId);
+  const elementId = findElementId(osmId);
+
   return fetch(`${endpoint}/${osmId}`)
     .then(response => response.text())
-    .then(response => xmlParse(response))
-    .then(response => osmtogeojson(response))
-    .then(response => {
-      if (isNodeId(osmId)) {
-        return response.features[0];
-      }
-
-      return response;
-    });
+    .then(response => xmlToJson(response))
+    .then(response => ({
+      ...response,
+      _id: elementId,
+      _type: elementType
+    }));
 }
 
 /**
@@ -34,11 +36,14 @@ export function fetchElementRequest(endpoint, osmId) {
  * @return {Promise}
  */
 export function sendElementRequest(auth, element, changesetId) {
-  element.properties.changeset = changesetId;
+  const copiedElement = simpleObjectDeepClone(element);
+  const { _id: elementId, _type: elementType } = copiedElement;
+  delete copiedElement._id;
+  delete copiedElement._type;
 
-  const elementId = element.properties.id;
-  const elementType = element.properties.type;
-  const elementXml = geojsontoosm(element);
+  copiedElement.osm[elementType][0].$.changeset = changesetId;
+
+  const elementXml = jsonToXml(copiedElement);
   const path = elementId
     ? `/${elementType}/create`
     : `/${elementType}/${elementId}`;
@@ -110,7 +115,6 @@ export function fetchNotesRequest(
       throw new RequestException(message);
     })
     .then(response => response.text())
-    .then(response => xmlParse(response))
     .then(response => xmlToJson(response))
     .then(response =>
       response.osm.note.map(note => ({

@@ -1,28 +1,28 @@
-import { WrongElementTypeException } from 'exceptions/element';
 import defaultOptions from '../defaultOptions.json';
 import OsmRequest from '../index';
 
-const sampleFeature = {
-  type: 'Feature',
-  id: 'node/3683625932',
-  properties: {
-    timestamp: '2015-08-06T09:49:47Z',
-    version: '1',
-    changeset: '33150668',
-    user: 'Vinber-Num&Lib',
-    uid: '2568974',
-    amenity: 'drinking_water',
-    id: 'node/3683625932'
+const sampleNode = {
+  osm: {
+    $: {},
+    node: [
+      {
+        $: {
+          id: '3683625932',
+          visible: 'true',
+          version: '1',
+          timestamp: '2015-08-06T09:49:47Z',
+          changeset: '33150668',
+          user: 'Vinber-Num&Lib',
+          uid: '2568974',
+          lat: '-0.5936602',
+          lon: '44.8331455'
+        },
+        tag: []
+      }
+    ]
   },
-  geometry: {
-    type: 'Point',
-    coordinates: [-0.5936602, 44.8331455]
-  }
-};
-
-const sampleFeatureCollection = {
-  type: 'FeatureCollection',
-  features: [{ ...sampleFeature }]
+  _id: '3683625932',
+  _type: 'node'
 };
 
 describe('OsmRequest', () => {
@@ -40,7 +40,7 @@ describe('OsmRequest', () => {
   });
 
   describe('createNodeElement', () => {
-    it('Should return a new geoJSON element', () => {
+    it('Should return a new element', () => {
       const lat = 1.234;
       const lon = -0.456;
       const properties = {
@@ -61,34 +61,18 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const propertyName = 'weird_key';
       const propertyValue = 'stuff';
-      const element = osm.setProperty(
-        sampleFeature,
-        propertyName,
-        propertyValue
-      );
-      const collection = () =>
-        osm.setProperty(sampleFeatureCollection, propertyName, propertyValue);
+      const element = osm.setProperty(sampleNode, propertyName, propertyValue);
 
-      expect(sampleFeature.properties[propertyName]).toBeUndefined();
-      expect(collection).toThrow(WrongElementTypeException);
-      expect(element.properties[propertyName]).toBe(propertyValue);
+      expect(element).toMatchSnapshot();
     });
 
     it('Should modify an element property', () => {
       const osm = new OsmRequest();
       const propertyName = 'amenity';
       const propertyValue = 'stuff';
-      const element = osm.setProperty(
-        sampleFeature,
-        propertyName,
-        propertyValue
-      );
-      const collection = () =>
-        osm.setProperty(sampleFeatureCollection, propertyName, propertyValue);
+      const element = osm.setProperty(sampleNode, propertyName, propertyValue);
 
-      expect(sampleFeature.properties[propertyName]).toBeDefined();
-      expect(collection).toThrow(WrongElementTypeException);
-      expect(element.properties[propertyName]).toBe(propertyValue);
+      expect(element).toMatchSnapshot();
     });
   });
 
@@ -97,34 +81,22 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const propertyName = 'weird_key';
       const propertyValue = 'stuff';
-      const element = osm.setProperties(sampleFeature, {
+      const element = osm.setProperties(sampleNode, {
         [propertyName]: propertyValue
       });
-      const collection = () =>
-        osm.setProperties(sampleFeatureCollection, {
-          [propertyName]: propertyValue
-        });
 
-      expect(sampleFeature.properties[propertyName]).toBeUndefined();
-      expect(collection).toThrow(WrongElementTypeException);
-      expect(element.properties[propertyName]).toBe(propertyValue);
+      expect(element).toMatchSnapshot();
     });
 
     it('Should modify an element property', () => {
       const osm = new OsmRequest();
       const propertyName = 'amenity';
       const propertyValue = 'stuff';
-      const element = osm.setProperties(sampleFeature, {
+      const element = osm.setProperties(sampleNode, {
         [propertyName]: propertyValue
       });
-      const collection = () =>
-        osm.setProperties(sampleFeatureCollection, {
-          [propertyName]: propertyValue
-        });
 
-      expect(sampleFeature.properties[propertyName]).toBeDefined();
-      expect(collection).toThrow(WrongElementTypeException);
-      expect(element.properties[propertyName]).toBe(propertyValue);
+      expect(element).toMatchSnapshot();
     });
   });
 
@@ -132,13 +104,9 @@ describe('OsmRequest', () => {
     it('Should remove a property from an element', () => {
       const osm = new OsmRequest();
       const propertyName = 'amenity';
-      const element = osm.removeProperty(sampleFeature, propertyName);
-      const collection = () =>
-        osm.removeProperty(sampleFeatureCollection, propertyName);
+      const element = osm.removeProperty(sampleNode, propertyName);
 
-      expect(sampleFeature.properties[propertyName]).toBeDefined();
-      expect(collection).toThrow(WrongElementTypeException);
-      expect(element.properties[propertyName]).toBeUndefined();
+      expect(element).toMatchSnapshot();
     });
   });
 
@@ -147,25 +115,18 @@ describe('OsmRequest', () => {
       const lat = 1.234;
       const lon = -0.456;
       const osm = new OsmRequest();
-      const element = osm.setCoordinates(sampleFeature, lat, lon);
-      const wrongElementType = () =>
-        osm.setCoordinates(sampleFeatureCollection, lat, lon);
+      const element = osm.setCoordinates(sampleNode, lat, lon);
 
-      expect(sampleFeature.geometry.coordinates).not.toEqual([lon, lat]);
-      expect(wrongElementType).toThrow(WrongElementTypeException);
-      expect(element.geometry.coordinates).toEqual([lon, lat]);
+      expect(element).toMatchSnapshot();
     });
   });
 
   describe('incrementVersion', () => {
     it('Should upgrade the version number of a node', () => {
       const osm = new OsmRequest();
-      const element = osm.incrementVersion(sampleFeature);
-      const expected = (
-        parseInt(sampleFeature.properties.version, 10) + 1
-      ).toString();
+      const element = osm.incrementVersion(sampleNode);
 
-      expect(element.properties.version).toBe(expected);
+      expect(element).toMatchSnapshot();
     });
   });
 });

@@ -1,5 +1,3 @@
-import { WrongElementTypeException } from 'exceptions/element';
-
 /**
  * Remove the trailing slashes from an URL and return it
  * @param {string} url
@@ -27,24 +25,21 @@ export function simpleObjectDeepClone(object) {
 }
 
 /**
- * Tells if an ID is one of an OSM node
+ * Return the type of an element based on the full OSM ID
  * @param {string} osmId
- * @return {boolean}
+ * @return {string}
  */
-export function isNodeId(osmId) {
-  return /^node\//.test(osmId);
+export function findElementType(osmId) {
+  return /^(\w+)\//.exec(osmId)[1];
 }
 
 /**
- * Throw an exception if the given element is not a Point
- * @param {Object} element
+ * Return the ID of an element based on the full OSM ID
+ * @param {string} osmId
+ * @return {string}
  */
-export function throwIfNotPoint(element) {
-  if (!element.geometry || element.geometry.type !== 'Point') {
-    throw new WrongElementTypeException(
-      'Other element types than Point are not supported for now'
-    );
-  }
+export function findElementId(osmId) {
+  return /\/(\d+)$/.exec(osmId)[1];
 }
 
 /**

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`GeoJSON exceptions GeoJSONException Should be well formatted 1`] = `"This is a test"`;

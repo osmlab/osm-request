@@ -8,7 +8,8 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
       </changeset>
-    </osm>"
+    </osm>
+  "
 `;
 
 exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 2`] = `
@@ -19,5 +20,6 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
       </changeset>
-    </osm>"
+    </osm>
+  "
 `;

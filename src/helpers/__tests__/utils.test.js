@@ -1,7 +1,6 @@
 import {
   removeTrailingSlashes,
   simpleObjectDeepClone,
-  isNodeId,
   buildQueryString
 } from '../utils';
 
@@ -50,13 +49,6 @@ describe('Utils helpers', () => {
       expect(sample.item4).not.toEqual(result.item4);
       expect(sample.item4[0]).not.toBe(result.item4[0]);
       expect(sample.item4[0]).not.toEqual(result.item4[0]);
-    });
-  });
-
-  describe('isNodeId', () => {
-    it('Should tell if an OSM ID is a node one', () => {
-      expect(isNodeId('node/12345')).toBe(true);
-      expect(isNodeId('way/12345')).toBe(false);
     });
   });
 
