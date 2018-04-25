@@ -23,3 +23,409 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
     </osm>
   "
 `;
+
+exports[`XML helpers convertNotesXmlToJson Should convert a Notes XML string into a proper JSON object 1`] = `
+Array [
+  Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1369237/close",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1369237/comment",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2018-04-22 17:54:49 UTC",
+        "html": "<p>Chez Florentin, Faustine, Aimé, Julien et Marine.</p>",
+        "text": "Chez Florentin, Faustine, Aimé, Julien et Marine.",
+      },
+      Object {
+        "action": "commented",
+        "date": "2018-04-22 17:57:56 UTC",
+        "html": "<p>c'est quoi ? une note personnelle ou le nom d'un établissement ?</p>",
+        "text": "c'est quoi ? une note personnelle ou le nom d'un établissement ?",
+      },
+    ],
+    "date_created": "2018-04-22 17:54:49 UTC",
+    "id": "1369237",
+    "lat": "44.4068500",
+    "lon": "0.5891000",
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1369237",
+  },
+  Object {
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2018-01-16 15:28:34 UTC",
+        "html": "<p>carrefour market</p>",
+        "text": "carrefour market",
+      },
+      Object {
+        "action": "closed",
+        "date": "2018-04-20 11:43:00 UTC",
+        "html": "<p></p>",
+        "text": "",
+        "uid": "2533303",
+        "user": "opline",
+        "user_url": "https://api.openstreetmap.org/user/opline",
+      },
+    ],
+    "date_closed": "2018-04-20 11:43:00 UTC",
+    "date_created": "2018-01-16 15:28:34 UTC",
+    "id": "1270165",
+    "lat": "44.4890700",
+    "lon": "0.1802000",
+    "reopen_url": "https://api.openstreetmap.org/api/0.6/notes/1270165/reopen",
+    "status": "closed",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1270165",
+  },
+  Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1106518/close",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1106518/comment",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2017-08-16 15:41:56 UTC",
+        "html": "<p>Monplaisir</p>",
+        "text": "Monplaisir",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-16 15:42:43 UTC",
+        "html": "<p>Les Carbonnières
+</p>",
+        "text": "Les Carbonnières
+",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-17 16:57:49 UTC",
+        "html": "<p>lieu-dit, rue ou résidence?</p>",
+        "text": "lieu-dit, rue ou résidence?",
+        "uid": "379182",
+        "user": "Metaltyty",
+        "user_url": "https://api.openstreetmap.org/user/Metaltyty",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-24 15:44:07 UTC",
+        "html": "<p>Lieu dit</p>",
+        "text": "Lieu dit",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-10-22 16:06:12 UTC",
+        "html": "<p>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</p>",
+        "text": "Monplaisir ou les carbonnières ? Vous nous proposez deux noms",
+        "uid": "2533303",
+        "user": "opline",
+        "user_url": "https://api.openstreetmap.org/user/opline",
+      },
+      Object {
+        "action": "commented",
+        "date": "2018-04-08 19:35:56 UTC",
+        "html": "<p>on cloture, pas de réactions ?</p>",
+        "text": "on cloture, pas de réactions ?",
+        "uid": "2568974",
+        "user": "Vinber-Num&Lib",
+        "user_url": "https://api.openstreetmap.org/user/Vinber-Num&Lib",
+      },
+    ],
+    "date_created": "2017-08-16 15:41:56 UTC",
+    "id": "1106518",
+    "lat": "44.5063613",
+    "lon": "0.2216578",
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1106518",
+  },
+]
+`;
+
+exports[`XML helpers jsonToXml Should convert a JSON object into an XML string 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<osm>
+  <node attribute1=\\"value1\\" attribute2=\\"value2\\">
+    <attribute3>value3</attribute3>
+    <attribute4>value4</attribute4>
+  </node>
+</osm>"
+`;
+
+exports[`XML helpers xmlToJson Should convert an XML string into a JSON object 1`] = `
+Object {
+  "osm": Object {
+    "$": Object {
+      "generator": "OpenStreetMap server",
+      "version": "0.6",
+    },
+    "note": Array [
+      Object {
+        "$": Object {
+          "lat": "44.4068500",
+          "lon": "0.5891000",
+        },
+        "close_url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1369237/close",
+        ],
+        "comment_url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1369237/comment",
+        ],
+        "comments": Array [
+          Object {
+            "comment": Array [
+              Object {
+                "action": Array [
+                  "opened",
+                ],
+                "date": Array [
+                  "2018-04-22 17:54:49 UTC",
+                ],
+                "html": Array [
+                  "<p>Chez Florentin, Faustine, Aimé, Julien et Marine.</p>",
+                ],
+                "text": Array [
+                  "Chez Florentin, Faustine, Aimé, Julien et Marine.",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2018-04-22 17:57:56 UTC",
+                ],
+                "html": Array [
+                  "<p>c'est quoi ? une note personnelle ou le nom d'un établissement ?</p>",
+                ],
+                "text": Array [
+                  "c'est quoi ? une note personnelle ou le nom d'un établissement ?",
+                ],
+              },
+            ],
+          },
+        ],
+        "date_created": Array [
+          "2018-04-22 17:54:49 UTC",
+        ],
+        "id": Array [
+          "1369237",
+        ],
+        "status": Array [
+          "open",
+        ],
+        "url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1369237",
+        ],
+      },
+      Object {
+        "$": Object {
+          "lat": "44.4890700",
+          "lon": "0.1802000",
+        },
+        "comments": Array [
+          Object {
+            "comment": Array [
+              Object {
+                "action": Array [
+                  "opened",
+                ],
+                "date": Array [
+                  "2018-01-16 15:28:34 UTC",
+                ],
+                "html": Array [
+                  "<p>carrefour market</p>",
+                ],
+                "text": Array [
+                  "carrefour market",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "closed",
+                ],
+                "date": Array [
+                  "2018-04-20 11:43:00 UTC",
+                ],
+                "html": Array [
+                  "<p></p>",
+                ],
+                "text": Array [
+                  "",
+                ],
+                "uid": Array [
+                  "2533303",
+                ],
+                "user": Array [
+                  "opline",
+                ],
+                "user_url": Array [
+                  "https://api.openstreetmap.org/user/opline",
+                ],
+              },
+            ],
+          },
+        ],
+        "date_closed": Array [
+          "2018-04-20 11:43:00 UTC",
+        ],
+        "date_created": Array [
+          "2018-01-16 15:28:34 UTC",
+        ],
+        "id": Array [
+          "1270165",
+        ],
+        "reopen_url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1270165/reopen",
+        ],
+        "status": Array [
+          "closed",
+        ],
+        "url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1270165",
+        ],
+      },
+      Object {
+        "$": Object {
+          "lat": "44.5063613",
+          "lon": "0.2216578",
+        },
+        "close_url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1106518/close",
+        ],
+        "comment_url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1106518/comment",
+        ],
+        "comments": Array [
+          Object {
+            "comment": Array [
+              Object {
+                "action": Array [
+                  "opened",
+                ],
+                "date": Array [
+                  "2017-08-16 15:41:56 UTC",
+                ],
+                "html": Array [
+                  "<p>Monplaisir</p>",
+                ],
+                "text": Array [
+                  "Monplaisir",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2017-08-16 15:42:43 UTC",
+                ],
+                "html": Array [
+                  "<p>Les Carbonnières
+</p>",
+                ],
+                "text": Array [
+                  "Les Carbonnières
+",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2017-08-17 16:57:49 UTC",
+                ],
+                "html": Array [
+                  "<p>lieu-dit, rue ou résidence?</p>",
+                ],
+                "text": Array [
+                  "lieu-dit, rue ou résidence?",
+                ],
+                "uid": Array [
+                  "379182",
+                ],
+                "user": Array [
+                  "Metaltyty",
+                ],
+                "user_url": Array [
+                  "https://api.openstreetmap.org/user/Metaltyty",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2017-08-24 15:44:07 UTC",
+                ],
+                "html": Array [
+                  "<p>Lieu dit</p>",
+                ],
+                "text": Array [
+                  "Lieu dit",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2017-10-22 16:06:12 UTC",
+                ],
+                "html": Array [
+                  "<p>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</p>",
+                ],
+                "text": Array [
+                  "Monplaisir ou les carbonnières ? Vous nous proposez deux noms",
+                ],
+                "uid": Array [
+                  "2533303",
+                ],
+                "user": Array [
+                  "opline",
+                ],
+                "user_url": Array [
+                  "https://api.openstreetmap.org/user/opline",
+                ],
+              },
+              Object {
+                "action": Array [
+                  "commented",
+                ],
+                "date": Array [
+                  "2018-04-08 19:35:56 UTC",
+                ],
+                "html": Array [
+                  "<p>on cloture, pas de réactions ?</p>",
+                ],
+                "text": Array [
+                  "on cloture, pas de réactions ?",
+                ],
+                "uid": Array [
+                  "2568974",
+                ],
+                "user": Array [
+                  "Vinber-Num&Lib",
+                ],
+                "user_url": Array [
+                  "https://api.openstreetmap.org/user/Vinber-Num&Lib",
+                ],
+              },
+            ],
+          },
+        ],
+        "date_created": Array [
+          "2017-08-16 15:41:56 UTC",
+        ],
+        "id": Array [
+          "1106518",
+        ],
+        "status": Array [
+          "open",
+        ],
+        "url": Array [
+          "https://api.openstreetmap.org/api/0.6/notes/1106518",
+        ],
+      },
+    ],
+  },
+}
+`;

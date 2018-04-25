@@ -53,7 +53,7 @@ export default class OsmRequest {
    * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
    * @return {Promise} Resolves on notes list
    */
-  fetchNotes(left, bottom, right, top, limit, closedDays) {
+  fetchNotes(left, bottom, right, top, limit = null, closedDays = null) {
     return fetchNotesRequest(
       this.endpoint,
       left,

@@ -5,7 +5,12 @@ import {
   findElementId,
   simpleObjectDeepClone
 } from 'helpers/utils';
-import { buildChangesetXml, xmlToJson, jsonToXml } from 'helpers/xml';
+import {
+  buildChangesetXml,
+  convertNotesXmlToJson,
+  xmlToJson,
+  jsonToXml
+} from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
 /**
@@ -88,8 +93,8 @@ export function fetchNotesRequest(
   bottom,
   right,
   top,
-  limit,
-  closedDays
+  limit = null,
+  closedDays = null
 ) {
   const params = {
     bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
@@ -115,13 +120,7 @@ export function fetchNotesRequest(
       throw new RequestException(message);
     })
     .then(response => response.text())
-    .then(response => xmlToJson(response))
-    .then(response =>
-      response.osm.note.map(note => ({
-        ...note,
-        comments: note.comments.comment
-      }))
-    );
+    .then(response => convertNotesXmlToJson(response));
 }
 
 /**

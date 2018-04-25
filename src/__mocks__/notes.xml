@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server">
+<note lon="0.5891000" lat="44.4068500">
+  <id>1369237</id>
+  <url>https://api.openstreetmap.org/api/0.6/notes/1369237</url>
+  <comment_url>https://api.openstreetmap.org/api/0.6/notes/1369237/comment</comment_url>
+  <close_url>https://api.openstreetmap.org/api/0.6/notes/1369237/close</close_url>
+  <date_created>2018-04-22 17:54:49 UTC</date_created>
+  <status>open</status>
+  <comments>
+    <comment>
+      <date>2018-04-22 17:54:49 UTC</date>
+      <action>opened</action>
+      <text>Chez Florentin, Faustine, Aimé, Julien et Marine.</text>
+      <html>&lt;p&gt;Chez Florentin, Faustine, Aimé, Julien et Marine.&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2018-04-22 17:57:56 UTC</date>
+      <action>commented</action>
+      <text>c'est quoi ? une note personnelle ou le nom d'un établissement ?</text>
+      <html>&lt;p&gt;c'est quoi ? une note personnelle ou le nom d'un établissement ?&lt;/p&gt;</html>
+    </comment>
+  </comments>
+</note>
+<note lon="0.1802000" lat="44.4890700">
+  <id>1270165</id>
+  <url>https://api.openstreetmap.org/api/0.6/notes/1270165</url>
+  <reopen_url>https://api.openstreetmap.org/api/0.6/notes/1270165/reopen</reopen_url>
+  <date_created>2018-01-16 15:28:34 UTC</date_created>
+  <status>closed</status>
+  <date_closed>2018-04-20 11:43:00 UTC</date_closed>
+  <comments>
+    <comment>
+      <date>2018-01-16 15:28:34 UTC</date>
+      <action>opened</action>
+      <text>carrefour market</text>
+      <html>&lt;p&gt;carrefour market&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2018-04-20 11:43:00 UTC</date>
+      <uid>2533303</uid>
+      <user>opline</user>
+      <user_url>https://api.openstreetmap.org/user/opline</user_url>
+      <action>closed</action>
+      <text></text>
+      <html>&lt;p&gt;&lt;/p&gt;</html>
+    </comment>
+  </comments>
+</note>
+<note lon="0.2216578" lat="44.5063613">
+  <id>1106518</id>
+  <url>https://api.openstreetmap.org/api/0.6/notes/1106518</url>
+  <comment_url>https://api.openstreetmap.org/api/0.6/notes/1106518/comment</comment_url>
+  <close_url>https://api.openstreetmap.org/api/0.6/notes/1106518/close</close_url>
+  <date_created>2017-08-16 15:41:56 UTC</date_created>
+  <status>open</status>
+  <comments>
+    <comment>
+      <date>2017-08-16 15:41:56 UTC</date>
+      <action>opened</action>
+      <text>Monplaisir</text>
+      <html>&lt;p&gt;Monplaisir&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2017-08-16 15:42:43 UTC</date>
+      <action>commented</action>
+      <text>Les Carbonnières
+</text>
+      <html>&lt;p&gt;Les Carbonnières
+&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2017-08-17 16:57:49 UTC</date>
+      <uid>379182</uid>
+      <user>Metaltyty</user>
+      <user_url>https://api.openstreetmap.org/user/Metaltyty</user_url>
+      <action>commented</action>
+      <text>lieu-dit, rue ou résidence?</text>
+      <html>&lt;p&gt;lieu-dit, rue ou résidence?&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2017-08-24 15:44:07 UTC</date>
+      <action>commented</action>
+      <text>Lieu dit</text>
+      <html>&lt;p&gt;Lieu dit&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2017-10-22 16:06:12 UTC</date>
+      <uid>2533303</uid>
+      <user>opline</user>
+      <user_url>https://api.openstreetmap.org/user/opline</user_url>
+      <action>commented</action>
+      <text>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</text>
+      <html>&lt;p&gt;Monplaisir ou les carbonnières ? Vous nous proposez deux noms&lt;/p&gt;</html>
+    </comment>
+    <comment>
+      <date>2018-04-08 19:35:56 UTC</date>
+      <uid>2568974</uid>
+      <user>Vinber-Num&amp;Lib</user>
+      <user_url>https://api.openstreetmap.org/user/Vinber-Num&amp;Lib</user_url>
+      <action>commented</action>
+      <text>on cloture, pas de réactions ?</text>
+      <html>&lt;p&gt;on cloture, pas de réactions ?&lt;/p&gt;</html>
+    </comment>
+  </comments>
+</note>
+</osm>
