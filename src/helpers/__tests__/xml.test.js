@@ -2,12 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import {
   buildChangesetXml,
+  convertElementXmlToJson,
   convertNotesXmlToJson,
   flattenAttributes,
   xmlToJson,
   jsonToXml
 } from '../xml';
 
+const nodeSample = fs.readFileSync(
+  path.join(__dirname, '../../__mocks__/node.xml')
+);
 const notesSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/notes.xml')
 );
@@ -21,6 +25,18 @@ describe('XML helpers', () => {
     it('Should build a stringified OSM changeset', () => {
       expect(buildChangesetXml('me', 'my comment')).toMatchSnapshot();
       expect(buildChangesetXml()).toMatchSnapshot();
+    });
+  });
+
+  describe('convertElementXmlToJson', () => {
+    it('Should convert an Element XML string into a proper JSON object', async done => {
+      const result = await convertElementXmlToJson(
+        nodeSample,
+        'node',
+        '3683625932'
+      );
+      expect(result).toMatchSnapshot();
+      done();
     });
   });
 

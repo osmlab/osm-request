@@ -8,7 +8,7 @@ import {
 import {
   buildChangesetXml,
   convertNotesXmlToJson,
-  xmlToJson,
+  convertElementXmlToJson,
   jsonToXml
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
@@ -25,12 +25,9 @@ export function fetchElementRequest(endpoint, osmId) {
 
   return fetch(`${endpoint}/${osmId}`)
     .then(response => response.text())
-    .then(response => xmlToJson(response))
-    .then(response => ({
-      ...response,
-      _id: elementId,
-      _type: elementType
-    }));
+    .then(response =>
+      convertElementXmlToJson(response, elementType, elementId)
+    );
 }
 
 /**

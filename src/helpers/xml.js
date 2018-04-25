@@ -22,8 +22,23 @@ export function buildChangesetXml(createdBy = '', comment = '') {
 }
 
 /**
+ * Convert a raw Element API response into a well formatted JSON object
+ * @param {string} xml - The raw API response
+ * @param {string} elementType - The type of the concerned OSM element (eg: node, way, relation)
+ * @param {string} elementId - The ID of the concerned OSM element
+ * @return {Promise}
+ */
+export function convertElementXmlToJson(xml, elementType, elementId) {
+  return xmlToJson(xml).then(result => ({
+    ...result,
+    _id: elementId,
+    _type: elementType
+  }));
+}
+
+/**
  * Convert a raw Notes API response into a well formatted JSON object
- * @param  {string} xml - The raw API response
+ * @param {string} xml - The raw API response
  * @return {Promise}
  */
 export function convertNotesXmlToJson(xml) {
@@ -65,7 +80,7 @@ export function convertNotesXmlToJson(xml) {
  *   attribute4: 'value4',
  * }
  *
- * @param  {Object} object
+ * @param {Object} object
  * @return {Object}
  */
 export function flattenAttributes(object) {
@@ -86,7 +101,7 @@ export function flattenAttributes(object) {
 
 /**
  * Convert a stringified XML into a JSON object
- * @param  {string} xml
+ * @param {string} xml
  * @return {Promise}
  */
 export function xmlToJson(xml) {
@@ -101,7 +116,7 @@ export function xmlToJson(xml) {
 
 /**
  * Convert a JSON object into a stringified XML
- * @param  {Object} json
+ * @param {Object} json
  * @return {string}
  */
 export function jsonToXml(json) {
