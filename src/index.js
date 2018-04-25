@@ -1,5 +1,6 @@
 import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
+import { getCurrentIsoTimestamp } from 'helpers/time';
 import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
 import {
   fetchElementRequest,
@@ -226,7 +227,7 @@ export default class OsmRequest {
   setTimestampToNow(element) {
     const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    newElement.osm[elementType][0].$.timestamp = new Date().toISOString();
+    newElement.osm[elementType][0].$.timestamp = getCurrentIsoTimestamp();
 
     return newElement;
   }

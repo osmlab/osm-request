@@ -49,7 +49,179 @@ Object {
 }
 `;
 
-exports[`OsmRequest incrementVersion Should upgrade the version number of a node 1`] = `
+exports[`OsmRequest fetchElement Should fetch an elmeent and returned its JSON representation 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {
+      "attribution": "http://www.openstreetmap.org/copyright",
+      "copyright": "OpenStreetMap and contributors",
+      "generator": "CGImap 0.6.0 (9711 thorn-01.openstreetmap.org)",
+      "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+      "version": "0.6",
+    },
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "44.8331455",
+          "lon": "-0.5936602",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "drinking_water",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest fetchNotes Should fetch notes from a given bbox 1`] = `
+Array [
+  Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1369237/close",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1369237/comment",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2018-04-22 17:54:49 UTC",
+        "html": "<p>Chez Florentin, Faustine, Aimé, Julien et Marine.</p>",
+        "text": "Chez Florentin, Faustine, Aimé, Julien et Marine.",
+      },
+      Object {
+        "action": "commented",
+        "date": "2018-04-22 17:57:56 UTC",
+        "html": "<p>c'est quoi ? une note personnelle ou le nom d'un établissement ?</p>",
+        "text": "c'est quoi ? une note personnelle ou le nom d'un établissement ?",
+      },
+    ],
+    "date_created": "2018-04-22 17:54:49 UTC",
+    "id": "1369237",
+    "lat": "44.4068500",
+    "lon": "0.5891000",
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1369237",
+  },
+  Object {
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2018-01-16 15:28:34 UTC",
+        "html": "<p>carrefour market</p>",
+        "text": "carrefour market",
+      },
+      Object {
+        "action": "closed",
+        "date": "2018-04-20 11:43:00 UTC",
+        "html": "<p></p>",
+        "text": "",
+        "uid": "2533303",
+        "user": "opline",
+        "user_url": "https://api.openstreetmap.org/user/opline",
+      },
+    ],
+    "date_closed": "2018-04-20 11:43:00 UTC",
+    "date_created": "2018-01-16 15:28:34 UTC",
+    "id": "1270165",
+    "lat": "44.4890700",
+    "lon": "0.1802000",
+    "reopen_url": "https://api.openstreetmap.org/api/0.6/notes/1270165/reopen",
+    "status": "closed",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1270165",
+  },
+  Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1365069/close",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1365069/comment",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2018-04-18 17:46:14 UTC",
+        "html": "<p>Labro</p>",
+        "text": "Labro",
+      },
+    ],
+    "date_created": "2018-04-18 17:46:14 UTC",
+    "id": "1365069",
+    "lat": "44.4201400",
+    "lon": "0.7933400",
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1365069",
+  },
+  Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1106518/close",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1106518/comment",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2017-08-16 15:41:56 UTC",
+        "html": "<p>Monplaisir</p>",
+        "text": "Monplaisir",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-16 15:42:43 UTC",
+        "html": "<p>Les Carbonnières
+</p>",
+        "text": "Les Carbonnières
+",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-17 16:57:49 UTC",
+        "html": "<p>lieu-dit, rue ou résidence?</p>",
+        "text": "lieu-dit, rue ou résidence?",
+        "uid": "379182",
+        "user": "Metaltyty",
+        "user_url": "https://api.openstreetmap.org/user/Metaltyty",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-08-24 15:44:07 UTC",
+        "html": "<p>Lieu dit</p>",
+        "text": "Lieu dit",
+      },
+      Object {
+        "action": "commented",
+        "date": "2017-10-22 16:06:12 UTC",
+        "html": "<p>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</p>",
+        "text": "Monplaisir ou les carbonnières ? Vous nous proposez deux noms",
+        "uid": "2533303",
+        "user": "opline",
+        "user_url": "https://api.openstreetmap.org/user/opline",
+      },
+      Object {
+        "action": "commented",
+        "date": "2018-04-08 19:35:56 UTC",
+        "html": "<p>on cloture, pas de réactions ?</p>",
+        "text": "on cloture, pas de réactions ?",
+        "uid": "2568974",
+        "user": "Vinber-Num&Lib",
+        "user_url": "https://api.openstreetmap.org/user/Vinber-Num&Lib",
+      },
+    ],
+    "date_created": "2017-08-16 15:41:56 UTC",
+    "id": "1106518",
+    "lat": "44.5063613",
+    "lon": "0.2216578",
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1106518",
+  },
+]
+`;
+
+exports[`OsmRequest incrementVersion Should upgrade the version number of an element 1`] = `
 Object {
   "_id": "3683625932",
   "_type": "node",
@@ -101,7 +273,7 @@ Object {
 }
 `;
 
-exports[`OsmRequest setCoordinates Should update the coordinates of a node 1`] = `
+exports[`OsmRequest setCoordinates Should update the coordinates of an element 1`] = `
 Object {
   "_id": "3683625932",
   "_type": "node",
@@ -253,6 +425,32 @@ Object {
             },
           },
         ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setTimestampToNow Should update the timestamp of an element 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2018-04-25T07:06:47.550Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [],
       },
     ],
   },

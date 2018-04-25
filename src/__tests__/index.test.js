@@ -1,3 +1,6 @@
+jest.mock('../requests');
+jest.mock('../helpers/time');
+
 import defaultOptions from '../defaultOptions.json';
 import OsmRequest from '../index';
 
@@ -111,7 +114,7 @@ describe('OsmRequest', () => {
   });
 
   describe('setCoordinates', () => {
-    it('Should update the coordinates of a node', () => {
+    it('Should update the coordinates of an element', () => {
       const lat = 1.234;
       const lon = -0.456;
       const osm = new OsmRequest();
@@ -121,12 +124,39 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('setTimestampToNow', () => {
+    it('Should update the timestamp of an element', () => {
+      const osm = new OsmRequest();
+      const element = osm.setTimestampToNow(sampleNode);
+
+      expect(element).toMatchSnapshot();
+    });
+  });
+
   describe('incrementVersion', () => {
-    it('Should upgrade the version number of a node', () => {
+    it('Should upgrade the version number of an element', () => {
       const osm = new OsmRequest();
       const element = osm.incrementVersion(sampleNode);
 
       expect(element).toMatchSnapshot();
+    });
+  });
+
+  describe('fetchElement', () => {
+    it('Should fetch an elmeent and returned its JSON representation', () => {
+      const osm = new OsmRequest();
+      const element = osm.fetchElement(1234);
+
+      expect(element).toMatchSnapshot();
+    });
+  });
+
+  describe('fetchNotes', () => {
+    it('Should fetch notes from a given bbox', () => {
+      const osm = new OsmRequest();
+      const notes = osm.fetchNotes(0, 0, 1, 1);
+
+      expect(notes).toMatchSnapshot();
     });
   });
 });

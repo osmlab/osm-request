@@ -43,6 +43,7 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/requests.js",
+      "<rootDir>/src/helpers/time.js",
       "<rootDir>/node_modules/"
     ]
   },

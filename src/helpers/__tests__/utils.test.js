@@ -1,7 +1,9 @@
 import {
   removeTrailingSlashes,
   simpleObjectDeepClone,
-  buildQueryString
+  buildQueryString,
+  findElementType,
+  findElementId
 } from '../utils';
 
 describe('Utils helpers', () => {
@@ -21,6 +23,22 @@ describe('Utils helpers', () => {
       expect(removeTrailingSlashes('http://azertyuiop/azertyuiop')).toBe(
         'http://azertyuiop/azertyuiop'
       );
+    });
+  });
+
+  describe('findElementType', () => {
+    it('Should find and return an OSM element type from a full OSM ID', () => {
+      expect(findElementType('node/1234')).toBe('node');
+      expect(findElementType('way/4567')).toBe('way');
+      expect(findElementType('relation/890')).toBe('relation');
+    });
+  });
+
+  describe('findElementId', () => {
+    it('Should find and return an OSM element ID from a full OSM ID', () => {
+      expect(findElementId('node/1234')).toBe('1234');
+      expect(findElementId('way/4567')).toBe('4567');
+      expect(findElementId('relation/890')).toBe('890');
     });
   });
 
@@ -59,10 +77,10 @@ describe('Utils helpers', () => {
         'param-2': 'stuff 2',
         param_3: 'stuff 3'
       };
+      const result = buildQueryString(params);
+      const expected = '?param1=stuff&param-2=stuff%202&param_3=stuff%203';
 
-      expect(buildQueryString(params)).toBe(
-        '?param1=stuff&param-2=stuff%202&param_3=stuff%203'
-      );
+      expect(result).toBe(expected);
     });
   });
 });
