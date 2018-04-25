@@ -33,7 +33,7 @@
     "lint": "eslint 'src/**/*.{js,json}'",
     "doc": "npm run doc:lint && documentation build ./src/* -f md > API.md",
     "doc:lint": "documentation lint ./src/*",
-    "preversion": "npm run test-ci && npm run build && npm run doc",
+    "preversion": "npm run test-ci && npm run build",
     "postversion": "git push && git push --tags"
   },
   "jest": {
@@ -59,6 +59,7 @@
     ],
     "src/**/*.js": [
       "npm run test-ci -- --findRelatedTests",
+      "npm run doc",
       "git add"
     ]
   },
