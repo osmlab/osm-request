@@ -1,5 +1,5 @@
 {
-  "endpoint": "https://api.openstreetmap.org/api/0.6",
+  "endpoint": "https://www.openstreetmap.org",
   "oauthConsumerKey": "",
   "oauthSecret": "",
   "oauthUserToken": "",

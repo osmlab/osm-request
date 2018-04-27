@@ -344,6 +344,7 @@ Send an element to OSM
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
+-   `endpoint` **[string][32]** The API endpoint
 -   `element` **[Object][33]** 
 -   `changesetId` **[number][35]** 
 
@@ -372,6 +373,7 @@ Request to create OSM changesets
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
+-   `endpoint` **[string][32]** The API endpoint
 -   `createdBy` **[string][32]?**  (optional, default `''`)
 -   `comment` **[string][32]?**  (optional, default `''`)
 
@@ -384,6 +386,7 @@ Checks if a given changeset is still opened at OSM.
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
+-   `endpoint` **[string][32]** The API endpoint
 -   `changesetId` **[number][35]** 
 
 Returns **[Promise][34]** 

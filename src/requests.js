@@ -15,15 +15,15 @@ import { RequestException } from 'exceptions/request';
 
 /**
  * Request to fetch an OSM element
- * @param  {string} endpoint The API endpoint
- * @param  {string} osmId
+ * @param {string} endpoint The API endpoint
+ * @param {string} osmId
  * @return {Object}
  */
 export function fetchElementRequest(endpoint, osmId) {
   const elementType = findElementType(osmId);
   const elementId = findElementId(osmId);
 
-  return fetch(`${endpoint}/${osmId}`)
+  return fetch(`${endpoint}/api/0.6/${osmId}`)
     .then(response => response.text())
     .then(response =>
       convertElementXmlToJson(response, elementType, elementId)
@@ -33,11 +33,12 @@ export function fetchElementRequest(endpoint, osmId) {
 /**
  * Send an element to OSM
  * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
  * @param {Object} element
  * @param {number} changesetId
  * @return {Promise}
  */
-export function sendElementRequest(auth, element, changesetId) {
+export function sendElementRequest(auth, endpoint, element, changesetId) {
   const copiedElement = simpleObjectDeepClone(element);
   const { _id: elementId, _type: elementType } = copiedElement;
   delete copiedElement._id;
@@ -47,14 +48,15 @@ export function sendElementRequest(auth, element, changesetId) {
 
   const elementXml = jsonToXml(copiedElement);
   const path = elementId
-    ? `/${elementType}/create`
-    : `/${elementType}/${elementId}`;
+    ? `${elementType}/create`
+    : `${elementType}/${elementId}`;
 
   return new Promise(resolve => {
     auth.xhr(
       {
-        path,
         method: 'PUT',
+        prefix: false,
+        path: `${endpoint}/api/0.6/${path}`,
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -105,7 +107,7 @@ export function fetchNotesRequest(
     params.closed = closedDays;
   }
 
-  return fetch(`${endpoint}/notes${buildQueryString(params)}`)
+  return fetch(`${endpoint}/api/0.6/notes${buildQueryString(params)}`)
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message => Promise.reject(message));
@@ -123,18 +125,25 @@ export function fetchNotesRequest(
 /**
  * Request to create OSM changesets
  * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
  * @param {string} [createdBy]
  * @param {string} [comment]
  * @return {Promise}
  */
-export function createChangesetRequest(auth, createdBy = '', comment = '') {
+export function createChangesetRequest(
+  auth,
+  endpoint,
+  createdBy = '',
+  comment = ''
+) {
   const changesetXml = buildChangesetXml(createdBy, comment);
 
   return new Promise(resolve => {
     auth.xhr(
       {
         method: 'PUT',
-        path: '/changeset/create',
+        prefix: false,
+        path: `${endpoint}/api/0.6/changeset/create`,
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -156,15 +165,17 @@ export function createChangesetRequest(auth, createdBy = '', comment = '') {
 /**
  * Checks if a given changeset is still opened at OSM.
  * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
  * @param {number} changesetId
  * @return {Promise}
  */
-export function changesetCheckRequest(auth, changesetId) {
+export function changesetCheckRequest(auth, endpoint, changesetId) {
   return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'GET',
-        path: `/changeset/${changesetId.toString()}`,
+        prefix: false,
+        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}`,
         options: {
           header: {
             'Content-Type': 'text/xml'

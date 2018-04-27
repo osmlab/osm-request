@@ -73,7 +73,12 @@ export default class OsmRequest {
    * @return {Promise}
    */
   createChangeset(createdBy = '', comment = '') {
-    return createChangesetRequest(this._auth, createdBy, comment);
+    return createChangesetRequest(
+      this._auth,
+      this.endpoint,
+      createdBy,
+      comment
+    );
   }
 
   /**
@@ -82,7 +87,7 @@ export default class OsmRequest {
    * @return {Promise}
    */
   isChangesetStillOpen(changesetId) {
-    return changesetCheckRequest(this._auth, changesetId);
+    return changesetCheckRequest(this._auth, this.endpoint, changesetId);
   }
 
   /**
@@ -255,6 +260,6 @@ export default class OsmRequest {
    * @return {Promise}
    */
   sendElement(element, changesetId) {
-    return sendElementRequest(this._auth, element, changesetId);
+    return sendElementRequest(this._auth, this.endpoint, element, changesetId);
   }
 }
