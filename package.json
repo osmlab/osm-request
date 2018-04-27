@@ -63,7 +63,7 @@
     "src/**/*.js": [
       "npm run test-ci -- --findRelatedTests",
       "npm run doc",
-      "git add"
+      "git add API.md"
     ]
   },
   "devDependencies": {
