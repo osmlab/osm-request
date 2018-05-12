@@ -48,8 +48,8 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
 
   const elementXml = jsonToXml(copiedElement);
   const path = elementId
-    ? `${elementType}/create`
-    : `${elementType}/${elementId}`;
+    ? `${elementType}/${elementId}`
+    : `${elementType}/create`;
 
   return new Promise(resolve => {
     auth.xhr(
