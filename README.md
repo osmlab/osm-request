@@ -81,8 +81,14 @@ Pull requests are welcome, as the project is fully open-source. If you want to w
 ## Make a release
 
 ```sh
+$ git checkout develop
+$ git pull origin develop
 $ npm version patch -m "release: %s"
 $ npm publish
+$ git checkout master
+$ git pull origin master
+$ git merge develop
+$ git push origin master
 ```
 
 `npm version` tests the code, builds it and updates the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commits the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.
