@@ -26,7 +26,7 @@
     -   [removeProperty][22]
     -   [setCoordinates][23]
     -   [setTimestampToNow][24]
-    -   [incrementVersion][25]
+    -   [setVersion][25]
     -   [sendElement][26]
 -   [fetchElementRequest][27]
 -   [sendElementRequest][28]
@@ -305,13 +305,14 @@ Set the current UTC date to a given element
 
 Returns **[Object][33]** A new version of the element
 
-### incrementVersion
+### setVersion
 
-Increase the version number of an element
+Change the version number (given by API) of an element
 
 **Parameters**
 
 -   `element` **[Object][33]** 
+-   `version` **int** 
 
 Returns **[Object][33]** A new version of the element
 
@@ -439,7 +440,7 @@ Returns **[Promise][34]**
 
 [24]: #settimestamptonow
 
-[25]: #incrementversion
+[25]: #setversion
 
 [26]: #sendelement
 

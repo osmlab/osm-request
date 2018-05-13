@@ -133,10 +133,10 @@ describe('OsmRequest', () => {
     });
   });
 
-  describe('incrementVersion', () => {
-    it('Should upgrade the version number of an element', () => {
+  describe('setVersion', () => {
+    it('Should change the version number of an element', () => {
       const osm = new OsmRequest();
-      const element = osm.incrementVersion(sampleNode);
+      const element = osm.setVersion(sampleNode, 3);
 
       expect(element).toMatchSnapshot();
     });

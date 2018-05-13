@@ -238,17 +238,16 @@ export default class OsmRequest {
   }
 
   /**
-   * Increase the version number of an element
+   * Change the version number (given by API) of an element
    * @param {Object} element
+   * @param {int} version
    * @return {Object} A new version of the element
    */
-  incrementVersion(element) {
+  setVersion(element, version) {
     const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
     const innerElement = newElement.osm[elementType][0];
-    innerElement.$.version = (
-      parseInt(innerElement.$.version || 0, 10) + 1
-    ).toString();
+    innerElement.$.version = parseInt(version).toString();
 
     return newElement;
   }

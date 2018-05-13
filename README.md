@@ -44,12 +44,12 @@ async function start() {
   });
   element = osm.removeProperty(element, 'key2');
   element = osm.setTimestampToNow(element);
-  element = osm.incrementVersion(element);
   element = osm.setCoordinates(element, 1.234, 0.456);
 
   const changesetId = await osm.createChangeset('Created by me', 'My changeset comment');
   const isChangesetStillOpen = await osm.isChangesetStillOpen(changesetId);
   const newElementVersion = await osm.sendElement(element, changesetId);
+  element = osm.setVersion(element, newElementVersion);
 }
 
 start();
