@@ -23,6 +23,7 @@ module.exports = {
   output: {
     library: 'OsmRequest',
     libraryTarget: 'umd',
+    libraryExport: 'default',
     filename: '[name].js',
     path: path.join(__dirname, 'dist')
   },
