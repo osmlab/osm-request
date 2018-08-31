@@ -24,6 +24,18 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
   "
 `;
 
+exports[`XML helpers buildChangesetXml Should handle strings having double quotes 1`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
+      </changeset>
+    </osm>
+  "
+`;
+
 exports[`XML helpers convertElementXmlToJson Should convert an Element XML string into a proper JSON object 1`] = `
 Object {
   "_id": "3683625932",

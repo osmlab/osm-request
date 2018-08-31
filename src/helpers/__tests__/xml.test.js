@@ -26,6 +26,12 @@ describe('XML helpers', () => {
       expect(buildChangesetXml('me', 'my comment')).toMatchSnapshot();
       expect(buildChangesetXml()).toMatchSnapshot();
     });
+
+    it('Should handle strings having double quotes', () => {
+      expect(
+        buildChangesetXml('My "app"', 'Doing some "weird" stuff')
+      ).toMatchSnapshot();
+    });
   });
 
   describe('convertElementXmlToJson', () => {

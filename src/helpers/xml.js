@@ -4,6 +4,20 @@ import packageJson from '../../package.json';
 const osmRequestVersion = packageJson.version;
 
 /**
+ * Escape a string to make it XML parameter-safe
+ * @param {string} str
+ * @return {string}
+ */
+export function encodeXML(str = '') {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+/**
  * Build a stringified OSM changeset
  * @param {string} [createdBy]
  * @param {string} [comment]
@@ -13,9 +27,9 @@ export function buildChangesetXml(createdBy = '', comment = '') {
   return `
     <osm>
       <changeset>
-        <tag k="created_by" v="${createdBy}"/>
+        <tag k="created_by" v="${encodeXML(createdBy)}"/>
         <tag k="created_by:library" v="OSM Request ${osmRequestVersion}"/>
-        <tag k="comment" v="${comment}"/>
+        <tag k="comment" v="${encodeXML(comment)}"/>
       </changeset>
     </osm>
   `;
