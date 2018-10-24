@@ -339,7 +339,73 @@ Object {
 }
 `;
 
+exports[`OsmRequest setProperties Should work with an element having no tags 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
 exports[`OsmRequest setProperty Should add a property to an element 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {},
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "-0.5936602",
+          "lon": "44.8331455",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "weird_key",
+              "v": "stuff",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest setProperty Should add a property to an element having no tag 1`] = `
 Object {
   "_id": "3683625932",
   "_type": "node",

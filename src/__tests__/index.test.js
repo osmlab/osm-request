@@ -28,6 +28,29 @@ const sampleNode = {
   _type: 'node'
 };
 
+const sampleNodeNoTags = {
+  osm: {
+    $: {},
+    node: [
+      {
+        $: {
+          id: '3683625932',
+          visible: 'true',
+          version: '1',
+          timestamp: '2015-08-06T09:49:47Z',
+          changeset: '33150668',
+          user: 'Vinber-Num&Lib',
+          uid: '2568974',
+          lat: '-0.5936602',
+          lon: '44.8331455'
+        }
+      }
+    ]
+  },
+  _id: '3683625932',
+  _type: 'node'
+};
+
 describe('OsmRequest', () => {
   describe('Getters', () => {
     it('Should return a default endpoint', () => {
@@ -69,6 +92,19 @@ describe('OsmRequest', () => {
       expect(element).toMatchSnapshot();
     });
 
+    it('Should add a property to an element having no tag', () => {
+      const osm = new OsmRequest();
+      const propertyName = 'weird_key';
+      const propertyValue = 'stuff';
+      const element = osm.setProperty(
+        sampleNodeNoTags,
+        propertyName,
+        propertyValue
+      );
+
+      expect(element).toMatchSnapshot();
+    });
+
     it('Should modify an element property', () => {
       const osm = new OsmRequest();
       const propertyName = 'amenity';
@@ -96,6 +132,17 @@ describe('OsmRequest', () => {
       const propertyName = 'amenity';
       const propertyValue = 'stuff';
       const element = osm.setProperties(sampleNode, {
+        [propertyName]: propertyValue
+      });
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('Should work with an element having no tags', () => {
+      const osm = new OsmRequest();
+      const propertyName = 'amenity';
+      const propertyValue = 'stuff';
+      const element = osm.setProperties(sampleNodeNoTags, {
         [propertyName]: propertyValue
       });
 

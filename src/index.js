@@ -144,9 +144,9 @@ export default class OsmRequest {
     const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
     const innerElement = newElement.osm[elementType][0];
-    const filteredTags = innerElement.tag.filter(
-      tag => tag.$.k !== propertyName.toString()
-    );
+    const filteredTags = innerElement.tag
+      ? innerElement.tag.filter(tag => tag.$.k !== propertyName.toString())
+      : [];
 
     innerElement.tag = [
       ...filteredTags,
@@ -174,9 +174,9 @@ export default class OsmRequest {
 
     const elementType = element._type;
     const innerElement = newElement.osm[elementType][0];
-    const filteredTags = innerElement.tag.filter(
-      tag => !propertiesName.includes(tag.$.k)
-    );
+    const filteredTags = innerElement.tag
+      ? innerElement.tag.filter(tag => !propertiesName.includes(tag.$.k))
+      : [];
     const formattedProperties = propertiesName.map(propertyName => ({
       $: {
         k: propertyName.toString(),
