@@ -198,6 +198,15 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('fetchWaysForNode', () => {
+    it('Should fetch ways using this node and return their JSON representation', () => {
+      const osm = new OsmRequest();
+      const ways = osm.fetchWaysForNode('node/5336441517');
+
+      expect(ways).toMatchSnapshot();
+    });
+  });
+
   describe('fetchNotes', () => {
     it('Should fetch notes from a given bbox', () => {
       const osm = new OsmRequest();

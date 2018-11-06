@@ -51,6 +51,23 @@ export function convertElementXmlToJson(xml, elementType, elementId) {
 }
 
 /**
+ * Convert a raw list of ways API response into a well formatted JSON object
+ * @param {string} xml - The raw API response
+ * @return {Promise}
+ */
+export function convertWaysXmlToJson(xml) {
+  return xmlToJson(xml).then(result => {
+    return result.osm.way
+      ? result.osm.way.map(w => ({
+          osm: { $: result.osm.$, way: [w] },
+          _id: w.$.id,
+          _type: 'way'
+        }))
+      : [];
+  });
+}
+
+/**
  * Convert a raw Notes API response into a well formatted JSON object
  * @param {string} xml - The raw API response
  * @return {Promise}

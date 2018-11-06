@@ -35,6 +35,103 @@ export const fetchElementRequest = jest.fn().mockImplementation(() => ({
   _type: 'node'
 }));
 
+export const fetchWaysForNodeRequest = jest.fn().mockImplementation(() => ({
+  _id: '536287533',
+  _type: 'way',
+  osm: {
+    $: {
+      attribution: 'http://www.openstreetmap.org/copyright',
+      copyright: 'OpenStreetMap and contributors',
+      generator: 'CGImap 0.6.0 (9711 thorn-01.openstreetmap.org)',
+      license: 'http://opendatacommons.org/licenses/odbl/1-0/',
+      version: '0.6'
+    },
+    way: [
+      {
+        $: {
+          changeset: '62261628',
+          id: '536287533',
+          timestamp: '2018-09-03T23:46:20Z',
+          uid: '1443767',
+          user: 'Olyon',
+          version: '3',
+          visible: 'true'
+        },
+        nd: [
+          {
+            $: {
+              ref: '5195549178'
+            }
+          },
+          {
+            $: {
+              ref: '5336441517'
+            }
+          },
+          {
+            $: {
+              ref: '5336441515'
+            }
+          },
+          {
+            $: {
+              ref: '5336441519'
+            }
+          },
+          {
+            $: {
+              ref: '5336441518'
+            }
+          },
+          {
+            $: {
+              ref: '1153562749'
+            }
+          }
+        ],
+        tag: [
+          {
+            $: {
+              k: 'highway',
+              v: 'primary'
+            }
+          },
+          {
+            $: {
+              k: 'lanes',
+              v: '1'
+            }
+          },
+          {
+            $: {
+              k: 'maxspeed',
+              v: '80'
+            }
+          },
+          {
+            $: {
+              k: 'old_ref',
+              v: 'N 512'
+            }
+          },
+          {
+            $: {
+              k: 'oneway',
+              v: 'yes'
+            }
+          },
+          {
+            $: {
+              k: 'ref',
+              v: 'D 2152'
+            }
+          }
+        ]
+      }
+    ]
+  }
+}));
+
 export const fetchNotesRequest = jest.fn().mockImplementation(() => [
   {
     lon: '0.5891000',

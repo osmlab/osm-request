@@ -9,6 +9,7 @@ import {
   buildChangesetXml,
   convertNotesXmlToJson,
   convertElementXmlToJson,
+  convertWaysXmlToJson,
   jsonToXml
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
@@ -28,6 +29,18 @@ export function fetchElementRequest(endpoint, osmId) {
     .then(response =>
       convertElementXmlToJson(response, elementType, elementId)
     );
+}
+
+/**
+ * Request to fetch ways using the given OSM node
+ * @param {string} endpoint The API endpoint
+ * @param {string} osmId
+ * @return {Object}
+ */
+export function fetchWaysForNodeRequest(endpoint, osmId) {
+  return fetch(`${endpoint}/api/0.6/${osmId}/ways`)
+    .then(response => response.text())
+    .then(response => convertWaysXmlToJson(response));
 }
 
 /**

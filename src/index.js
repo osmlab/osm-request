@@ -4,6 +4,7 @@ import { getCurrentIsoTimestamp } from 'helpers/time';
 import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
 import {
   fetchElementRequest,
+  fetchWaysForNodeRequest,
   sendElementRequest,
   fetchNotesRequest,
   createChangesetRequest,
@@ -131,6 +132,15 @@ export default class OsmRequest {
    */
   fetchElement(osmId) {
     return fetchElementRequest(this.endpoint, osmId);
+  }
+
+  /**
+   * Fetch ways using the given OSM node
+   * @param {string} osmId Eg: node/12345
+   * @return {Promise} Resolve on ways array (each one can be used as an Element for all other functions)
+   */
+  fetchWaysForNode(osmId) {
+    return fetchWaysForNodeRequest(this.endpoint, osmId);
   }
 
   /**
