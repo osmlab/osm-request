@@ -105,8 +105,8 @@ export default class OsmRequest {
         node: [
           {
             $: {
-              visible: 'true',
-              version: '1'
+              lat: lat,
+              lon: lon
             },
             tag: []
           }
