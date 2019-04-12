@@ -215,4 +215,18 @@ describe('OsmRequest', () => {
       expect(notes).toMatchSnapshot();
     });
   });
+
+  describe('fetchMapForBbox', () => {
+    it('Should fetch map elements for a given bbox', () => {
+      const osm = new OsmRequest();
+      const osmElements = osm.fetchMapByBbox(
+        -1.55511,
+        47.21283,
+        -1.55261,
+        47.21377
+      );
+
+      expect(osmElements).toMatchSnapshot();
+    });
+  });
 });

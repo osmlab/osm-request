@@ -10,7 +10,9 @@ import {
   convertNotesXmlToJson,
   convertElementXmlToJson,
   convertWaysXmlToJson,
-  jsonToXml
+  jsonToXml,
+  xmlToJson,
+  cleanMapJson
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
@@ -212,4 +214,44 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
       }
     );
   });
+}
+
+/**
+ * Request to fetch all OSM elements within a bbox extent
+ * @param {string} endpoint The API endpoint
+ * @param {number} left The minimal longitude (X)
+ * @param {number} bottom The minimal latitude (Y)
+ * @param {number} right The maximal longitude (X)
+ * @param {number} top The maximal latitude (Y)
+ * @return {Promise}
+ */
+export function fetchMapByBbox(endpoint, left, bottom, right, top) {
+  const args = Array.from(arguments);
+  if (args.length !== 5 && args.some(arg => arg === undefined)) {
+    throw new Error("You didn't provide all arguments to the function");
+  } else {
+    const params = {
+      bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
+    };
+
+    return fetch(`${endpoint}/api/0.6/map${buildQueryString(params)}`)
+      .then(response => {
+        if (response.status !== 200) {
+          return response.text().then(message => Promise.reject(message));
+        }
+        return response.text();
+      })
+      .catch(message => {
+        throw new RequestException(message);
+      })
+      .then(response => {
+        return xmlToJson(response)
+          .then(json => {
+            return Promise.resolve(cleanMapJson(json));
+          })
+          .catch(error => {
+            throw new RequestException(error);
+          });
+      });
+  }
 }

@@ -4,6 +4,7 @@ import { getCurrentIsoTimestamp } from 'helpers/time';
 import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
 import {
   fetchElementRequest,
+  fetchMapByBbox,
   fetchWaysForNodeRequest,
   sendElementRequest,
   fetchNotesRequest,
@@ -95,7 +96,7 @@ export default class OsmRequest {
    * Create a shiny new OSM node element, in a JSON format
    * @param {number} lat
    * @param {number} lon
-   * @param {[object]} [properties] Optional, initial properties
+   * @param {Object} [properties] Optional, initial properties
    * @return {Object}
    */
   createNodeElement(lat, lon, properties = {}) {
@@ -270,5 +271,17 @@ export default class OsmRequest {
    */
   sendElement(element, changesetId) {
     return sendElementRequest(this._auth, this.endpoint, element, changesetId);
+  }
+
+  /**
+   * Request to fetch all OSM elements within a bbox extent
+   * @param {number} left The minimal longitude (X)
+   * @param {number} bottom The minimal latitude (Y)
+   * @param {number} right The maximal longitude (X)
+   * @param {number} top The maximal latitude (Y)
+   * @return {Promise}
+   */
+  fetchMapByBbox(left, bottom, right, top) {
+    return fetchMapByBbox(this._options.endpoint, left, bottom, right, top);
   }
 }
