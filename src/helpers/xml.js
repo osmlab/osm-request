@@ -51,6 +51,62 @@ export function convertElementXmlToJson(xml, elementType, elementId) {
 }
 
 /**
+ * Convert a JSON list of ways fragment into a well formatted JSON object
+ * @param {Object} wayKey - The raw API response
+ * @param {Object} rootOsmMetadata - The raw API response
+ * @return {Array}
+ */
+export function cleanWaysJsonFragment(wayKey, rootOsmMetadata) {
+  return wayKey.map(w => ({
+    osm: { $: rootOsmMetadata, way: [w] },
+    _id: w.$.id,
+    _type: 'way'
+  }));
+}
+
+/**
+ * Convert a JSON object with OSM map features into a well formatted JSON object
+ * @param {Object} osmMapJson - The raw API response
+ * @return {Array}
+ */
+export function cleanMapJson(osmMapJson) {
+  const { $, bounds } = osmMapJson.osm;
+  let way = [];
+  if (osmMapJson.osm.way) {
+    way = cleanWaysJsonFragment(osmMapJson.osm.way, osmMapJson.osm.$);
+  }
+  let node = [];
+  if (osmMapJson.osm.node) {
+    node = osmMapJson.osm.node = osmMapJson.osm.node.map(n => {
+      return {
+        ...n,
+        _id: n['$'].id,
+        _type: 'node'
+      };
+    });
+  }
+  let relation = [];
+  if (osmMapJson.osm.relation) {
+    relation = osmMapJson.osm.relation.map(r => {
+      return {
+        ...r,
+        _id: r['$'].id,
+        _type: 'relation'
+      };
+    });
+  }
+  return {
+    osm: {
+      $,
+      bounds,
+      node,
+      way,
+      relation
+    }
+  };
+}
+
+/**
  * Convert a raw list of ways API response into a well formatted JSON object
  * @param {string} xml - The raw API response
  * @return {Promise}
@@ -58,11 +114,7 @@ export function convertElementXmlToJson(xml, elementType, elementId) {
 export function convertWaysXmlToJson(xml) {
   return xmlToJson(xml).then(result => {
     return result.osm.way
-      ? result.osm.way.map(w => ({
-          osm: { $: result.osm.$, way: [w] },
-          _id: w.$.id,
-          _type: 'way'
-        }))
+      ? cleanWaysJsonFragment(result.osm.way, result.osm.$)
       : [];
   });
 }
