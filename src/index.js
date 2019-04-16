@@ -9,7 +9,8 @@ import {
   sendElementRequest,
   fetchNotesRequest,
   createChangesetRequest,
-  changesetCheckRequest
+  changesetCheckRequest,
+  deleteElementRequest
 } from './requests';
 
 /**
@@ -283,5 +284,20 @@ export default class OsmRequest {
    */
   fetchMapByBbox(left, bottom, right, top) {
     return fetchMapByBbox(this._options.endpoint, left, bottom, right, top);
+  }
+
+  /**
+   * Delete an element from OSM
+   * @param {Object} element
+   * @param {number} changesetId
+   * @return {Promise} Promise with the new version number due to deletion
+   */
+  deleteElement(element, changesetId) {
+    return deleteElementRequest(
+      this._auth,
+      this.endpoint,
+      element,
+      changesetId
+    );
   }
 }

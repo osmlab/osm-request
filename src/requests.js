@@ -255,3 +255,45 @@ export function fetchMapByBbox(endpoint, left, bottom, right, top) {
       });
   }
 }
+
+/**
+ * Delete an OSM element
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {Object} element
+ * @param {number} changesetId
+ * @return {Promise}
+ */
+export function deleteElementRequest(auth, endpoint, element, changesetId) {
+  const copiedElement = simpleObjectDeepClone(element);
+  const { _id: elementId, _type: elementType } = copiedElement;
+  delete copiedElement._id;
+  delete copiedElement._type;
+
+  copiedElement.osm[elementType][0].$.changeset = changesetId;
+
+  const elementXml = jsonToXml(copiedElement);
+  const path = `${elementType}/${elementId}`;
+
+  return new Promise(resolve => {
+    auth.xhr(
+      {
+        method: 'DELETE',
+        prefix: false,
+        path: `${endpoint}/api/0.6/${path}`,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        },
+        content: elementXml
+      },
+      (err, version) => {
+        if (err) {
+          throw new RequestException(err);
+        }
+        return resolve(parseInt(version, 10));
+      }
+    );
+  });
+}
