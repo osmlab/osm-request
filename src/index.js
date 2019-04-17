@@ -5,6 +5,7 @@ import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
 import {
   fetchElementRequest,
   fetchMapByBbox,
+  fetchRelationsForElementRequest,
   fetchWaysForNodeRequest,
   sendElementRequest,
   fetchNotesRequest,
@@ -134,6 +135,15 @@ export default class OsmRequest {
    */
   fetchElement(osmId) {
     return fetchElementRequest(this.endpoint, osmId);
+  }
+
+  /**
+   * Fetch relation(s) from an OSM element
+   * @param {string} osmId Eg: node/12345
+   * @return {Promise}
+   */
+  fetchRelationsForElement(osmId) {
+    return fetchRelationsForElementRequest(this.endpoint, osmId);
   }
 
   /**

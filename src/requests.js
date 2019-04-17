@@ -12,7 +12,8 @@ import {
   convertWaysXmlToJson,
   jsonToXml,
   xmlToJson,
-  cleanMapJson
+  cleanMapJson,
+  convertRelationsXmlToJson
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
@@ -262,7 +263,7 @@ export function fetchMapByBbox(endpoint, left, bottom, right, top) {
  * @param {string} endpoint The API endpoint
  * @param {Object} element
  * @param {number} changesetId
- * @return {Promise}
+ * @return {Promise} Promise with the new version number due to deletion
  */
 export function deleteElementRequest(auth, endpoint, element, changesetId) {
   const copiedElement = simpleObjectDeepClone(element);
@@ -296,4 +297,15 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
       }
     );
   });
+}
+
+/** Request to fetch relation(s) from an OSM element
+ * @param {string} endpoint The API endpoint
+ * @param {string} osmId
+ * @return {Promise}
+ */
+export function fetchRelationsForElementRequest(endpoint, osmId) {
+  return fetch(`${endpoint}/api/0.6/${osmId}/relations`)
+    .then(response => response.text())
+    .then(response => convertRelationsXmlToJson(response));
 }

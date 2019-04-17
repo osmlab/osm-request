@@ -120,6 +120,23 @@ export function convertWaysXmlToJson(xml) {
 }
 
 /**
+ * Convert list of relations into a well formatted JSON object
+ * @param {string} xml - The raw API response
+ * @return {Promise}
+ */
+export function convertRelationsXmlToJson(xml) {
+  return xmlToJson(xml).then(result => {
+    if (result.osm.relation) {
+      result.osm.relation.forEach(relation => {
+        relation._id = relation['$'].id;
+        relation._type = 'relation';
+      });
+    }
+    return Promise.resolve(result);
+  });
+}
+
+/**
  * Convert a raw Notes API response into a well formatted JSON object
  * @param {string} xml - The raw API response
  * @return {Promise}
