@@ -35,6 +35,26 @@ export function fetchElementRequest(endpoint, osmId) {
 }
 
 /**
+ * Request to fetch way or relation and all other elements referenced by it
+ * @param {string} endpoint The API endpoint
+ * @param {string} osmId Can only contain either a way or a relation
+ * @return {Promise} Promise with well formatted JSON content
+ */
+export function fetchElementRequestFull(endpoint, osmId) {
+  return fetch(`${endpoint}/api/0.6/${osmId}/full`)
+    .then(response => response.text())
+    .then(response => {
+      return xmlToJson(response)
+        .then(json => {
+          return Promise.resolve(cleanMapJson(json));
+        })
+        .catch(error => {
+          throw new RequestException(error);
+        });
+    });
+}
+
+/**
  * Request to fetch ways using the given OSM node
  * @param {string} endpoint The API endpoint
  * @param {string} osmId

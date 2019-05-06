@@ -95,15 +95,18 @@ export function cleanMapJson(osmMapJson) {
       };
     });
   }
-  return {
+  const newOsmObject = {
     osm: {
       $,
-      bounds,
       node,
       way,
       relation
     }
   };
+  if (bounds) {
+    newOsmObject.osm.bounds = bounds;
+  }
+  return newOsmObject;
 }
 
 /**
