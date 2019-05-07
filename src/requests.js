@@ -7,6 +7,7 @@ import {
 } from 'helpers/utils';
 import {
   buildChangesetXml,
+  buildChangesetFromObjectXml,
   convertNotesXmlToJson,
   convertElementXmlToJson,
   convertWaysXmlToJson,
@@ -232,6 +233,54 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
         }
 
         return resolve(changesetId);
+      }
+    );
+  });
+}
+
+/**
+ * Update tags if a given changeset is still opened at OSM.
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {number} changesetId
+ * @param {Object} object use to set multiples tags
+ * @throws Will throw an error for any request with http code 40x.
+ * @return {Promise}
+ */
+export function updateChangesetTagsRequest(
+  auth,
+  endpoint,
+  changesetId,
+  object
+) {
+  const changesetXml = buildChangesetFromObjectXml(object);
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'PUT',
+        prefix: false,
+        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}`,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        },
+        content: changesetXml
+      },
+      (err, xml) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'Changeset update request failed',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
+        }
       }
     );
   });

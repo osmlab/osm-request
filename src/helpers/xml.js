@@ -36,6 +36,24 @@ export function buildChangesetXml(createdBy = '', comment = '') {
 }
 
 /**
+ * Build an OSM changeset from object keys values, intended for update
+ * @param {object}
+ * @return {string}
+ */
+export function buildChangesetFromObjectXml(object) {
+  const tags = Object.entries(object).map(entry => {
+    return `<tag k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
+  return `
+    <osm>
+      <changeset>
+        ${tags.join(`\n        `)}
+      </changeset>
+    </osm>
+  `;
+}
+
+/**
  * Convert a raw Element API response into a well formatted JSON object
  * @param {string} xml - The raw API response
  * @param {string} elementType - The type of the concerned OSM element (eg: node, way, relation)

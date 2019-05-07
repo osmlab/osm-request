@@ -12,6 +12,7 @@ import {
   fetchNotesRequest,
   createChangesetRequest,
   changesetCheckRequest,
+  updateChangesetTagsRequest,
   deleteElementRequest
 } from './requests';
 
@@ -93,6 +94,22 @@ export default class OsmRequest {
    */
   isChangesetStillOpen(changesetId) {
     return changesetCheckRequest(this._auth, this.endpoint, changesetId);
+  }
+
+  /**
+   * Update changeset tags if still open
+   * @param {number} changesetId
+   * @param {Object} object use to set multiples tags
+   * @throws Will throw an error for any request with http code 40x
+   * @return {Promise}
+   */
+  updateChangesetTags(changesetId, object) {
+    return updateChangesetTagsRequest(
+      this._auth,
+      this.endpoint,
+      changesetId,
+      object
+    );
   }
 
   /**
