@@ -14,7 +14,8 @@ import {
   jsonToXml,
   xmlToJson,
   cleanMapJson,
-  convertRelationsXmlToJson
+  convertRelationsXmlToJson,
+  buildPreferencesFromObjectXml
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
 
@@ -377,4 +378,192 @@ export function fetchRelationsForElementRequest(endpoint, osmId) {
   return fetch(`${endpoint}/api/0.6/${osmId}/relations`)
     .then(response => response.text())
     .then(response => convertRelationsXmlToJson(response));
+}
+
+/**
+ * Request to fetch preferences for the connected user
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @throws Will throw an error for any request with http code 40x.
+ * @return {Promise} Promise with the value for the key
+ */
+export function getUserPreferencesRequest(auth, endpoint) {
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'GET',
+        prefix: false,
+        path: `${endpoint}/api/0.6/user/preferences`,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        }
+      },
+      (err, xml) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'Issue to get user preferences',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        }
+        return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
+      }
+    );
+  });
+}
+
+/**
+ * Request to set all preferences for a connected user
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {Object} object An object to provide keys values to create XML preferences
+ * @return {Promise} Promise
+ */
+export function setUserPreferencesRequest(auth, endpoint, object) {
+  const preferencesXml = buildPreferencesFromObjectXml(object);
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'PUT',
+        prefix: false,
+        path: `${endpoint}/api/0.6/user/preferences`,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        },
+        content: preferencesXml
+      },
+      (err, text) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'User preferences update request failed',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          return resolve(text);
+        }
+      }
+    );
+  });
+}
+
+/**
+ * Request to fetch a preference from a key for the connected user
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {string} key The key to retrieve
+ * @throws Will throw an error for any request with http code 40x.
+ * @return {Promise} Promise with the value for the key
+ */
+export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'GET',
+        prefix: false,
+        path: `${endpoint}/api/0.6/user/preferences/${key}`
+      },
+      (err, text) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'Issue to get this user preference',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        }
+        return resolve(text);
+      }
+    );
+  });
+}
+
+/**
+ * Request to set a preference from a key for the connected user
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {string} key The key to set
+ * @param {string} value The value to set. Overwrite existing value if key exists
+ * @return {Promise} Promise
+ */
+export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'PUT',
+        prefix: false,
+        path: `${endpoint}/api/0.6/user/preferences/${key}`,
+        options: {
+          header: {
+            'Content-Type': 'text/plain'
+          }
+        },
+        content: value
+      },
+      (err, text) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: `User preference update request failed for ${key}`,
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          return resolve(text);
+        }
+      }
+    );
+  });
+}
+
+/**
+ * Request to delete a preference from a key for the connected user
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {string} key The key to use
+ * @return {Promise} Promise
+ */
+export function deleteUserPreferenceRequest(auth, endpoint, key) {
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'DELETE',
+        prefix: false,
+        path: `${endpoint}/api/0.6/user/preferences/${key}`
+      },
+      (err, text) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: `User preference deletion request failed for ${key}`,
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          return resolve(text);
+        }
+      }
+    );
+  });
 }

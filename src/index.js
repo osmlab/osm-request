@@ -13,7 +13,12 @@ import {
   createChangesetRequest,
   changesetCheckRequest,
   updateChangesetTagsRequest,
-  deleteElementRequest
+  deleteElementRequest,
+  getUserPreferencesRequest,
+  setUserPreferencesRequest,
+  getUserPreferenceByKeyRequest,
+  setUserPreferenceByKeyRequest,
+  deleteUserPreferenceRequest
 } from './requests';
 
 /**
@@ -318,7 +323,7 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchMapByBbox(left, bottom, right, top) {
-    return fetchMapByBbox(this._options.endpoint, left, bottom, right, top);
+    return fetchMapByBbox(this.endpoint, left, bottom, right, top);
   }
 
   /**
@@ -334,5 +339,49 @@ export default class OsmRequest {
       element,
       changesetId
     );
+  }
+  /**
+   * Get all preferences from connected user
+   * @return {Promise} Promise with Well formatted JSON of user preferences
+   */
+  getUserPreferences() {
+    return getUserPreferencesRequest(this._auth, this.endpoint);
+  }
+
+  /**
+   * Set all preferences for a connected user
+   * @param {Object} object An object to provide keys values to create XML preferences
+   * @return {Promise} Promise
+   */
+  setUserPreferences(object) {
+    return setUserPreferencesRequest(this._auth, this.endpoint, object);
+  }
+
+  /**
+   * Get a preference from a key for the connected user
+   * @param {string} key The key to retrieve
+   * @return {Promise} Promise with the value for the key
+   */
+  getUserPreferenceByKey(key) {
+    return getUserPreferenceByKeyRequest(this._auth, this.endpoint, key);
+  }
+
+  /**
+   * Set a preference from a key for the connected user
+   * @param {string} key The key to set.
+   * @param {string} value The value to set. Overwrite existing value if key exists
+   * @return {Promise} Promise
+   */
+  setUserPreferenceByKey(key, value) {
+    return setUserPreferenceByKeyRequest(this._auth, this.endpoint, key, value);
+  }
+
+  /**
+   * Delete a preference from a key for the connected user
+   * @param {string} key The key to use.
+   * @return {Promise} Promise
+   */
+  deleteUserPreference(key) {
+    return deleteUserPreferenceRequest(this._auth, this.endpoint, key);
   }
 }

@@ -54,6 +54,24 @@ export function buildChangesetFromObjectXml(object) {
 }
 
 /**
+ * Build an OSM preferences XML from object keys values
+ * @param {object}
+ * @return {string}
+ */
+export function buildPreferencesFromObjectXml(object) {
+  const preferences = Object.entries(object).map(entry => {
+    return `<preference k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
+  return `
+    <osm>
+      <preferences>
+        ${preferences.join(`\n        `)}
+      </preferences>
+    </osm>
+  `;
+}
+
+/**
  * Convert a raw Element API response into a well formatted JSON object
  * @param {string} xml - The raw API response
  * @param {string} elementType - The type of the concerned OSM element (eg: node, way, relation)
