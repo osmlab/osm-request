@@ -161,6 +161,223 @@ export function fetchNotesRequest(
 }
 
 /**
+ * Request to get OSM notes with textual search
+ * @param {string} endpoint The API endpoint
+ * @param {string} q Specifies the search query
+ * @param {string} [format] It can be 'xml' (default) to get OSM
+ * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+ * return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS
+ * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+ * @param {number} [closed] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+ * @param {string} [display_name] Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter
+ * @param {number} [user] Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter
+ * @param {number} [from] Specifies the beginning of a date range to search in for a note
+ * @param {number} [to] Specifies the end of a date range to search in for a note. Today date is the default
+ * @return {Promise}
+ */
+export function fetchNotesSearchRequest(
+  endpoint,
+  q,
+  format = 'xml',
+  limit = null,
+  closed = null,
+  display_name = null,
+  user = null,
+  from = null,
+  to = null
+) {
+  const params = {
+    q
+  };
+
+  let baseUrl = `${endpoint}/api/0.6/notes/search.${format}`;
+  if (format === 'raw') {
+    baseUrl = `${endpoint}/api/0.6/notes/search`;
+  }
+
+  const objectOptionalArgs = {
+    limit,
+    closed,
+    display_name,
+    user,
+    from,
+    to
+  };
+
+  Object.entries(objectOptionalArgs).forEach(optional => {
+    if (optional[1]) {
+      params[optional[0]] = optional[1];
+    }
+  });
+
+  return fetch(`${baseUrl}${buildQueryString(params)}`)
+    .then(response => {
+      if (response.status !== 200) {
+        return response.text().then(message =>
+          Promise.reject({
+            message,
+            status: response.status,
+            statusText: response.statusText
+          })
+        );
+      }
+
+      return response;
+    })
+    .catch(message => {
+      throw new RequestException(message);
+    })
+    .then(response => response.text())
+    .then(text => {
+      if (format === 'xml') {
+        return convertNotesXmlToJson(text);
+      } else {
+        return text;
+      }
+    });
+}
+
+/**
+ * Request to fetch OSM note by id
+ * @param {string} endpoint The API endpoint
+ * param {number} noteId Identifier for the note
+ * @param {string} format It can be 'xml' (default) to get OSM
+ * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+ * return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS
+ * @return {Promise}
+ */
+export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
+  let url = `${endpoint}/api/0.6/notes/${noteId.toString()}.${format}`;
+  if (format === 'raw') {
+    url = `${endpoint}/api/0.6/notes/${noteId.toString()}`;
+  }
+  return fetch(url)
+    .then(response => {
+      if (response.status !== 200) {
+        return response.text().then(message =>
+          Promise.reject({
+            message,
+            status: response.status,
+            statusText: response.statusText
+          })
+        );
+      }
+
+      return response;
+    })
+    .catch(message => {
+      throw new RequestException(message);
+    })
+    .then(response => response.text())
+    .then(text => {
+      if (format === 'xml') {
+        return convertNotesXmlToJson(text);
+      } else {
+        return text;
+      }
+    })
+    .then(response => {
+      if (format === 'xml') {
+        return response.find(() => true);
+      } else {
+        return response;
+      }
+    });
+}
+
+/**
+ * Request generic enough to manage all POST request for a particular note
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * param {number} noteId Identifier for the note
+ * @param {string} text A mandatory text field with arbitrary text containing the note
+ * @param {string} type Mandatory type. It can be 'comment', 'close' or 'reopen'
+ * @return {Promise}
+ */
+export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
+  const qs = buildQueryString({
+    text
+  });
+  const url = `${endpoint}/api/0.6/notes/${noteId}/${type}${qs}`;
+  return new Promise(resolve => {
+    auth.xhr(
+      {
+        method: 'POST',
+        prefix: false,
+        path: url,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        }
+      },
+      (err, xml) => {
+        if (err) {
+          throw new RequestException(
+            JSON.stringify({
+              message: `Note ${type} change failed`,
+              status: err.status,
+              statusText: err.statusText
+            })
+          );
+        }
+
+        return resolve(
+          convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
+        );
+      }
+    );
+  }).then(arr => arr.find(() => true));
+}
+
+/**
+ * Request to create a note
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {number} lat Specifies the latitude of the note
+ * @param {number} lon Specifies the longitude of the note
+ * @param {string} text A mandatory text field with arbitrary text containing the note
+ * @return {Promise}
+ */
+export function createNoteRequest(auth, endpoint, lat, lon, text) {
+  const qs = buildQueryString({
+    lat,
+    lon,
+    text
+  });
+  const url = `${endpoint}/api/0.6/notes${qs}`;
+  return new Promise(resolve => {
+    auth.xhr(
+      {
+        method: 'POST',
+        prefix: false,
+        path: url,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        }
+      },
+      (err, xml) => {
+        if (err) {
+          throw new RequestException(
+            JSON.stringify({
+              message: 'Note creation failed',
+              status: err.status,
+              statusText: err.statusText
+            })
+          );
+        }
+
+        return resolve(
+          convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
+        );
+      }
+    );
+  }).then(arr => arr.find(() => true));
+}
+
+/**
  * Request to create OSM changesets
  * @param {osmAuth} auth An instance of osm-auth
  * @param {string} endpoint The API endpoint

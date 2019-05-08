@@ -10,6 +10,10 @@ import {
   fetchWaysForNodeRequest,
   sendElementRequest,
   fetchNotesRequest,
+  fetchNotesSearchRequest,
+  fetchNoteByIdRequest,
+  createNoteRequest,
+  genericPostNoteRequest,
   createChangesetRequest,
   changesetCheckRequest,
   updateChangesetTagsRequest,
@@ -74,6 +78,111 @@ export default class OsmRequest {
       top,
       limit,
       closedDays
+    );
+  }
+
+  /**
+   * Fetch OSM notes with textual search
+   * @param {string} q Specifies the search query
+   * @param {string} [format] It can be 'xml' (default) to get OSM
+   * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+   * return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS
+   * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
+   * @param {number} [closed] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+   * @param {string} [display_name] Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter
+   * @param {number} [user] Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter
+   * @param {number} [from] Specifies the beginning of a date range to search in for a note
+   * @param {number} [to] Specifies the end of a date range to search in for a note. Today date is the default
+   * @return {Promise}
+   */
+  fetchNotesSearch(
+    q,
+    format = 'xml',
+    limit = null,
+    closed = null,
+    display_name = null,
+    user = null,
+    from = null,
+    to = null
+  ) {
+    return fetchNotesSearchRequest(
+      this.endpoint,
+      q,
+      format,
+      limit,
+      closed,
+      display_name,
+      user,
+      from,
+      to
+    );
+  }
+
+  /**
+   * Get OSM note by id
+   * param {number} noteId Identifier for the note
+   * @param {string} format It can be 'xml' (default) to get OSM
+   * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+   * return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS
+   * @return {Promise}
+   */
+  fetchNote(noteId, format = 'xml') {
+    return fetchNoteByIdRequest(this.endpoint, noteId, format);
+  }
+
+  /**
+   * Create an OSM note
+   * @param {number} lat Specifies the latitude of the note
+   * @param {number} lon Specifies the longitude of the note
+   * @param {string} text A mandatory text field with arbitrary text containing the note
+   * @return {Promise}
+   */
+  createNote(lat, lon, text) {
+    return createNoteRequest(this._auth, this.endpoint, lat, lon, text);
+  }
+
+  /**
+   * Comment an OSM note
+   * @param {string} text A mandatory text field with arbitrary text containing the note
+   * @return {Promise}
+   */
+  commentNote(noteId, text) {
+    return genericPostNoteRequest(
+      this._auth,
+      this.endpoint,
+      noteId,
+      text,
+      'comment'
+    );
+  }
+
+  /**
+   * Close an OSM note
+   * @param {string} text A mandatory text field with arbitrary text containing the note
+   * @return {Promise}
+   */
+  closeNote(noteId, text) {
+    return genericPostNoteRequest(
+      this._auth,
+      this.endpoint,
+      noteId,
+      text,
+      'close'
+    );
+  }
+
+  /**
+   * Reopen an OSM note
+   * @param {string} text A mandatory text field with arbitrary text containing the note
+   * @return {Promise}
+   */
+  reopenNote(noteId, text) {
+    return genericPostNoteRequest(
+      this._auth,
+      this.endpoint,
+      noteId,
+      text,
+      'reopen'
     );
   }
 

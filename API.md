@@ -24,49 +24,59 @@
 -   [OsmRequest][20]
     -   [endpoint][21]
     -   [fetchNotes][22]
-    -   [createChangeset][23]
-    -   [isChangesetStillOpen][24]
-    -   [updateChangesetTags][25]
-    -   [createNodeElement][26]
-    -   [fetchElement][27]
-    -   [fetchRelationsForElement][28]
-    -   [fetchWaysForNode][29]
-    -   [setProperty][30]
-    -   [setProperties][31]
-    -   [removeProperty][32]
-    -   [setCoordinates][33]
-    -   [setTimestampToNow][34]
-    -   [setVersion][35]
-    -   [sendElement][36]
-    -   [fetchMapByBbox][37]
-    -   [deleteElement][38]
-    -   [getUserPreferences][39]
-    -   [setUserPreferences][40]
-    -   [getUserPreferenceByKey][41]
-    -   [setUserPreferenceByKey][42]
-    -   [deleteUserPreference][43]
--   [fetchElementRequest][44]
--   [fetchElementRequestFull][45]
--   [fetchWaysForNodeRequest][46]
--   [sendElementRequest][47]
--   [fetchNotesRequest][48]
--   [createChangesetRequest][49]
--   [changesetCheckRequest][50]
--   [updateChangesetTagsRequest][51]
--   [fetchMapByBbox][52]
--   [deleteElementRequest][53]
--   [fetchRelationsForElementRequest][54]
--   [getUserPreferencesRequest][55]
--   [setUserPreferencesRequest][56]
--   [getUserPreferenceByKeyRequest][57]
--   [setUserPreferenceByKeyRequest][58]
--   [deleteUserPreferenceRequest][59]
+    -   [fetchNotesSearch][23]
+    -   [fetchNote][24]
+    -   [createNote][25]
+    -   [commentNote][26]
+    -   [closeNote][27]
+    -   [reopenNote][28]
+    -   [createChangeset][29]
+    -   [isChangesetStillOpen][30]
+    -   [updateChangesetTags][31]
+    -   [createNodeElement][32]
+    -   [fetchElement][33]
+    -   [fetchRelationsForElement][34]
+    -   [fetchWaysForNode][35]
+    -   [setProperty][36]
+    -   [setProperties][37]
+    -   [removeProperty][38]
+    -   [setCoordinates][39]
+    -   [setTimestampToNow][40]
+    -   [setVersion][41]
+    -   [sendElement][42]
+    -   [fetchMapByBbox][43]
+    -   [deleteElement][44]
+    -   [getUserPreferences][45]
+    -   [setUserPreferences][46]
+    -   [getUserPreferenceByKey][47]
+    -   [setUserPreferenceByKey][48]
+    -   [deleteUserPreference][49]
+-   [fetchElementRequest][50]
+-   [fetchElementRequestFull][51]
+-   [fetchWaysForNodeRequest][52]
+-   [sendElementRequest][53]
+-   [fetchNotesRequest][54]
+-   [fetchNotesSearchRequest][55]
+-   [fetchNoteByIdRequest][56]
+-   [genericPostNoteRequest][57]
+-   [createNoteRequest][58]
+-   [createChangesetRequest][59]
+-   [changesetCheckRequest][60]
+-   [updateChangesetTagsRequest][61]
+-   [fetchMapByBbox][62]
+-   [deleteElementRequest][63]
+-   [fetchRelationsForElementRequest][64]
+-   [getUserPreferencesRequest][65]
+-   [setUserPreferencesRequest][66]
+-   [getUserPreferenceByKeyRequest][67]
+-   [setUserPreferenceByKeyRequest][68]
+-   [deleteUserPreferenceRequest][69]
 
 ## getCurrentIsoTimestamp
 
 Get the current timestamp (for testing purpose)
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## removeTrailingSlashes
 
@@ -74,9 +84,9 @@ Remove the trailing slashes from an URL and return it
 
 **Parameters**
 
--   `url` **[string][60]** 
+-   `url` **[string][70]** 
 
-Returns **[string][60]** The cleaned URL
+Returns **[string][70]** The cleaned URL
 
 ## simpleObjectDeepClone
 
@@ -92,9 +102,9 @@ All the objects contained in the items array will be references to the first obj
 
 **Parameters**
 
--   `object` **[Object][61]** A simple object notation. No Map, Set or anything
+-   `object` **[Object][71]** A simple object notation. No Map, Set or anything
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
 
 ## findElementType
 
@@ -102,9 +112,9 @@ Return the type of an element based on the full OSM ID
 
 **Parameters**
 
--   `osmId` **[string][60]** 
+-   `osmId` **[string][70]** 
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## findElementId
 
@@ -112,17 +122,17 @@ Return the ID of an element based on the full OSM ID
 
 **Parameters**
 
--   `osmId` **[string][60]** 
+-   `osmId` **[string][70]** 
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## buildQueryString
 
 **Parameters**
 
--   `params` **[Object][61]** 
+-   `params` **[Object][71]** 
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## encodeXML
 
@@ -130,9 +140,9 @@ Escape a string to make it XML parameter-safe
 
 **Parameters**
 
--   `str` **[string][60]**  (optional, default `''`)
+-   `str` **[string][70]**  (optional, default `''`)
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## buildChangesetXml
 
@@ -140,10 +150,10 @@ Build a stringified OSM changeset
 
 **Parameters**
 
--   `createdBy` **[string][60]?**  (optional, default `''`)
--   `comment` **[string][60]?**  (optional, default `''`)
+-   `createdBy` **[string][70]?**  (optional, default `''`)
+-   `comment` **[string][70]?**  (optional, default `''`)
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## buildChangesetFromObjectXml
 
@@ -153,7 +163,7 @@ Build an OSM changeset from object keys values, intended for update
 
 -   `object`  
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## buildPreferencesFromObjectXml
 
@@ -163,7 +173,7 @@ Build an OSM preferences XML from object keys values
 
 -   `object`  
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## convertElementXmlToJson
 
@@ -171,11 +181,11 @@ Convert a raw Element API response into a well formatted JSON object
 
 **Parameters**
 
--   `xml` **[string][60]** The raw API response
--   `elementType` **[string][60]** The type of the concerned OSM element (eg: node, way, relation)
--   `elementId` **[string][60]** The ID of the concerned OSM element
+-   `xml` **[string][70]** The raw API response
+-   `elementType` **[string][70]** The type of the concerned OSM element (eg: node, way, relation)
+-   `elementId` **[string][70]** The ID of the concerned OSM element
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## cleanWaysJsonFragment
 
@@ -183,10 +193,10 @@ Convert a JSON list of ways fragment into a well formatted JSON object
 
 **Parameters**
 
--   `wayKey` **[Object][61]** The raw API response
--   `rootOsmMetadata` **[Object][61]** The raw API response
+-   `wayKey` **[Object][71]** The raw API response
+-   `rootOsmMetadata` **[Object][71]** The raw API response
 
-Returns **[Array][63]** 
+Returns **[Array][73]** 
 
 ## cleanMapJson
 
@@ -194,9 +204,9 @@ Convert a JSON object with OSM map features into a well formatted JSON object
 
 **Parameters**
 
--   `osmMapJson` **[Object][61]** The raw API response
+-   `osmMapJson` **[Object][71]** The raw API response
 
-Returns **[Array][63]** 
+Returns **[Array][73]** 
 
 ## convertWaysXmlToJson
 
@@ -204,9 +214,9 @@ Convert a raw list of ways API response into a well formatted JSON object
 
 **Parameters**
 
--   `xml` **[string][60]** The raw API response
+-   `xml` **[string][70]** The raw API response
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## convertRelationsXmlToJson
 
@@ -214,9 +224,9 @@ Convert list of relations into a well formatted JSON object
 
 **Parameters**
 
--   `xml` **[string][60]** The raw API response
+-   `xml` **[string][70]** The raw API response
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## convertNotesXmlToJson
 
@@ -224,9 +234,9 @@ Convert a raw Notes API response into a well formatted JSON object
 
 **Parameters**
 
--   `xml` **[string][60]** The raw API response
+-   `xml` **[string][70]** The raw API response
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## flattenAttributes
 
@@ -252,9 +262,9 @@ Eg:
 
 **Parameters**
 
--   `object` **[Object][61]** 
+-   `object` **[Object][71]** 
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
 
 ## xmlToJson
 
@@ -262,9 +272,9 @@ Convert a stringified XML into a JSON object
 
 **Parameters**
 
--   `xml` **[string][60]** 
+-   `xml` **[string][70]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## jsonToXml
 
@@ -272,9 +282,9 @@ Convert a JSON object into a stringified XML
 
 **Parameters**
 
--   `json` **[Object][61]** 
+-   `json` **[Object][71]** 
 
-Returns **[string][60]** 
+Returns **[string][70]** 
 
 ## OsmRequest
 
@@ -282,13 +292,13 @@ OSM API request handler
 
 **Parameters**
 
--   `options` **[Object][61]?** Custom options to apply (optional, default `{}`)
+-   `options` **[Object][71]?** Custom options to apply (optional, default `{}`)
 
 ### endpoint
 
 Return the API endpoint to use for the requests
 
-Returns **[string][60]** URL of the API endpoint
+Returns **[string][70]** URL of the API endpoint
 
 ### fetchNotes
 
@@ -296,14 +306,92 @@ Retrieve the OSM notes in given bounding box
 
 **Parameters**
 
--   `left` **[number][64]** The minimal longitude (X)
--   `bottom` **[number][64]** The minimal latitude (Y)
--   `right` **[number][64]** The maximal longitude (X)
--   `top` **[number][64]** The maximal latitude (Y)
--   `limit` **[number][64]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
--   `closedDays` **[number][64]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
+-   `left` **[number][74]** The minimal longitude (X)
+-   `bottom` **[number][74]** The minimal latitude (Y)
+-   `right` **[number][74]** The maximal longitude (X)
+-   `top` **[number][74]** The maximal latitude (Y)
+-   `limit` **[number][74]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
+-   `closedDays` **[number][74]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
 
-Returns **[Promise][62]** Resolves on notes list
+Returns **[Promise][72]** Resolves on notes list
+
+### fetchNotesSearch
+
+Fetch OSM notes with textual search
+
+**Parameters**
+
+-   `q` **[string][70]** Specifies the search query
+-   `format` **[string][70]?** It can be 'xml' (default) to get OSM
+    and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+    return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS (optional, default `'xml'`)
+-   `limit` **[number][74]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
+-   `closed` **[number][74]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
+-   `display_name` **[string][70]?** Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter (optional, default `null`)
+-   `user` **[number][74]?** Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter (optional, default `null`)
+-   `from` **[number][74]?** Specifies the beginning of a date range to search in for a note (optional, default `null`)
+-   `to` **[number][74]?** Specifies the end of a date range to search in for a note. Today date is the default (optional, default `null`)
+
+Returns **[Promise][72]** 
+
+### fetchNote
+
+Get OSM note by id
+param {number} noteId Identifier for the note
+
+**Parameters**
+
+-   `noteId`  
+-   `format` **[string][70]** It can be 'xml' (default) to get OSM
+    and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+    return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS (optional, default `'xml'`)
+
+Returns **[Promise][72]** 
+
+### createNote
+
+Create an OSM note
+
+**Parameters**
+
+-   `lat` **[number][74]** Specifies the latitude of the note
+-   `lon` **[number][74]** Specifies the longitude of the note
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+
+Returns **[Promise][72]** 
+
+### commentNote
+
+Comment an OSM note
+
+**Parameters**
+
+-   `noteId`  
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+
+Returns **[Promise][72]** 
+
+### closeNote
+
+Close an OSM note
+
+**Parameters**
+
+-   `noteId`  
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+
+Returns **[Promise][72]** 
+
+### reopenNote
+
+Reopen an OSM note
+
+**Parameters**
+
+-   `noteId`  
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+
+Returns **[Promise][72]** 
 
 ### createChangeset
 
@@ -311,10 +399,10 @@ Send a request to OSM to create a new changeset
 
 **Parameters**
 
--   `createdBy` **[string][60]?**  (optional, default `''`)
--   `comment` **[string][60]?**  (optional, default `''`)
+-   `createdBy` **[string][70]?**  (optional, default `''`)
+-   `comment` **[string][70]?**  (optional, default `''`)
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### isChangesetStillOpen
 
@@ -322,9 +410,9 @@ Check if a changeset is still open
 
 **Parameters**
 
--   `changesetId` **[number][64]** 
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### updateChangesetTags
 
@@ -332,13 +420,13 @@ Update changeset tags if still open
 
 **Parameters**
 
--   `changesetId` **[number][64]** 
--   `object` **[Object][61]** use to set multiples tags
+-   `changesetId` **[number][74]** 
+-   `object` **[Object][71]** use to set multiples tags
 
 
 -   Throws **any** Will throw an error for any request with http code 40x
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### createNodeElement
 
@@ -346,11 +434,11 @@ Create a shiny new OSM node element, in a JSON format
 
 **Parameters**
 
--   `lat` **[number][64]** 
--   `lon` **[number][64]** 
--   `properties` **[Object][61]?** Optional, initial properties (optional, default `{}`)
+-   `lat` **[number][74]** 
+-   `lon` **[number][74]** 
+-   `properties` **[Object][71]?** Optional, initial properties (optional, default `{}`)
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
 
 ### fetchElement
 
@@ -359,11 +447,11 @@ all other elements referenced by it
 
 **Parameters**
 
--   `osmId` **[string][60]** Eg: node/12345
--   `options` **[Object][61]** Optional parameters
-    -   `options.full` **[boolean][65]?** True for getting all elements referenced by this element
+-   `osmId` **[string][70]** Eg: node/12345
+-   `options` **[Object][71]** Optional parameters
+    -   `options.full` **[boolean][75]?** True for getting all elements referenced by this element
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### fetchRelationsForElement
 
@@ -371,9 +459,9 @@ Fetch relation(s) from an OSM element
 
 **Parameters**
 
--   `osmId` **[string][60]** Eg: node/12345
+-   `osmId` **[string][70]** Eg: node/12345
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### fetchWaysForNode
 
@@ -381,9 +469,9 @@ Fetch ways using the given OSM node
 
 **Parameters**
 
--   `osmId` **[string][60]** Eg: node/12345
+-   `osmId` **[string][70]** Eg: node/12345
 
-Returns **[Promise][62]** Resolve on ways array (each one can be used as an Element for all other functions)
+Returns **[Promise][72]** Resolve on ways array (each one can be used as an Element for all other functions)
 
 ### setProperty
 
@@ -391,11 +479,11 @@ Add or replace a property in a given element
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `propertyName` **[string][60]** 
--   `propertyValue` **[string][60]** 
+-   `element` **[Object][71]** 
+-   `propertyName` **[string][70]** 
+-   `propertyValue` **[string][70]** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### setProperties
 
@@ -403,10 +491,10 @@ Add or replace several properties in a given element
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `properties` **[Object][61]** 
+-   `element` **[Object][71]** 
+-   `properties` **[Object][71]** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### removeProperty
 
@@ -414,10 +502,10 @@ Remove a property from a given element
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `propertyName` **[string][60]** 
+-   `element` **[Object][71]** 
+-   `propertyName` **[string][70]** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### setCoordinates
 
@@ -425,11 +513,11 @@ Replace the coordinates of the OSM node and return a copy of the element
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `lat` **[number][64]** 
--   `lon` **[number][64]** 
+-   `element` **[Object][71]** 
+-   `lat` **[number][74]** 
+-   `lon` **[number][74]** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### setTimestampToNow
 
@@ -437,9 +525,9 @@ Set the current UTC date to a given element
 
 **Parameters**
 
--   `element` **[Object][61]** 
+-   `element` **[Object][71]** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### setVersion
 
@@ -447,10 +535,10 @@ Change the version number (given by API) of an element
 
 **Parameters**
 
--   `element` **[Object][61]** 
+-   `element` **[Object][71]** 
 -   `version` **int** 
 
-Returns **[Object][61]** A new version of the element
+Returns **[Object][71]** A new version of the element
 
 ### sendElement
 
@@ -458,10 +546,10 @@ Send an element to OSM
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `changesetId` **[number][64]** 
+-   `element` **[Object][71]** 
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### fetchMapByBbox
 
@@ -469,12 +557,12 @@ Request to fetch all OSM elements within a bbox extent
 
 **Parameters**
 
--   `left` **[number][64]** The minimal longitude (X)
--   `bottom` **[number][64]** The minimal latitude (Y)
--   `right` **[number][64]** The maximal longitude (X)
--   `top` **[number][64]** The maximal latitude (Y)
+-   `left` **[number][74]** The minimal longitude (X)
+-   `bottom` **[number][74]** The minimal latitude (Y)
+-   `right` **[number][74]** The maximal longitude (X)
+-   `top` **[number][74]** The maximal latitude (Y)
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ### deleteElement
 
@@ -482,16 +570,16 @@ Delete an element from OSM
 
 **Parameters**
 
--   `element` **[Object][61]** 
--   `changesetId` **[number][64]** 
+-   `element` **[Object][71]** 
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** Promise with the new version number due to deletion
+Returns **[Promise][72]** Promise with the new version number due to deletion
 
 ### getUserPreferences
 
 Get all preferences from connected user
 
-Returns **[Promise][62]** Promise with Well formatted JSON of user preferences
+Returns **[Promise][72]** Promise with Well formatted JSON of user preferences
 
 ### setUserPreferences
 
@@ -499,9 +587,9 @@ Set all preferences for a connected user
 
 **Parameters**
 
--   `object` **[Object][61]** An object to provide keys values to create XML preferences
+-   `object` **[Object][71]** An object to provide keys values to create XML preferences
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 ### getUserPreferenceByKey
 
@@ -509,9 +597,9 @@ Get a preference from a key for the connected user
 
 **Parameters**
 
--   `key` **[string][60]** The key to retrieve
+-   `key` **[string][70]** The key to retrieve
 
-Returns **[Promise][62]** Promise with the value for the key
+Returns **[Promise][72]** Promise with the value for the key
 
 ### setUserPreferenceByKey
 
@@ -519,10 +607,10 @@ Set a preference from a key for the connected user
 
 **Parameters**
 
--   `key` **[string][60]** The key to set.
--   `value` **[string][60]** The value to set. Overwrite existing value if key exists
+-   `key` **[string][70]** The key to set.
+-   `value` **[string][70]** The value to set. Overwrite existing value if key exists
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 ### deleteUserPreference
 
@@ -530,9 +618,9 @@ Delete a preference from a key for the connected user
 
 **Parameters**
 
--   `key` **[string][60]** The key to use.
+-   `key` **[string][70]** The key to use.
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 ## fetchElementRequest
 
@@ -540,10 +628,10 @@ Request to fetch an OSM element
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `osmId` **[string][60]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `osmId` **[string][70]** 
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
 
 ## fetchElementRequestFull
 
@@ -551,10 +639,10 @@ Request to fetch way or relation and all other elements referenced by it
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `osmId` **[string][60]** Can only contain either a way or a relation
+-   `endpoint` **[string][70]** The API endpoint
+-   `osmId` **[string][70]** Can only contain either a way or a relation
 
-Returns **[Promise][62]** Promise with well formatted JSON content
+Returns **[Promise][72]** Promise with well formatted JSON content
 
 ## fetchWaysForNodeRequest
 
@@ -562,10 +650,10 @@ Request to fetch ways using the given OSM node
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `osmId` **[string][60]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `osmId` **[string][70]** 
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
 
 ## sendElementRequest
 
@@ -574,11 +662,11 @@ Send an element to OSM
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `element` **[Object][61]** 
--   `changesetId` **[number][64]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `element` **[Object][71]** 
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## fetchNotesRequest
 
@@ -586,15 +674,79 @@ Request to fetch OSM notes
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `left` **[number][64]** The minimal longitude (X)
--   `bottom` **[number][64]** The minimal latitude (Y)
--   `right` **[number][64]** The maximal longitude (X)
--   `top` **[number][64]** The maximal latitude (Y)
--   `limit` **[number][64]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
--   `closedDays` **[number][64]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
+-   `endpoint` **[string][70]** The API endpoint
+-   `left` **[number][74]** The minimal longitude (X)
+-   `bottom` **[number][74]** The minimal latitude (Y)
+-   `right` **[number][74]** The maximal longitude (X)
+-   `top` **[number][74]** The maximal latitude (Y)
+-   `limit` **[number][74]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
+-   `closedDays` **[number][74]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
 
-Returns **[Object][61]** 
+Returns **[Object][71]** 
+
+## fetchNotesSearchRequest
+
+Request to get OSM notes with textual search
+
+**Parameters**
+
+-   `endpoint` **[string][70]** The API endpoint
+-   `q` **[string][70]** Specifies the search query
+-   `format` **[string][70]?** It can be 'xml' (default) to get OSM
+    and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+    return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS (optional, default `'xml'`)
+-   `limit` **[number][74]?** The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100) (optional, default `null`)
+-   `closed` **[number][74]?** The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned) (optional, default `null`)
+-   `display_name` **[string][70]?** Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter (optional, default `null`)
+-   `user` **[number][74]?** Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter (optional, default `null`)
+-   `from` **[number][74]?** Specifies the beginning of a date range to search in for a note (optional, default `null`)
+-   `to` **[number][74]?** Specifies the end of a date range to search in for a note. Today date is the default (optional, default `null`)
+
+Returns **[Promise][72]** 
+
+## fetchNoteByIdRequest
+
+Request to fetch OSM note by id
+
+**Parameters**
+
+-   `endpoint` **[string][70]** The API endpoint
+    param {number} noteId Identifier for the note
+-   `noteId`  
+-   `format` **[string][70]** It can be 'xml' (default) to get OSM
+    and convert to JSON, 'raw' to return raw OSM XML, 'json' to
+    return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS (optional, default `'xml'`)
+
+Returns **[Promise][72]** 
+
+## genericPostNoteRequest
+
+Request generic enough to manage all POST request for a particular note
+
+**Parameters**
+
+-   `auth` **osmAuth** An instance of osm-auth
+-   `endpoint` **[string][70]** The API endpoint
+    param {number} noteId Identifier for the note
+-   `noteId`  
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+-   `type` **[string][70]** Mandatory type. It can be 'comment', 'close' or 'reopen'
+
+Returns **[Promise][72]** 
+
+## createNoteRequest
+
+Request to create a note
+
+**Parameters**
+
+-   `auth` **osmAuth** An instance of osm-auth
+-   `endpoint` **[string][70]** The API endpoint
+-   `lat` **[number][74]** Specifies the latitude of the note
+-   `lon` **[number][74]** Specifies the longitude of the note
+-   `text` **[string][70]** A mandatory text field with arbitrary text containing the note
+
+Returns **[Promise][72]** 
 
 ## createChangesetRequest
 
@@ -603,11 +755,11 @@ Request to create OSM changesets
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `createdBy` **[string][60]?**  (optional, default `''`)
--   `comment` **[string][60]?**  (optional, default `''`)
+-   `endpoint` **[string][70]** The API endpoint
+-   `createdBy` **[string][70]?**  (optional, default `''`)
+-   `comment` **[string][70]?**  (optional, default `''`)
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## changesetCheckRequest
 
@@ -616,10 +768,10 @@ Checks if a given changeset is still opened at OSM.
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `changesetId` **[number][64]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## updateChangesetTagsRequest
 
@@ -628,14 +780,14 @@ Update tags if a given changeset is still opened at OSM.
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `changesetId` **[number][64]** 
--   `object` **[Object][61]** use to set multiples tags
+-   `endpoint` **[string][70]** The API endpoint
+-   `changesetId` **[number][74]** 
+-   `object` **[Object][71]** use to set multiples tags
 
 
 -   Throws **any** Will throw an error for any request with http code 40x.
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## fetchMapByBbox
 
@@ -643,13 +795,13 @@ Request to fetch all OSM elements within a bbox extent
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `left` **[number][64]** The minimal longitude (X)
--   `bottom` **[number][64]** The minimal latitude (Y)
--   `right` **[number][64]** The maximal longitude (X)
--   `top` **[number][64]** The maximal latitude (Y)
+-   `endpoint` **[string][70]** The API endpoint
+-   `left` **[number][74]** The minimal longitude (X)
+-   `bottom` **[number][74]** The minimal latitude (Y)
+-   `right` **[number][74]** The maximal longitude (X)
+-   `top` **[number][74]** The maximal latitude (Y)
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## deleteElementRequest
 
@@ -658,11 +810,11 @@ Delete an OSM element
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `element` **[Object][61]** 
--   `changesetId` **[number][64]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `element` **[Object][71]** 
+-   `changesetId` **[number][74]** 
 
-Returns **[Promise][62]** Promise with the new version number due to deletion
+Returns **[Promise][72]** Promise with the new version number due to deletion
 
 ## fetchRelationsForElementRequest
 
@@ -670,10 +822,10 @@ Request to fetch relation(s) from an OSM element
 
 **Parameters**
 
--   `endpoint` **[string][60]** The API endpoint
--   `osmId` **[string][60]** 
+-   `endpoint` **[string][70]** The API endpoint
+-   `osmId` **[string][70]** 
 
-Returns **[Promise][62]** 
+Returns **[Promise][72]** 
 
 ## getUserPreferencesRequest
 
@@ -682,12 +834,12 @@ Request to fetch preferences for the connected user
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
+-   `endpoint` **[string][70]** The API endpoint
 
 
 -   Throws **any** Will throw an error for any request with http code 40x.
 
-Returns **[Promise][62]** Promise with the value for the key
+Returns **[Promise][72]** Promise with the value for the key
 
 ## setUserPreferencesRequest
 
@@ -696,10 +848,10 @@ Request to set all preferences for a connected user
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `object` **[Object][61]** An object to provide keys values to create XML preferences
+-   `endpoint` **[string][70]** The API endpoint
+-   `object` **[Object][71]** An object to provide keys values to create XML preferences
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 ## getUserPreferenceByKeyRequest
 
@@ -708,13 +860,13 @@ Request to fetch a preference from a key for the connected user
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `key` **[string][60]** The key to retrieve
+-   `endpoint` **[string][70]** The API endpoint
+-   `key` **[string][70]** The key to retrieve
 
 
 -   Throws **any** Will throw an error for any request with http code 40x.
 
-Returns **[Promise][62]** Promise with the value for the key
+Returns **[Promise][72]** Promise with the value for the key
 
 ## setUserPreferenceByKeyRequest
 
@@ -723,11 +875,11 @@ Request to set a preference from a key for the connected user
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `key` **[string][60]** The key to set
--   `value` **[string][60]** The value to set. Overwrite existing value if key exists
+-   `endpoint` **[string][70]** The API endpoint
+-   `key` **[string][70]** The key to set
+-   `value` **[string][70]** The value to set. Overwrite existing value if key exists
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 ## deleteUserPreferenceRequest
 
@@ -736,10 +888,10 @@ Request to delete a preference from a key for the connected user
 **Parameters**
 
 -   `auth` **osmAuth** An instance of osm-auth
--   `endpoint` **[string][60]** The API endpoint
--   `key` **[string][60]** The key to use
+-   `endpoint` **[string][70]** The API endpoint
+-   `key` **[string][70]** The key to use
 
-Returns **[Promise][62]** Promise
+Returns **[Promise][72]** Promise
 
 [1]: #getcurrentisotimestamp
 
@@ -785,88 +937,108 @@ Returns **[Promise][62]** Promise
 
 [22]: #fetchnotes
 
-[23]: #createchangeset
+[23]: #fetchnotessearch
 
-[24]: #ischangesetstillopen
+[24]: #fetchnote
 
-[25]: #updatechangesettags
+[25]: #createnote
 
-[26]: #createnodeelement
+[26]: #commentnote
 
-[27]: #fetchelement
+[27]: #closenote
 
-[28]: #fetchrelationsforelement
+[28]: #reopennote
 
-[29]: #fetchwaysfornode
+[29]: #createchangeset
 
-[30]: #setproperty
+[30]: #ischangesetstillopen
 
-[31]: #setproperties
+[31]: #updatechangesettags
 
-[32]: #removeproperty
+[32]: #createnodeelement
 
-[33]: #setcoordinates
+[33]: #fetchelement
 
-[34]: #settimestamptonow
+[34]: #fetchrelationsforelement
 
-[35]: #setversion
+[35]: #fetchwaysfornode
 
-[36]: #sendelement
+[36]: #setproperty
 
-[37]: #fetchmapbybbox
+[37]: #setproperties
 
-[38]: #deleteelement
+[38]: #removeproperty
 
-[39]: #getuserpreferences
+[39]: #setcoordinates
 
-[40]: #setuserpreferences
+[40]: #settimestamptonow
 
-[41]: #getuserpreferencebykey
+[41]: #setversion
 
-[42]: #setuserpreferencebykey
+[42]: #sendelement
 
-[43]: #deleteuserpreference
+[43]: #fetchmapbybbox
 
-[44]: #fetchelementrequest
+[44]: #deleteelement
 
-[45]: #fetchelementrequestfull
+[45]: #getuserpreferences
 
-[46]: #fetchwaysfornoderequest
+[46]: #setuserpreferences
 
-[47]: #sendelementrequest
+[47]: #getuserpreferencebykey
 
-[48]: #fetchnotesrequest
+[48]: #setuserpreferencebykey
 
-[49]: #createchangesetrequest
+[49]: #deleteuserpreference
 
-[50]: #changesetcheckrequest
+[50]: #fetchelementrequest
 
-[51]: #updatechangesettagsrequest
+[51]: #fetchelementrequestfull
 
-[52]: #fetchmapbybbox-1
+[52]: #fetchwaysfornoderequest
 
-[53]: #deleteelementrequest
+[53]: #sendelementrequest
 
-[54]: #fetchrelationsforelementrequest
+[54]: #fetchnotesrequest
 
-[55]: #getuserpreferencesrequest
+[55]: #fetchnotessearchrequest
 
-[56]: #setuserpreferencesrequest
+[56]: #fetchnotebyidrequest
 
-[57]: #getuserpreferencebykeyrequest
+[57]: #genericpostnoterequest
 
-[58]: #setuserpreferencebykeyrequest
+[58]: #createnoterequest
 
-[59]: #deleteuserpreferencerequest
+[59]: #createchangesetrequest
 
-[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[60]: #changesetcheckrequest
 
-[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[61]: #updatechangesettagsrequest
 
-[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[62]: #fetchmapbybbox-1
 
-[63]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[63]: #deleteelementrequest
 
-[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[64]: #fetchrelationsforelementrequest
 
-[65]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[65]: #getuserpreferencesrequest
+
+[66]: #setuserpreferencesrequest
+
+[67]: #getuserpreferencebykeyrequest
+
+[68]: #setuserpreferencebykeyrequest
+
+[69]: #deleteuserpreferencerequest
+
+[70]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[71]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[72]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[73]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[74]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[75]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean

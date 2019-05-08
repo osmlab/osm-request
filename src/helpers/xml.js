@@ -182,7 +182,13 @@ export function convertRelationsXmlToJson(xml) {
  */
 export function convertNotesXmlToJson(xml) {
   return xmlToJson(xml)
-    .then(result => result.osm.note)
+    .then(result => {
+      if (result.osm.note) {
+        return result.osm.note;
+      } else {
+        return [];
+      }
+    })
     .then(notes =>
       notes.map(note => {
         const returnedNote = flattenAttributes(note);
