@@ -457,6 +457,33 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
 }
 
 /**
+ * Get a changeset for a given id at OSM.
+ * @param {string} endpoint The API endpoint
+ * @param {number} changesetId
+ * @return {Promise}
+ */
+export function changesetGetRequest(endpoint, changesetId) {
+  return fetch(`${endpoint}/api/0.6/changeset/${changesetId.toString()}`)
+    .then(response => {
+      if (response.status !== 200) {
+        return response.text().then(message =>
+          Promise.reject({
+            message,
+            status: response.status,
+            statusText: response.statusText
+          })
+        );
+      }
+      return response.text();
+    })
+    .catch(message => {
+      throw new RequestException(message);
+    })
+    .then(response => {
+      return xmlToJson(response);
+    });
+}
+/**
  * Update tags if a given changeset is still opened at OSM.
  * @param {osmAuth} auth An instance of osm-auth
  * @param {string} endpoint The API endpoint
@@ -498,6 +525,46 @@ export function updateChangesetTagsRequest(
           );
         } else {
           return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
+        }
+      }
+    );
+  });
+}
+
+/**
+ * Request to close changeset for a given id if still opened
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {number} changesetId
+ * @throws Will throw an error for any request with http code 40x.
+ * @return {Promise} Empty string if it works
+ */
+export function closeChangesetRequest(auth, endpoint, changesetId) {
+  return new Promise((resolve, reject) => {
+    auth.xhr(
+      {
+        method: 'PUT',
+        prefix: false,
+        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}/close`,
+        options: {
+          header: {
+            'Content-Type': 'text/plain'
+          }
+        }
+      },
+      (err, text) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'Changeset close request failed',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          return resolve(text);
         }
       }
     );

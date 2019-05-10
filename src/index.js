@@ -1,7 +1,12 @@
 import osmAuth from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
 import { getCurrentIsoTimestamp } from 'helpers/time';
-import { removeTrailingSlashes, simpleObjectDeepClone } from 'helpers/utils';
+import {
+  findElementType,
+  findElementId,
+  removeTrailingSlashes,
+  simpleObjectDeepClone
+} from 'helpers/utils';
 import {
   fetchElementRequest,
   fetchElementRequestFull,
@@ -16,7 +21,9 @@ import {
   genericPostNoteRequest,
   createChangesetRequest,
   changesetCheckRequest,
+  changesetGetRequest,
   updateChangesetTagsRequest,
+  closeChangesetRequest,
   deleteElementRequest,
   getUserPreferencesRequest,
   setUserPreferencesRequest,
@@ -211,6 +218,15 @@ export default class OsmRequest {
   }
 
   /**
+   * Get a changeset for a given id
+   * @param {number} changesetId
+   * @return {Promise}
+   */
+  fetchChangeset(changesetId) {
+    return changesetGetRequest(this.endpoint, changesetId);
+  }
+
+  /**
    * Update changeset tags if still open
    * @param {number} changesetId
    * @param {Object} object use to set multiples tags
@@ -224,6 +240,16 @@ export default class OsmRequest {
       changesetId,
       object
     );
+  }
+
+  /**
+   * Close changeset for a given id if still opened
+   * @param {number} changesetId
+   * @throws Will throw an error for any request with http code 40x.
+   * @return {Promise} Empty string if it works
+   */
+  closeChangeset(changesetId) {
+    return closeChangesetRequest(this._auth, this.endpoint, changesetId);
   }
 
   /**
@@ -257,6 +283,86 @@ export default class OsmRequest {
       }
     }));
 
+    return element;
+  }
+
+  /**
+   * Create a shiny new OSM way element, in a JSON format
+   * @param {Array<string>} nodeOsmIds
+   * @param {Object} [properties] Optional, initial properties
+   * @return {Object}
+   */
+  createWayElement(nodeOsmIds, properties = {}) {
+    const element = {
+      osm: {
+        $: {},
+        way: [
+          {
+            $: {},
+            nd: nodeOsmIds.map(id => {
+              return {
+                $: {
+                  ref: findElementId(id)
+                }
+              };
+            }),
+            tag: []
+          }
+        ]
+      },
+      _type: 'way'
+    };
+
+    element.osm.way[0].tag = Object.keys(properties).map(propertyName => ({
+      $: {
+        k: propertyName.toString(),
+        v: properties[propertyName].toString()
+      }
+    }));
+    return element;
+  }
+
+  /**
+   * Create a shiny new OSM relation element, in a JSON format
+   * @param {Array<Object>} osmElements Array of object with keys id and optional role key. Key id contains an osmId value like 'node/1234'
+   * @param {Object} [properties] Optional, initial properties
+   * @return {Object}
+   */
+  createRelationElement(osmElements, properties = {}) {
+    const element = {
+      osm: {
+        $: {},
+        relation: [
+          {
+            $: {},
+            member: osmElements.map(elementObject => {
+              const { id, role } = elementObject;
+              const elementType = findElementType(id);
+              const elementId = findElementId(id);
+              const elementObjectCopy = {
+                type: elementType,
+                ref: elementId
+              };
+              if (role !== undefined) {
+                elementObjectCopy.role = elementObject.role;
+              }
+              return {
+                $: elementObjectCopy
+              };
+            }),
+            tag: []
+          }
+        ]
+      },
+      _type: 'relation'
+    };
+
+    element.osm.relation[0].tag = Object.keys(properties).map(propertyName => ({
+      $: {
+        k: propertyName.toString(),
+        v: properties[propertyName].toString()
+      }
+    }));
     return element;
   }
 
@@ -383,6 +489,77 @@ export default class OsmRequest {
     newElement.osm[elementType][0].$.lon = lon.toString();
 
     return newElement;
+  }
+
+  /**
+   * Get the nodes ids of the OSM way
+   * @param {Object} way
+   * @return {Array<string>} nodeOsmIds
+   */
+  getNodeIdsForWay(way) {
+    return way.osm.way[0].nd.map(node => `node/${node.$.ref}`);
+  }
+
+  /**
+   * Replace the nodes of the OSM way and return a copy of the way
+   * @param {Object} way
+   * @param {Array<string>} nodeOsmIds
+   * @return {Object} A new version of the way
+   */
+  setNodeIdsForWay(way, nodeOsmIds) {
+    const newWay = simpleObjectDeepClone(way);
+    newWay.osm.way[0].nd = nodeOsmIds.map(id => {
+      return {
+        $: {
+          ref: findElementId(id)
+        }
+      };
+    });
+    return newWay;
+  }
+
+  /**
+   * Get the members objects from an OSM relation
+   * @param {Object} relation
+   * @return {Array<Object>} Array of object with keys id with osmId value e.g 'node/1234' and optional role key
+   */
+  getRelationMembers(relation) {
+    return relation.osm.relation[0].member.map(member => {
+      const { type, ref, role } = member.$;
+      const elementObjectCopy = {
+        id: `${type}/${ref}`
+      };
+      if (role !== undefined) {
+        elementObjectCopy.role = role;
+      }
+      return elementObjectCopy;
+    });
+  }
+
+  /**
+   * Replace the members objects of the OSM relation and return a copy of the relation
+   * @param {Object} relation
+   * @param {Array<Object>} osmElements Array of object with keys id and optional role key. Key id contains an osmId value like 'node/1234'
+   * @return {Object} A new version of the relation
+   */
+  setRelationMembers(relation, osmElements) {
+    const newRelation = simpleObjectDeepClone(relation);
+    newRelation.osm.relation[0].member = osmElements.map(elementObject => {
+      const { id, role } = elementObject;
+      const elementType = findElementType(id);
+      const elementId = findElementId(id);
+      const elementObjectCopy = {
+        type: elementType,
+        ref: elementId
+      };
+      if (role !== undefined) {
+        elementObjectCopy.role = elementObject.role;
+      }
+      return {
+        $: elementObjectCopy
+      };
+    });
+    return newRelation;
   }
 
   /**
