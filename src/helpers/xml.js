@@ -79,25 +79,12 @@ export function buildPreferencesFromObjectXml(object) {
  * @return {Promise}
  */
 export function convertElementXmlToJson(xml, elementType, elementId) {
-  return xmlToJson(xml).then(result => ({
-    ...result,
-    _id: elementId,
-    _type: elementType
-  }));
-}
-
-/**
- * Convert a JSON list of ways fragment into a well formatted JSON object
- * @param {Object} wayKey - The raw API response
- * @param {Object} rootOsmMetadata - The raw API response
- * @return {Array}
- */
-export function cleanWaysJsonFragment(wayKey, rootOsmMetadata) {
-  return wayKey.map(w => ({
-    osm: { $: rootOsmMetadata, way: [w] },
-    _id: w.$.id,
-    _type: 'way'
-  }));
+  return xmlToJson(xml).then(result => {
+    const element = result.osm[elementType][0];
+    element._id = elementId;
+    element._type = elementType;
+    return element;
+  });
 }
 
 /**
@@ -106,14 +93,20 @@ export function cleanWaysJsonFragment(wayKey, rootOsmMetadata) {
  * @return {Array}
  */
 export function cleanMapJson(osmMapJson) {
-  const { $, bounds } = osmMapJson.osm;
+  const { bounds } = osmMapJson.osm;
   let way = [];
   if (osmMapJson.osm.way) {
-    way = cleanWaysJsonFragment(osmMapJson.osm.way, osmMapJson.osm.$);
+    way = osmMapJson.osm.way.map(w => {
+      return {
+        ...w,
+        _id: w['$'].id,
+        _type: 'node'
+      };
+    });
   }
   let node = [];
   if (osmMapJson.osm.node) {
-    node = osmMapJson.osm.node = osmMapJson.osm.node.map(n => {
+    node = osmMapJson.osm.node.map(n => {
       return {
         ...n,
         _id: n['$'].id,
@@ -132,15 +125,12 @@ export function cleanMapJson(osmMapJson) {
     });
   }
   const newOsmObject = {
-    osm: {
-      $,
-      node,
-      way,
-      relation
-    }
+    node,
+    way,
+    relation
   };
   if (bounds) {
-    newOsmObject.osm.bounds = bounds;
+    newOsmObject.bounds = bounds;
   }
   return newOsmObject;
 }
@@ -153,7 +143,11 @@ export function cleanMapJson(osmMapJson) {
 export function convertWaysXmlToJson(xml) {
   return xmlToJson(xml).then(result => {
     return result.osm.way
-      ? cleanWaysJsonFragment(result.osm.way, result.osm.$)
+      ? result.osm.way.map(w => {
+          w._id = w.$.id;
+          w._type = 'way';
+          return w;
+        })
       : [];
   });
 }
@@ -171,7 +165,7 @@ export function convertRelationsXmlToJson(xml) {
         relation._type = 'relation';
       });
     }
-    return Promise.resolve(result);
+    return Promise.resolve(result.osm.relation);
   });
 }
 

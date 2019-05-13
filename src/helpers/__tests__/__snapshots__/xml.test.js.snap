@@ -38,40 +38,27 @@ exports[`XML helpers buildChangesetXml Should handle strings having double quote
 
 exports[`XML helpers convertElementXmlToJson Should convert an Element XML string into a proper JSON object 1`] = `
 Object {
+  "$": Object {
+    "changeset": "33150668",
+    "id": "3683625932",
+    "lat": "44.8331455",
+    "lon": "-0.5936602",
+    "timestamp": "2015-08-06T09:49:47Z",
+    "uid": "2568974",
+    "user": "Vinber-Num&Lib",
+    "version": "1",
+    "visible": "true",
+  },
   "_id": "3683625932",
   "_type": "node",
-  "osm": Object {
-    "$": Object {
-      "attribution": "http://www.openstreetmap.org/copyright",
-      "copyright": "OpenStreetMap and contributors",
-      "generator": "CGImap 0.6.0 (8254 thorn-02.openstreetmap.org)",
-      "license": "http://opendatacommons.org/licenses/odbl/1-0/",
-      "version": "0.6",
-    },
-    "node": Array [
-      Object {
-        "$": Object {
-          "changeset": "33150668",
-          "id": "3683625932",
-          "lat": "44.8331455",
-          "lon": "-0.5936602",
-          "timestamp": "2015-08-06T09:49:47Z",
-          "uid": "2568974",
-          "user": "Vinber-Num&Lib",
-          "version": "1",
-          "visible": "true",
-        },
-        "tag": Array [
-          Object {
-            "$": Object {
-              "k": "amenity",
-              "v": "drinking_water",
-            },
-          },
-        ],
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "amenity",
+        "v": "drinking_water",
       },
-    ],
-  },
+    },
+  ],
 }
 `;
 

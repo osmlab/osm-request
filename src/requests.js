@@ -82,9 +82,16 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
   delete copiedElement._id;
   delete copiedElement._type;
 
-  copiedElement.osm[elementType][0].$.changeset = changesetId;
+  copiedElement.$.changeset = changesetId;
 
-  const elementXml = jsonToXml(copiedElement);
+  const osmContent = {
+    osm: {
+      $: {},
+      node: [copiedElement]
+    }
+  };
+
+  const elementXml = jsonToXml(osmContent);
   const path = elementId
     ? `${elementType}/${elementId}`
     : `${elementType}/create`;
@@ -578,11 +585,19 @@ export function closeChangesetRequest(auth, endpoint, changesetId) {
  * @param {number} bottom The minimal latitude (Y)
  * @param {number} right The maximal longitude (X)
  * @param {number} top The maximal latitude (Y)
+ * @param {string} mode The mode is json so output in the promise will be an object, otherwise, it will be an object and a XML string
  * @return {Promise}
  */
-export function fetchMapByBbox(endpoint, left, bottom, right, top) {
+export function fetchMapByBboxRequest(
+  endpoint,
+  left,
+  bottom,
+  right,
+  top,
+  mode = 'json'
+) {
   const args = Array.from(arguments);
-  if (args.length !== 5 && args.some(arg => arg === undefined)) {
+  if (args.length < 5 && args.some(arg => arg === undefined)) {
     throw new Error("You didn't provide all arguments to the function");
   } else {
     const params = {
@@ -600,13 +615,26 @@ export function fetchMapByBbox(endpoint, left, bottom, right, top) {
         throw new RequestException(message);
       })
       .then(response => {
-        return xmlToJson(response)
-          .then(json => {
-            return Promise.resolve(cleanMapJson(json));
-          })
-          .catch(error => {
-            throw new RequestException(error);
-          });
+        if (mode !== 'json') {
+          return Promise.all([
+            xmlToJson(response)
+              .then(json => {
+                return Promise.resolve(cleanMapJson(json));
+              })
+              .catch(error => {
+                throw new RequestException(error);
+              }),
+            response
+          ]);
+        } else {
+          return xmlToJson(response)
+            .then(json => {
+              return Promise.resolve(cleanMapJson(json));
+            })
+            .catch(error => {
+              throw new RequestException(error);
+            });
+        }
       });
   }
 }
@@ -625,9 +653,16 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
   delete copiedElement._id;
   delete copiedElement._type;
 
-  copiedElement.osm[elementType][0].$.changeset = changesetId;
+  copiedElement.$.changeset = changesetId;
 
-  const elementXml = jsonToXml(copiedElement);
+  const osmContent = {
+    osm: {
+      $: {},
+      node: [copiedElement]
+    }
+  };
+
+  const elementXml = jsonToXml(osmContent);
   const path = `${elementType}/${elementId}`;
 
   return new Promise(resolve => {

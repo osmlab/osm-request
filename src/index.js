@@ -10,7 +10,7 @@ import {
 import {
   fetchElementRequest,
   fetchElementRequestFull,
-  fetchMapByBbox,
+  fetchMapByBboxRequest,
   fetchRelationsForElementRequest,
   fetchWaysForNodeRequest,
   sendElementRequest,
@@ -256,114 +256,107 @@ export default class OsmRequest {
    * Create a shiny new OSM node element, in a JSON format
    * @param {number} lat
    * @param {number} lon
-   * @param {Object} [properties] Optional, initial properties
+   * @param {Object} [tags] Optional, initial tags
+   * @param {string} [id] Optional, identifier for OSM element
    * @return {Object}
    */
-  createNodeElement(lat, lon, properties = {}) {
-    const element = {
-      osm: {
-        $: {},
-        node: [
-          {
-            $: {
-              lat: lat,
-              lon: lon
-            },
-            tag: []
-          }
-        ]
+  createNodeElement(lat, lon, tags = {}, id) {
+    const node = {
+      $: {
+        lat: lat,
+        lon: lon
       },
+      tag: [],
       _type: 'node'
     };
+    if (id !== undefined) {
+      node._id = id.toString();
+    }
 
-    element.osm.node[0].tag = Object.keys(properties).map(propertyName => ({
+    node.tag = Object.keys(tags).map(tagName => ({
       $: {
-        k: propertyName.toString(),
-        v: properties[propertyName].toString()
+        k: tagName.toString(),
+        v: tags[tagName].toString()
       }
     }));
 
-    return element;
+    return node;
   }
 
   /**
    * Create a shiny new OSM way element, in a JSON format
    * @param {Array<string>} nodeOsmIds
-   * @param {Object} [properties] Optional, initial properties
+   * @param {Object} [tags] Optional, initial tags
+   * @param {string} [id] Optional, identifier for OSM element
    * @return {Object}
    */
-  createWayElement(nodeOsmIds, properties = {}) {
-    const element = {
-      osm: {
-        $: {},
-        way: [
-          {
-            $: {},
-            nd: nodeOsmIds.map(id => {
-              return {
-                $: {
-                  ref: findElementId(id)
-                }
-              };
-            }),
-            tag: []
+  createWayElement(nodeOsmIds, tags = {}, id) {
+    const way = {
+      $: {},
+      nd: nodeOsmIds.map(id => {
+        return {
+          $: {
+            ref: findElementId(id)
           }
-        ]
-      },
+        };
+      }),
+      tag: [],
       _type: 'way'
     };
 
-    element.osm.way[0].tag = Object.keys(properties).map(propertyName => ({
+    if (id !== undefined) {
+      way._id = id.toString();
+    }
+
+    way.tag = Object.keys(tags).map(tagName => ({
       $: {
-        k: propertyName.toString(),
-        v: properties[propertyName].toString()
+        k: tagName.toString(),
+        v: tags[tagName].toString()
       }
     }));
-    return element;
+    return way;
   }
 
   /**
    * Create a shiny new OSM relation element, in a JSON format
    * @param {Array<Object>} osmElements Array of object with keys id and optional role key. Key id contains an osmId value like 'node/1234'
-   * @param {Object} [properties] Optional, initial properties
+   * @param {Object} [tags] Optional, initial tags
+   * @param {string} [id] Optional, identifier for OSM element
    * @return {Object}
    */
-  createRelationElement(osmElements, properties = {}) {
-    const element = {
-      osm: {
-        $: {},
-        relation: [
-          {
-            $: {},
-            member: osmElements.map(elementObject => {
-              const { id, role } = elementObject;
-              const elementType = findElementType(id);
-              const elementId = findElementId(id);
-              const elementObjectCopy = {
-                type: elementType,
-                ref: elementId
-              };
-              if (role !== undefined) {
-                elementObjectCopy.role = elementObject.role;
-              }
-              return {
-                $: elementObjectCopy
-              };
-            }),
-            tag: []
-          }
-        ]
-      },
+  createRelationElement(osmElements, tags = {}, id) {
+    const relation = {
+      $: {},
+      member: osmElements.map(elementObject => {
+        const { id, role } = elementObject;
+        const elementType = findElementType(id);
+        const elementId = findElementId(id);
+        const elementObjectCopy = {
+          type: elementType,
+          ref: elementId
+        };
+        if (role !== undefined) {
+          elementObjectCopy.role = elementObject.role;
+        }
+        return {
+          $: elementObjectCopy
+        };
+      }),
+      tag: [],
       _type: 'relation'
     };
 
-    element.osm.relation[0].tag = Object.keys(properties).map(propertyName => ({
+    if (id !== undefined) {
+      relation._id = id.toString();
+    }
+
+    relation.tag = Object.keys(tags).map(tagName => ({
       $: {
-        k: propertyName.toString(),
-        v: properties[propertyName].toString()
+        k: tagName.toString(),
+        v: tags[tagName].toString()
       }
     }));
-    return element;
+    return relation;
   }
 
   /**
@@ -401,26 +394,39 @@ export default class OsmRequest {
   }
 
   /**
-   * Add or replace a property in a given element
+   * Find an element with it OsmId within an OSM collection
+   * @param {Object} json An object with key that can be 'node', 'way', 'relation'
+   * @param {string} osmId Eg: node/12345
+   * @return {Obejct} OSM element
+   */
+  findElementWithinOSMCollection(json, osmId) {
+    const elementType = findElementType(osmId);
+    const elementId = findElementId(osmId);
+    if (elementType in json) {
+      return json[elementType].find(element => element.$.id === elementId);
+    }
+    return undefined;
+  }
+
+  /**
+   * Add or replace a tag in a given element
    * @param {Object} element
-   * @param {string} propertyName
-   * @param {string} propertyValue
+   * @param {string} tagName
+   * @param {string} tagValue
    * @return {Object} A new version of the element
    */
-  setProperty(element, propertyName, propertyValue) {
-    const elementType = element._type;
+  setProperty(element, tagName, tagValue) {
     const newElement = simpleObjectDeepClone(element);
-    const innerElement = newElement.osm[elementType][0];
-    const filteredTags = innerElement.tag
-      ? innerElement.tag.filter(tag => tag.$.k !== propertyName.toString())
+    const filteredTags = newElement.tag
+      ? newElement.tag.filter(tag => tag.$.k !== tagName.toString())
       : [];
 
-    innerElement.tag = [
+    newElement.tag = [
       ...filteredTags,
       {
         $: {
-          k: propertyName.toString(),
-          v: propertyValue.toString()
+          k: tagName.toString(),
+          v: tagValue.toString()
         }
       }
     ];
@@ -429,48 +435,42 @@ export default class OsmRequest {
   }
 
   /**
-   * Add or replace several properties in a given element
+   * Add or replace several tags in a given element
    * @param {Object} element
-   * @param {Object} properties
+   * @param {Object} tags
    * @return {Object} A new version of the element
    */
-  setProperties(element, properties) {
+  setProperties(element, tags) {
     const newElement = simpleObjectDeepClone(element);
-    const clonedProperties = simpleObjectDeepClone(properties);
-    const propertiesName = Object.keys(clonedProperties);
+    const clonedTags = simpleObjectDeepClone(tags);
+    const tagsName = Object.keys(clonedTags);
 
-    const elementType = element._type;
-    const innerElement = newElement.osm[elementType][0];
-    const filteredTags = innerElement.tag
-      ? innerElement.tag.filter(tag => !propertiesName.includes(tag.$.k))
+    const filteredTags = newElement.tag
+      ? newElement.tag.filter(tag => !tagsName.includes(tag.$.k))
       : [];
-    const formattedProperties = propertiesName.map(propertyName => ({
+    const formattedTags = tagsName.map(tagName => ({
       $: {
-        k: propertyName.toString(),
-        v: clonedProperties[propertyName].toString()
+        k: tagName.toString(),
+        v: clonedTags[tagName].toString()
       }
     }));
 
-    innerElement.tag = [...filteredTags, ...formattedProperties];
+    newElement.tag = [...filteredTags, ...formattedTags];
 
     return newElement;
   }
 
   /**
-   * Remove a property from a given element
+   * Remove a tag from a given element
    * @param {Object} element
-   * @param {string} propertyName
+   * @param {string} tagName
    * @return {Object} A new version of the element
    */
-  removeProperty(element, propertyName) {
-    const elementType = element._type;
+  removeProperty(element, tagName) {
     const newElement = simpleObjectDeepClone(element);
-    const innerElement = newElement.osm[elementType][0];
-    const filteredTags = innerElement.tag.filter(
-      tag => tag.$.k !== propertyName
-    );
+    const filteredTags = newElement.tag.filter(tag => tag.$.k !== tagName);
 
-    innerElement.tag = filteredTags;
+    newElement.tag = filteredTags;
 
     return newElement;
   }
@@ -483,10 +483,9 @@ export default class OsmRequest {
    * @return {Object} A new version of the element
    */
   setCoordinates(element, lat, lon) {
-    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    newElement.osm[elementType][0].$.lat = lat.toString();
-    newElement.osm[elementType][0].$.lon = lon.toString();
+    newElement.$.lat = lat.toString();
+    newElement.$.lon = lon.toString();
 
     return newElement;
   }
@@ -497,7 +496,7 @@ export default class OsmRequest {
    * @return {Array<string>} nodeOsmIds
    */
   getNodeIdsForWay(way) {
-    return way.osm.way[0].nd.map(node => `node/${node.$.ref}`);
+    return way.nd.map(node => `node/${node.$.ref}`);
   }
 
   /**
@@ -508,7 +507,7 @@ export default class OsmRequest {
    */
   setNodeIdsForWay(way, nodeOsmIds) {
     const newWay = simpleObjectDeepClone(way);
-    newWay.osm.way[0].nd = nodeOsmIds.map(id => {
+    newWay.nd = nodeOsmIds.map(id => {
       return {
         $: {
           ref: findElementId(id)
@@ -524,7 +523,7 @@ export default class OsmRequest {
    * @return {Array<Object>} Array of object with keys id with osmId value e.g 'node/1234' and optional role key
    */
   getRelationMembers(relation) {
-    return relation.osm.relation[0].member.map(member => {
+    return relation.member.map(member => {
       const { type, ref, role } = member.$;
       const elementObjectCopy = {
         id: `${type}/${ref}`
@@ -544,7 +543,7 @@ export default class OsmRequest {
    */
   setRelationMembers(relation, osmElements) {
     const newRelation = simpleObjectDeepClone(relation);
-    newRelation.osm.relation[0].member = osmElements.map(elementObject => {
+    newRelation.member = osmElements.map(elementObject => {
       const { id, role } = elementObject;
       const elementType = findElementType(id);
       const elementId = findElementId(id);
@@ -568,9 +567,8 @@ export default class OsmRequest {
    * @return {Object} A new version of the element
    */
   setTimestampToNow(element) {
-    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    newElement.osm[elementType][0].$.timestamp = getCurrentIsoTimestamp();
+    newElement.$.timestamp = getCurrentIsoTimestamp();
 
     return newElement;
   }
@@ -582,10 +580,8 @@ export default class OsmRequest {
    * @return {Object} A new version of the element
    */
   setVersion(element, version) {
-    const elementType = element._type;
     const newElement = simpleObjectDeepClone(element);
-    const innerElement = newElement.osm[elementType][0];
-    innerElement.$.version = parseInt(version).toString();
+    newElement.$.version = parseInt(version).toString();
 
     return newElement;
   }
@@ -606,10 +602,11 @@ export default class OsmRequest {
    * @param {number} bottom The minimal latitude (Y)
    * @param {number} right The maximal longitude (X)
    * @param {number} top The maximal latitude (Y)
+   * @param {string} mode The mode is json so output in the promise will be an object, otherwise, it will be an object and a XML string
    * @return {Promise}
    */
-  fetchMapByBbox(left, bottom, right, top) {
-    return fetchMapByBbox(this.endpoint, left, bottom, right, top);
+  fetchMapByBbox(left, bottom, right, top, mode = 'json') {
+    return fetchMapByBboxRequest(this.endpoint, left, bottom, right, top, mode);
   }
 
   /**

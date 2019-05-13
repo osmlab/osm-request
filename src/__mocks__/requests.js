@@ -264,7 +264,7 @@ export const fetchNotesRequest = jest.fn().mockImplementation(() => [
   }
 ]);
 
-export const fetchMapByBbox = jest.fn().mockImplementation(() => ({
+export const fetchMapByBboxRequest = jest.fn().mockImplementation(() => ({
   osm: {
     $: {
       version: '0.6',

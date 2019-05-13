@@ -13,34 +13,34 @@
 -   [buildChangesetFromObjectXml][9]
 -   [buildPreferencesFromObjectXml][10]
 -   [convertElementXmlToJson][11]
--   [cleanWaysJsonFragment][12]
--   [cleanMapJson][13]
--   [convertWaysXmlToJson][14]
--   [convertRelationsXmlToJson][15]
--   [convertNotesXmlToJson][16]
--   [flattenAttributes][17]
--   [xmlToJson][18]
--   [jsonToXml][19]
--   [OsmRequest][20]
-    -   [endpoint][21]
-    -   [fetchNotes][22]
-    -   [fetchNotesSearch][23]
-    -   [fetchNote][24]
-    -   [createNote][25]
-    -   [commentNote][26]
-    -   [closeNote][27]
-    -   [reopenNote][28]
-    -   [createChangeset][29]
-    -   [isChangesetStillOpen][30]
-    -   [fetchChangeset][31]
-    -   [updateChangesetTags][32]
-    -   [closeChangeset][33]
-    -   [createNodeElement][34]
-    -   [createWayElement][35]
-    -   [createRelationElement][36]
-    -   [fetchElement][37]
-    -   [fetchRelationsForElement][38]
-    -   [fetchWaysForNode][39]
+-   [cleanMapJson][12]
+-   [convertWaysXmlToJson][13]
+-   [convertRelationsXmlToJson][14]
+-   [convertNotesXmlToJson][15]
+-   [flattenAttributes][16]
+-   [xmlToJson][17]
+-   [jsonToXml][18]
+-   [OsmRequest][19]
+    -   [endpoint][20]
+    -   [fetchNotes][21]
+    -   [fetchNotesSearch][22]
+    -   [fetchNote][23]
+    -   [createNote][24]
+    -   [commentNote][25]
+    -   [closeNote][26]
+    -   [reopenNote][27]
+    -   [createChangeset][28]
+    -   [isChangesetStillOpen][29]
+    -   [fetchChangeset][30]
+    -   [updateChangesetTags][31]
+    -   [closeChangeset][32]
+    -   [createNodeElement][33]
+    -   [createWayElement][34]
+    -   [createRelationElement][35]
+    -   [fetchElement][36]
+    -   [fetchRelationsForElement][37]
+    -   [fetchWaysForNode][38]
+    -   [findElementWithinOSMCollection][39]
     -   [setProperty][40]
     -   [setProperties][41]
     -   [removeProperty][42]
@@ -73,7 +73,7 @@
 -   [changesetGetRequest][69]
 -   [updateChangesetTagsRequest][70]
 -   [closeChangesetRequest][71]
--   [fetchMapByBbox][72]
+-   [fetchMapByBboxRequest][72]
 -   [deleteElementRequest][73]
 -   [fetchRelationsForElementRequest][74]
 -   [getUserPreferencesRequest][75]
@@ -196,17 +196,6 @@ Convert a raw Element API response into a well formatted JSON object
 -   `elementId` **[string][80]** The ID of the concerned OSM element
 
 Returns **[Promise][82]** 
-
-## cleanWaysJsonFragment
-
-Convert a JSON list of ways fragment into a well formatted JSON object
-
-**Parameters**
-
--   `wayKey` **[Object][81]** The raw API response
--   `rootOsmMetadata` **[Object][81]** The raw API response
-
-Returns **[Array][83]** 
 
 ## cleanMapJson
 
@@ -469,7 +458,8 @@ Create a shiny new OSM node element, in a JSON format
 
 -   `lat` **[number][84]** 
 -   `lon` **[number][84]** 
--   `properties` **[Object][81]?** Optional, initial properties (optional, default `{}`)
+-   `tags` **[Object][81]?** Optional, initial tags (optional, default `{}`)
+-   `id` **[string][80]?** Optional, identifier for OSM element
 
 Returns **[Object][81]** 
 
@@ -480,7 +470,8 @@ Create a shiny new OSM way element, in a JSON format
 **Parameters**
 
 -   `nodeOsmIds` **[Array][83]&lt;[string][80]>** 
--   `properties` **[Object][81]?** Optional, initial properties (optional, default `{}`)
+-   `tags` **[Object][81]?** Optional, initial tags (optional, default `{}`)
+-   `id` **[string][80]?** Optional, identifier for OSM element
 
 Returns **[Object][81]** 
 
@@ -491,7 +482,8 @@ Create a shiny new OSM relation element, in a JSON format
 **Parameters**
 
 -   `osmElements` **[Array][83]&lt;[Object][81]>** Array of object with keys id and optional role key. Key id contains an osmId value like 'node/1234'
--   `properties` **[Object][81]?** Optional, initial properties (optional, default `{}`)
+-   `tags` **[Object][81]?** Optional, initial tags (optional, default `{}`)
+-   `id` **[string][80]?** Optional, identifier for OSM element
 
 Returns **[Object][81]** 
 
@@ -528,37 +520,48 @@ Fetch ways using the given OSM node
 
 Returns **[Promise][82]** Resolve on ways array (each one can be used as an Element for all other functions)
 
+### findElementWithinOSMCollection
+
+Find an element with it OsmId within an OSM collection
+
+**Parameters**
+
+-   `json` **[Object][81]** An object with key that can be 'node', 'way', 'relation'
+-   `osmId` **[string][80]** Eg: node/12345
+
+Returns **Obejct** OSM element
+
 ### setProperty
 
-Add or replace a property in a given element
+Add or replace a tag in a given element
 
 **Parameters**
 
 -   `element` **[Object][81]** 
--   `propertyName` **[string][80]** 
--   `propertyValue` **[string][80]** 
+-   `tagName` **[string][80]** 
+-   `tagValue` **[string][80]** 
 
 Returns **[Object][81]** A new version of the element
 
 ### setProperties
 
-Add or replace several properties in a given element
+Add or replace several tags in a given element
 
 **Parameters**
 
 -   `element` **[Object][81]** 
--   `properties` **[Object][81]** 
+-   `tags` **[Object][81]** 
 
 Returns **[Object][81]** A new version of the element
 
 ### removeProperty
 
-Remove a property from a given element
+Remove a tag from a given element
 
 **Parameters**
 
 -   `element` **[Object][81]** 
--   `propertyName` **[string][80]** 
+-   `tagName` **[string][80]** 
 
 Returns **[Object][81]** A new version of the element
 
@@ -658,6 +661,7 @@ Request to fetch all OSM elements within a bbox extent
 -   `bottom` **[number][84]** The minimal latitude (Y)
 -   `right` **[number][84]** The maximal longitude (X)
 -   `top` **[number][84]** The maximal latitude (Y)
+-   `mode` **[string][80]** The mode is json so output in the promise will be an object, otherwise, it will be an object and a XML string (optional, default `'json'`)
 
 Returns **[Promise][82]** 
 
@@ -912,7 +916,7 @@ Request to close changeset for a given id if still opened
 
 Returns **[Promise][82]** Empty string if it works
 
-## fetchMapByBbox
+## fetchMapByBboxRequest
 
 Request to fetch all OSM elements within a bbox extent
 
@@ -923,6 +927,7 @@ Request to fetch all OSM elements within a bbox extent
 -   `bottom` **[number][84]** The minimal latitude (Y)
 -   `right` **[number][84]** The maximal longitude (X)
 -   `top` **[number][84]** The maximal latitude (Y)
+-   `mode` **[string][80]** The mode is json so output in the promise will be an object, otherwise, it will be an object and a XML string (optional, default `'json'`)
 
 Returns **[Promise][82]** 
 
@@ -1038,61 +1043,61 @@ Returns **[Promise][82]** Promise
 
 [11]: #convertelementxmltojson
 
-[12]: #cleanwaysjsonfragment
+[12]: #cleanmapjson
 
-[13]: #cleanmapjson
+[13]: #convertwaysxmltojson
 
-[14]: #convertwaysxmltojson
+[14]: #convertrelationsxmltojson
 
-[15]: #convertrelationsxmltojson
+[15]: #convertnotesxmltojson
 
-[16]: #convertnotesxmltojson
+[16]: #flattenattributes
 
-[17]: #flattenattributes
+[17]: #xmltojson
 
-[18]: #xmltojson
+[18]: #jsontoxml
 
-[19]: #jsontoxml
+[19]: #osmrequest
 
-[20]: #osmrequest
+[20]: #endpoint
 
-[21]: #endpoint
+[21]: #fetchnotes
 
-[22]: #fetchnotes
+[22]: #fetchnotessearch
 
-[23]: #fetchnotessearch
+[23]: #fetchnote
 
-[24]: #fetchnote
+[24]: #createnote
 
-[25]: #createnote
+[25]: #commentnote
 
-[26]: #commentnote
+[26]: #closenote
 
-[27]: #closenote
+[27]: #reopennote
 
-[28]: #reopennote
+[28]: #createchangeset
 
-[29]: #createchangeset
+[29]: #ischangesetstillopen
 
-[30]: #ischangesetstillopen
+[30]: #fetchchangeset
 
-[31]: #fetchchangeset
+[31]: #updatechangesettags
 
-[32]: #updatechangesettags
+[32]: #closechangeset
 
-[33]: #closechangeset
+[33]: #createnodeelement
 
-[34]: #createnodeelement
+[34]: #createwayelement
 
-[35]: #createwayelement
+[35]: #createrelationelement
 
-[36]: #createrelationelement
+[36]: #fetchelement
 
-[37]: #fetchelement
+[37]: #fetchrelationsforelement
 
-[38]: #fetchrelationsforelement
+[38]: #fetchwaysfornode
 
-[39]: #fetchwaysfornode
+[39]: #findelementwithinosmcollection
 
 [40]: #setproperty
 
@@ -1158,7 +1163,7 @@ Returns **[Promise][82]** Promise
 
 [71]: #closechangesetrequest
 
-[72]: #fetchmapbybbox-1
+[72]: #fetchmapbybboxrequest
 
 [73]: #deleteelementrequest
 
