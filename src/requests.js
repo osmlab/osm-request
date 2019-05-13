@@ -58,6 +58,30 @@ export function fetchElementRequestFull(endpoint, osmId) {
 }
 
 /**
+ * Request to fetch an OSM element
+ * @param {string} endpoint The API endpoint
+ * @param {Array} osmIds Eg: ['node/12345', 'node/6789']. We do not support optional version e.g 'node/12345v2'
+ * @return {Promise}
+ */
+export function multiFetchElementsByTypeRequest(endpoint, osmIds) {
+  const elementType = findElementType(osmIds[0]);
+  const ids = osmIds.map(osmId => findElementId(osmId));
+  return fetch(
+    `${endpoint}/api/0.6/${elementType}s?${elementType}s=${ids.join(',')}`
+  )
+    .then(response => response.text())
+    .then(response => {
+      return xmlToJson(response)
+        .then(json => {
+          return Promise.resolve(cleanMapJson(json));
+        })
+        .catch(error => {
+          throw new RequestException(error);
+        });
+    });
+}
+
+/**
  * Request to fetch ways using the given OSM node
  * @param {string} endpoint The API endpoint
  * @param {string} osmId
@@ -387,7 +411,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
 }
 
 /**
- * Request to create OSM changesets
+ * Request to create OSM changeset
  * @param {osmAuth} auth An instance of osm-auth
  * @param {string} endpoint The API endpoint
  * @param {string} [createdBy]
@@ -578,6 +602,115 @@ export function closeChangesetRequest(auth, endpoint, changesetId) {
       }
     );
   });
+}
+
+/**
+ * Request to upload an OSC file content conforming to the OsmChange specification OSM changeset
+ * @param {osmAuth} auth An instance of osm-auth
+ * @param {string} endpoint The API endpoint
+ * @param {string} changesetId
+ * @param {string} osmChangeContent OSC file content text
+ * @return {Promise}
+ */
+export function uploadChangesetOscRequest(
+  auth,
+  endpoint,
+  changesetId,
+  osmChangeContent
+) {
+  return new Promise(resolve => {
+    auth.xhr(
+      {
+        method: 'POST',
+        prefix: false,
+        path: `${endpoint}/api/0.6/changeset/create`,
+        options: {
+          header: {
+            'Content-Type': 'text/xml'
+          }
+        },
+        content: osmChangeContent
+      },
+      (err, xml) => {
+        if (err) {
+          throw new RequestException(
+            'Changeset OSC file content upload request failed'
+          );
+        }
+        return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
+      }
+    );
+  });
+}
+
+/**
+ * Request to get changesets from OSM API
+ * @param {string} endpoint The API endpoint
+ * @param {Object} options  Optional parameters
+ * @param {number} [options.left] The minimal longitude (X)
+ * @param {number} [options.bottom] The minimal latitude (Y)
+ * @param {number} [options.right] The maximal longitude (X)
+ * @param {number} [options.top] The maximal latitude (Y)
+ * @param {string} [options.display_name] Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter
+ * @param {number} [options.user] Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter
+ * @param {string} [options.time] Can be a unique value T1 or two values T1, T2 comma separated. Find changesets closed after value T1 or find changesets that were closed after T1 and created before T2. In other words, any changesets that were open at some time during the given time range T1 to T2. Time format is anything that http://ruby-doc.org/stdlib-2.6.3/libdoc/date/rdoc/DateTime.html#method-c-parse can parse.
+ * @param {number} [options.open] Only finds changesets that are still open but excludes changesets that are closed or have reached the element limit for a changeset (50.000 at the moment). Can be set to true
+ * @param {number} [options.closed] Only finds changesets that are closed or have reached the element limit. Can be set to true
+ * @param {number} [options.changesets] Finds changesets with the specified ids
+ * @return {Promise}
+ */
+export function fetchChangesetsRequest(endpoint, options = {}) {
+  let baseUrl = `${endpoint}/api/0.6/changesets`;
+
+  const keys = [
+    'left',
+    'bottom',
+    'right',
+    'top',
+    'display_name',
+    'user',
+    'time',
+    'open',
+    'closed',
+    'changesets'
+  ];
+
+  const params = {};
+  keys.forEach(key => {
+    if (key in options && options[key]) {
+      params[key] = options[key].toString();
+    }
+  });
+
+  if (params.left && params.bottom && params.right && params.top) {
+    params.bbox = `${params.left.toString()},${params.bottom.toString()},${params.right.toString()},${params.top.toString()}`;
+    delete params.left;
+    delete params.bottom;
+    delete params.right;
+    delete params.top;
+  }
+
+  return fetch(`${baseUrl}${buildQueryString(params)}`)
+    .then(response => {
+      if (response.status !== 200) {
+        return response.text().then(message =>
+          Promise.reject({
+            message,
+            status: response.status,
+            statusText: response.statusText
+          })
+        );
+      }
+
+      return response;
+    })
+    .catch(message => {
+      throw new RequestException(message);
+    })
+    .then(response => response.text())
+    .then(text => {
+      return xmlToJson(text);
+    });
 }
 
 /**

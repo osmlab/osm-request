@@ -10,6 +10,7 @@ import {
 import {
   fetchElementRequest,
   fetchElementRequestFull,
+  multiFetchElementsByTypeRequest,
   fetchMapByBboxRequest,
   fetchRelationsForElementRequest,
   fetchWaysForNodeRequest,
@@ -24,6 +25,8 @@ import {
   changesetGetRequest,
   updateChangesetTagsRequest,
   closeChangesetRequest,
+  uploadChangesetOscRequest,
+  fetchChangesetsRequest,
   deleteElementRequest,
   getUserPreferencesRequest,
   setUserPreferencesRequest,
@@ -253,6 +256,41 @@ export default class OsmRequest {
   }
 
   /**
+   * Upload an OSC file content conforming to the OsmChange specification OSM changeset
+   * @param {string} changesetId
+   * @param {string} osmChangeContent OSC file content text
+   * @throws Will throw an error for any request with http code 40x.
+   * @return {Promise}
+   */
+  uploadChangesetOsc(changesetId, osmChangeContent) {
+    return uploadChangesetOscRequest(
+      this._auth,
+      this.endpoint,
+      changesetId,
+      osmChangeContent
+    );
+  }
+
+  /**
+   * Fetch changesets from OSM API
+   * @param {Object} options  Optional parameters
+   * @param {number} [options.left] The minimal longitude (X)
+   * @param {number} [options.bottom] The minimal latitude (Y)
+   * @param {number} [options.right] The maximal longitude (X)
+   * @param {number} [options.top] The maximal latitude (Y)
+   * @param {string} [options.display_name] Specifies the creator of the returned notes by using a valid display name. Does not work together with the user parameter
+   * @param {number} [options.user] Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter
+   * @param {string} [options.time] Can be a unique value T1 or two values T1, T2 comma separated. Find changesets closed after value T1 or find changesets that were closed after T1 and created before T2. In other words, any changesets that were open at some time during the given time range T1 to T2. Time format is anything that http://ruby-doc.org/stdlib-2.6.3/libdoc/date/rdoc/DateTime.html#method-c-parse can parse.
+   * @param {number} [options.open] Only finds changesets that are still open but excludes changesets that are closed or have reached the element limit for a changeset (50.000 at the moment). Can be set to true
+   * @param {number} [options.closed] Only finds changesets that are closed or have reached the element limit. Can be set to true
+   * @param {number} [options.changesets] Finds changesets with the specified ids
+   * @return {Promise}
+   */
+  fetchChangesets(options) {
+    return fetchChangesetsRequest(this.endpoint, options);
+  }
+
+  /**
    * Create a shiny new OSM node element, in a JSON format
    * @param {number} lat
    * @param {number} lon
@@ -373,6 +411,15 @@ export default class OsmRequest {
     } else {
       return fetchElementRequest(this.endpoint, osmId);
     }
+  }
+
+  /**
+   * Fetch multiple OSM elements by it full OSM IDs. Work only with a type of elements, no mixed elements type are allowed
+   * @param {Array} osmIds Eg: ['node/12345', 'node/6789']. We do not support optional version e.g 'node/12345v2'
+   * @return {Promise}
+   */
+  fetchMultipleElements(osmIds) {
+    return multiFetchElementsByTypeRequest(this.endpoint, osmIds);
   }
 
   /**

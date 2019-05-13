@@ -124,11 +124,13 @@ export function cleanMapJson(osmMapJson) {
       };
     });
   }
-  const newOsmObject = {
-    node,
-    way,
-    relation
-  };
+  const newOsmObject = {};
+  Object.entries({ node: node, way: way, relation: relation }).map(entry => {
+    if (entry[0] in osmMapJson.osm) {
+      newOsmObject[entry[0]] = entry[1];
+    }
+  });
+
   if (bounds) {
     newOsmObject.bounds = bounds;
   }
