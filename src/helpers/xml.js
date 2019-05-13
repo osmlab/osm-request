@@ -21,33 +21,51 @@ export function encodeXML(str = '') {
  * Build a stringified OSM changeset
  * @param {string} [createdBy]
  * @param {string} [comment]
+ * @param {string} [optionalTags] Keys values to set tags
  * @return {string}
  */
-export function buildChangesetXml(createdBy = '', comment = '') {
+export function buildChangesetXml(
+  createdBy = '',
+  comment = '',
+  optionalTags = {}
+) {
+  const tags = Object.entries(optionalTags).map(entry => {
+    return `<tag k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
   return `
     <osm>
       <changeset>
         <tag k="created_by" v="${encodeXML(createdBy)}"/>
         <tag k="created_by:library" v="OSM Request ${osmRequestVersion}"/>
         <tag k="comment" v="${encodeXML(comment)}"/>
+        ${tags.join(`\n        `)}
       </changeset>
     </osm>
   `;
 }
 
 /**
- * Build an OSM changeset from object keys values, intended for update
- * @param {object}
+ * Build an OSM changeset from keys values, intended for update
+ * @param {Object} tags To set tags
+ * @param {string} [createdBy]
+ * @param {string} [comment]
  * @return {string}
  */
-export function buildChangesetFromObjectXml(object) {
-  const tags = Object.entries(object).map(entry => {
+export function buildChangesetFromObjectXml(
+  tags,
+  createdBy = '',
+  comment = ''
+) {
+  const tagsArray = Object.entries(tags).map(entry => {
     return `<tag k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
   });
   return `
     <osm>
       <changeset>
-        ${tags.join(`\n        `)}
+        <tag k="created_by" v="${encodeXML(createdBy)}"/>
+        <tag k="created_by:library" v="OSM Request ${osmRequestVersion}"/>
+        <tag k="comment" v="${encodeXML(comment)}"/>
+        ${tagsArray.join(`\n        `)}
       </changeset>
     </osm>
   `;

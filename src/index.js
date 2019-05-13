@@ -200,14 +200,16 @@ export default class OsmRequest {
    * Send a request to OSM to create a new changeset
    * @param {string} [createdBy]
    * @param {string} [comment]
+   * @param {string} [tags]
    * @return {Promise}
    */
-  createChangeset(createdBy = '', comment = '') {
+  createChangeset(createdBy = '', comment = '', tags = {}) {
     return createChangesetRequest(
       this._auth,
       this.endpoint,
       createdBy,
-      comment
+      comment,
+      tags
     );
   }
 
@@ -232,15 +234,19 @@ export default class OsmRequest {
   /**
    * Update changeset tags if still open
    * @param {number} changesetId
-   * @param {Object} object use to set multiples tags
+   * @param {string} [createdBy]
+   * @param {string} [comment]
+   * @param {Object} [object] use to set multiples tags
    * @throws Will throw an error for any request with http code 40x
    * @return {Promise}
    */
-  updateChangesetTags(changesetId, object) {
+  updateChangesetTags(changesetId, createdBy = '', comment = '', object = {}) {
     return updateChangesetTagsRequest(
       this._auth,
       this.endpoint,
       changesetId,
+      createdBy,
+      comment,
       object
     );
   }

@@ -416,15 +416,17 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
  * @param {string} endpoint The API endpoint
  * @param {string} [createdBy]
  * @param {string} [comment]
+ * @param {string} [tags] An object with keys values to set to tags
  * @return {Promise}
  */
 export function createChangesetRequest(
   auth,
   endpoint,
   createdBy = '',
-  comment = ''
+  comment = '',
+  tags = {}
 ) {
-  const changesetXml = buildChangesetXml(createdBy, comment);
+  const changesetXml = buildChangesetXml(createdBy, comment, tags);
 
   return new Promise(resolve => {
     auth.xhr(
@@ -521,7 +523,9 @@ export function changesetGetRequest(endpoint, changesetId) {
  * @param {osmAuth} auth An instance of osm-auth
  * @param {string} endpoint The API endpoint
  * @param {number} changesetId
- * @param {Object} object use to set multiples tags
+ * @param {string} [createdBy]
+ * @param {string} [comment]
+ * @param {Object} [tags] Use to set multiples tags
  * @throws Will throw an error for any request with http code 40x.
  * @return {Promise}
  */
@@ -529,9 +533,11 @@ export function updateChangesetTagsRequest(
   auth,
   endpoint,
   changesetId,
-  object
+  createdBy = '',
+  comment = '',
+  tags = {}
 ) {
-  const changesetXml = buildChangesetFromObjectXml(object);
+  const changesetXml = buildChangesetFromObjectXml(tags, createdBy, comment);
   return new Promise((resolve, reject) => {
     auth.xhr(
       {

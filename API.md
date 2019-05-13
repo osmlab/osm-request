@@ -179,16 +179,19 @@ Build a stringified OSM changeset
 
 -   `createdBy` **[string][87]?**  (optional, default `''`)
 -   `comment` **[string][87]?**  (optional, default `''`)
+-   `optionalTags` **[string][87]?** Keys values to set tags (optional, default `{}`)
 
 Returns **[string][87]** 
 
 ## buildChangesetFromObjectXml
 
-Build an OSM changeset from object keys values, intended for update
+Build an OSM changeset from keys values, intended for update
 
 **Parameters**
 
--   `object`  
+-   `tags` **[Object][88]** To set tags
+-   `createdBy` **[string][87]?**  (optional, default `''`)
+-   `comment` **[string][87]?**  (optional, default `''`)
 
 Returns **[string][87]** 
 
@@ -417,6 +420,7 @@ Send a request to OSM to create a new changeset
 
 -   `createdBy` **[string][87]?**  (optional, default `''`)
 -   `comment` **[string][87]?**  (optional, default `''`)
+-   `tags` **[string][87]?**  (optional, default `{}`)
 
 Returns **[Promise][90]** 
 
@@ -447,7 +451,9 @@ Update changeset tags if still open
 **Parameters**
 
 -   `changesetId` **[number][92]** 
--   `object` **[Object][88]** use to set multiples tags
+-   `createdBy` **[string][87]?**  (optional, default `''`)
+-   `comment` **[string][87]?**  (optional, default `''`)
+-   `object` **[Object][88]?** use to set multiples tags (optional, default `{}`)
 
 
 -   Throws **any** Will throw an error for any request with http code 40x
@@ -931,6 +937,7 @@ Request to create OSM changeset
 -   `endpoint` **[string][87]** The API endpoint
 -   `createdBy` **[string][87]?**  (optional, default `''`)
 -   `comment` **[string][87]?**  (optional, default `''`)
+-   `tags` **[string][87]?** An object with keys values to set to tags (optional, default `{}`)
 
 Returns **[Promise][90]** 
 
@@ -966,7 +973,9 @@ Update tags if a given changeset is still opened at OSM.
 -   `auth` **osmAuth** An instance of osm-auth
 -   `endpoint` **[string][87]** The API endpoint
 -   `changesetId` **[number][92]** 
--   `object` **[Object][88]** use to set multiples tags
+-   `createdBy` **[string][87]?**  (optional, default `''`)
+-   `comment` **[string][87]?**  (optional, default `''`)
+-   `tags` **[Object][88]?** Use to set multiples tags (optional, default `{}`)
 
 
 -   Throws **any** Will throw an error for any request with http code 40x.

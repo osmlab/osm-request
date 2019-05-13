@@ -7,6 +7,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by\\" v=\\"me\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
+        
       </changeset>
     </osm>
   "
@@ -19,6 +20,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by\\" v=\\"\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
+        
       </changeset>
     </osm>
   "
@@ -31,6 +33,7 @@ exports[`XML helpers buildChangesetXml Should handle strings having double quote
         <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
+        
       </changeset>
     </osm>
   "
