@@ -43,6 +43,15 @@ export function findElementId(osmId) {
 }
 
 /**
+ * Check the OSM ID e.g -12 is negative
+ * @param {string} id
+ * @return {boolean}
+ */
+export function checkIdIsNegative(id) {
+  return /^[-]\d+$/.test(id);
+}
+
+/**
  * @param {Object} params
  * @return {string}
  */

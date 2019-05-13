@@ -3,6 +3,7 @@ import {
   buildQueryString,
   findElementType,
   findElementId,
+  checkIdIsNegative,
   simpleObjectDeepClone
 } from 'helpers/utils';
 import {
@@ -92,9 +93,10 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
   };
 
   const elementXml = jsonToXml(osmContent);
-  const path = elementId
-    ? `${elementType}/${elementId}`
-    : `${elementType}/create`;
+  const path =
+    elementId && !checkIdIsNegative(elementId)
+      ? `${elementType}/${elementId}`
+      : `${elementType}/create`;
 
   return new Promise(resolve => {
     auth.xhr(
