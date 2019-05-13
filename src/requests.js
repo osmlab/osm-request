@@ -111,10 +111,10 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
 
   const osmContent = {
     osm: {
-      $: {},
-      node: [copiedElement]
+      $: {}
     }
   };
+  osmContent.osm[elementType] = [copiedElement];
 
   const elementXml = jsonToXml(osmContent);
   const path =
