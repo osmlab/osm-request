@@ -778,10 +778,10 @@ describe('OsmRequest', () => {
     it('Should fetch map elements for a given bbox', () => {
       const osm = new OsmRequest();
       const osmElements = osm.fetchMapByBbox(
-        -1.55511,
-        47.21283,
-        -1.55261,
-        47.21377
+        -1.78859,
+        48.22076,
+        -1.78784,
+        48.22122
       );
 
       expect(osmElements).toMatchSnapshot();
