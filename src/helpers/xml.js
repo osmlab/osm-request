@@ -118,7 +118,7 @@ export function cleanMapJson(osmMapJson) {
       return {
         ...w,
         _id: w['$'].id,
-        _type: 'node'
+        _type: 'way'
       };
     });
   }
