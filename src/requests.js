@@ -1,21 +1,20 @@
 import fetch from 'cross-fetch';
 import {
-  buildQueryString,
   findElementType,
   findElementId,
   checkIdIsNegative,
-  simpleObjectDeepClone
+  simpleObjectDeepClone,
+  buildApiUrl
 } from 'helpers/utils';
 import {
   buildChangesetXml,
   buildChangesetFromObjectXml,
   convertNotesXmlToJson,
   convertElementXmlToJson,
-  convertWaysXmlToJson,
+  convertElementsListXmlToJson,
   jsonToXml,
   xmlToJson,
   cleanMapJson,
-  convertRelationsXmlToJson,
   buildPreferencesFromObjectXml
 } from 'helpers/xml';
 import { RequestException } from 'exceptions/request';
@@ -30,7 +29,7 @@ export function fetchElementRequest(endpoint, osmId) {
   const elementType = findElementType(osmId);
   const elementId = findElementId(osmId);
 
-  return fetch(`${endpoint}/api/0.6/${osmId}`)
+  return fetch(buildApiUrl(endpoint, `/${osmId}`))
     .then(response => response.text())
     .then(response =>
       convertElementXmlToJson(response, elementType, elementId)
@@ -44,17 +43,15 @@ export function fetchElementRequest(endpoint, osmId) {
  * @return {Promise} Promise with well formatted JSON content
  */
 export function fetchElementRequestFull(endpoint, osmId) {
-  return fetch(`${endpoint}/api/0.6/${osmId}/full`)
+  return fetch(buildApiUrl(endpoint, `/${osmId}/full`))
     .then(response => response.text())
-    .then(response => {
-      return xmlToJson(response)
-        .then(json => {
-          return Promise.resolve(cleanMapJson(json));
-        })
+    .then(response =>
+      xmlToJson(response)
+        .then(json => Promise.resolve(cleanMapJson(json)))
         .catch(error => {
           throw new RequestException(error);
-        });
-    });
+        })
+    );
 }
 
 /**
@@ -67,18 +64,16 @@ export function multiFetchElementsByTypeRequest(endpoint, osmIds) {
   const elementType = findElementType(osmIds[0]);
   const ids = osmIds.map(osmId => findElementId(osmId));
   return fetch(
-    `${endpoint}/api/0.6/${elementType}s?${elementType}s=${ids.join(',')}`
+    buildApiUrl(endpoint, `/${elementType}s?${elementType}s=${ids.join(',')}`)
   )
     .then(response => response.text())
-    .then(response => {
-      return xmlToJson(response)
-        .then(json => {
-          return Promise.resolve(cleanMapJson(json));
-        })
+    .then(response =>
+      xmlToJson(response)
+        .then(json => Promise.resolve(cleanMapJson(json)))
         .catch(error => {
           throw new RequestException(error);
-        });
-    });
+        })
+    );
 }
 
 /**
@@ -88,9 +83,9 @@ export function multiFetchElementsByTypeRequest(endpoint, osmIds) {
  * @return {Object}
  */
 export function fetchWaysForNodeRequest(endpoint, osmId) {
-  return fetch(`${endpoint}/api/0.6/${osmId}/ways`)
+  return fetch(buildApiUrl(endpoint, `/${osmId}/ways`))
     .then(response => response.text())
-    .then(response => convertWaysXmlToJson(response));
+    .then(response => convertElementsListXmlToJson(response, 'way'));
 }
 
 /**
@@ -119,15 +114,15 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
   const elementXml = jsonToXml(osmContent);
   const path =
     elementId && !checkIdIsNegative(elementId)
-      ? `${elementType}/${elementId}`
-      : `${elementType}/create`;
+      ? `/${elementType}/${elementId}`
+      : `/${elementType}/create`;
 
   return new Promise(resolve => {
     auth.xhr(
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/${path}`,
+        path: buildApiUrl(endpoint, path),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -174,11 +169,11 @@ export function fetchNotesRequest(
     params.limit = limit;
   }
 
-  if (closedDays !== null && closedDays !== undefined) {
+  if (closedDays !== null && typeof closedDays !== 'undefined') {
     params.closed = closedDays;
   }
 
-  return fetch(`${endpoint}/api/0.6/notes${buildQueryString(params)}`)
+  return fetch(buildApiUrl(endpoint, '/notes', params))
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message => Promise.reject(message));
@@ -186,8 +181,8 @@ export function fetchNotesRequest(
 
       return response;
     })
-    .catch(message => {
-      throw new RequestException(message);
+    .catch(error => {
+      throw new RequestException(error);
     })
     .then(response => response.text())
     .then(response => convertNotesXmlToJson(response));
@@ -223,9 +218,9 @@ export function fetchNotesSearchRequest(
     q
   };
 
-  let baseUrl = `${endpoint}/api/0.6/notes/search.${format}`;
+  let path = `/notes/search.${format}`;
   if (format === 'raw') {
-    baseUrl = `${endpoint}/api/0.6/notes/search`;
+    path = `/notes/search`;
   }
 
   const objectOptionalArgs = {
@@ -243,7 +238,7 @@ export function fetchNotesSearchRequest(
     }
   });
 
-  return fetch(`${baseUrl}${buildQueryString(params)}`)
+  return fetch(buildApiUrl(endpoint, path, params))
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message =>
@@ -257,8 +252,8 @@ export function fetchNotesSearchRequest(
 
       return response;
     })
-    .catch(message => {
-      throw new RequestException(message);
+    .catch(error => {
+      throw new RequestException(error);
     })
     .then(response => response.text())
     .then(text => {
@@ -280,11 +275,11 @@ export function fetchNotesSearchRequest(
  * @return {Promise}
  */
 export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
-  let url = `${endpoint}/api/0.6/notes/${noteId.toString()}.${format}`;
+  let path = `/notes/${noteId.toString()}.${format}`;
   if (format === 'raw') {
-    url = `${endpoint}/api/0.6/notes/${noteId.toString()}`;
+    path = `/notes/${noteId.toString()}`;
   }
-  return fetch(url)
+  return fetch(buildApiUrl(endpoint, path))
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message =>
@@ -298,8 +293,8 @@ export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
 
       return response;
     })
-    .catch(message => {
-      throw new RequestException(message);
+    .catch(error => {
+      throw new RequestException(error);
     })
     .then(response => response.text())
     .then(text => {
@@ -328,16 +323,12 @@ export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
  * @return {Promise}
  */
 export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
-  const qs = buildQueryString({
-    text
-  });
-  const url = `${endpoint}/api/0.6/notes/${noteId}/${type}${qs}`;
   return new Promise(resolve => {
     auth.xhr(
       {
         method: 'POST',
         prefix: false,
-        path: url,
+        path: buildApiUrl(endpoint, `/notes/${noteId}/${type}`, { text }),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -373,18 +364,17 @@ export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
  * @return {Promise}
  */
 export function createNoteRequest(auth, endpoint, lat, lon, text) {
-  const qs = buildQueryString({
+  const params = {
     lat,
     lon,
     text
-  });
-  const url = `${endpoint}/api/0.6/notes${qs}`;
+  };
   return new Promise(resolve => {
     auth.xhr(
       {
         method: 'POST',
         prefix: false,
-        path: url,
+        path: buildApiUrl(endpoint, '/notes', params),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -433,7 +423,7 @@ export function createChangesetRequest(
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/changeset/create`,
+        path: buildApiUrl(endpoint, '/changeset/create'),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -465,7 +455,7 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
       {
         method: 'GET',
         prefix: false,
-        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}`,
+        path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -498,7 +488,7 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
  * @return {Promise}
  */
 export function changesetGetRequest(endpoint, changesetId) {
-  return fetch(`${endpoint}/api/0.6/changeset/${changesetId.toString()}`)
+  return fetch(buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`))
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message =>
@@ -511,12 +501,10 @@ export function changesetGetRequest(endpoint, changesetId) {
       }
       return response.text();
     })
-    .catch(message => {
-      throw new RequestException(message);
+    .catch(error => {
+      throw new RequestException(error);
     })
-    .then(response => {
-      return xmlToJson(response);
-    });
+    .then(response => xmlToJson(response));
 }
 /**
  * Update tags if a given changeset is still opened at OSM.
@@ -543,7 +531,7 @@ export function updateChangesetTagsRequest(
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}`,
+        path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -584,7 +572,10 @@ export function closeChangesetRequest(auth, endpoint, changesetId) {
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/changeset/${changesetId.toString()}/close`,
+        path: buildApiUrl(
+          endpoint,
+          `/changeset/${changesetId.toString()}/close`
+        ),
         options: {
           header: {
             'Content-Type': 'text/plain'
@@ -629,7 +620,7 @@ export function uploadChangesetOscRequest(
       {
         method: 'POST',
         prefix: false,
-        path: `${endpoint}/api/0.6/changeset/create`,
+        path: buildApiUrl(endpoint, `/changeset/create`),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -666,8 +657,6 @@ export function uploadChangesetOscRequest(
  * @return {Promise}
  */
 export function fetchChangesetsRequest(endpoint, options = {}) {
-  let baseUrl = `${endpoint}/api/0.6/changesets`;
-
   const keys = [
     'left',
     'bottom',
@@ -696,7 +685,7 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
     delete params.top;
   }
 
-  return fetch(`${baseUrl}${buildQueryString(params)}`)
+  return fetch(buildApiUrl(endpoint, '/changesets', params))
     .then(response => {
       if (response.status !== 200) {
         return response.text().then(message =>
@@ -710,13 +699,11 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
 
       return response;
     })
-    .catch(message => {
-      throw new RequestException(message);
+    .catch(error => {
+      throw new RequestException(error);
     })
     .then(response => response.text())
-    .then(text => {
-      return xmlToJson(text);
-    });
+    .then(text => xmlToJson(text));
 }
 
 /**
@@ -738,30 +725,28 @@ export function fetchMapByBboxRequest(
   mode = 'json'
 ) {
   const args = Array.from(arguments);
-  if (args.length < 5 && args.some(arg => arg === undefined)) {
+  if (args.length < 5 && args.some(arg => typeof arg === 'undefined')) {
     throw new Error("You didn't provide all arguments to the function");
   } else {
     const params = {
       bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
     };
 
-    return fetch(`${endpoint}/api/0.6/map${buildQueryString(params)}`)
+    return fetch(buildApiUrl(endpoint, '/map', params))
       .then(response => {
         if (response.status !== 200) {
           return response.text().then(message => Promise.reject(message));
         }
         return response.text();
       })
-      .catch(message => {
-        throw new RequestException(message);
+      .catch(error => {
+        throw new RequestException(error);
       })
       .then(response => {
         if (mode !== 'json') {
           return Promise.all([
             xmlToJson(response)
-              .then(json => {
-                return Promise.resolve(cleanMapJson(json));
-              })
+              .then(json => Promise.resolve(cleanMapJson(json)))
               .catch(error => {
                 throw new RequestException(error);
               }),
@@ -769,9 +754,7 @@ export function fetchMapByBboxRequest(
           ]);
         } else {
           return xmlToJson(response)
-            .then(json => {
-              return Promise.resolve(cleanMapJson(json));
-            })
+            .then(json => Promise.resolve(cleanMapJson(json)))
             .catch(error => {
               throw new RequestException(error);
             });
@@ -804,14 +787,14 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
   };
 
   const elementXml = jsonToXml(osmContent);
-  const path = `${elementType}/${elementId}`;
+  const path = `/${elementType}/${elementId}`;
 
   return new Promise(resolve => {
     auth.xhr(
       {
         method: 'DELETE',
         prefix: false,
-        path: `${endpoint}/api/0.6/${path}`,
+        path: buildApiUrl(endpoint, path),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -835,9 +818,9 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
  * @return {Promise}
  */
 export function fetchRelationsForElementRequest(endpoint, osmId) {
-  return fetch(`${endpoint}/api/0.6/${osmId}/relations`)
+  return fetch(buildApiUrl(endpoint, `/${osmId}/relations`))
     .then(response => response.text())
-    .then(response => convertRelationsXmlToJson(response));
+    .then(response => convertElementsListXmlToJson(response, 'relation'));
 }
 
 /**
@@ -853,7 +836,7 @@ export function getUserPreferencesRequest(auth, endpoint) {
       {
         method: 'GET',
         prefix: false,
-        path: `${endpoint}/api/0.6/user/preferences`,
+        path: buildApiUrl(endpoint, '/user/preferences'),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -892,7 +875,7 @@ export function setUserPreferencesRequest(auth, endpoint, object) {
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/user/preferences`,
+        path: buildApiUrl(endpoint, '/user/preferences'),
         options: {
           header: {
             'Content-Type': 'text/xml'
@@ -933,7 +916,7 @@ export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
       {
         method: 'GET',
         prefix: false,
-        path: `${endpoint}/api/0.6/user/preferences/${key}`
+        path: buildApiUrl(endpoint, `/user/preferences/${key}`)
       },
       (err, text) => {
         if (err) {
@@ -967,7 +950,7 @@ export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
       {
         method: 'PUT',
         prefix: false,
-        path: `${endpoint}/api/0.6/user/preferences/${key}`,
+        path: buildApiUrl(endpoint, `/user/preferences/${key}`),
         options: {
           header: {
             'Content-Type': 'text/plain'
@@ -1007,7 +990,7 @@ export function deleteUserPreferenceRequest(auth, endpoint, key) {
       {
         method: 'DELETE',
         prefix: false,
-        path: `${endpoint}/api/0.6/user/preferences/${key}`
+        path: buildApiUrl(endpoint, `/user/preferences/${key}`)
       },
       (err, text) => {
         if (err) {

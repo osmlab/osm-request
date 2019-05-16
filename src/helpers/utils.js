@@ -56,6 +56,10 @@ export function checkIdIsNegative(id) {
  * @return {string}
  */
 export function buildQueryString(params) {
+  if (params === null || typeof params === 'undefined') {
+    return '';
+  }
+
   const builtParams = [];
 
   for (const paramName of Object.keys(params)) {
@@ -69,4 +73,15 @@ export function buildQueryString(params) {
   const queryString = builtParams.join('&');
 
   return `${questionMark}${queryString}`;
+}
+
+/**
+ * Constructs complete API URL
+ * @param {string} endpoint The endpoint URL
+ * @param {string} path The method you want to use (example: /node/1234)
+ * @param {Object} [params] The URL parameters
+ * @return {string} The complete URL
+ */
+export function buildApiUrl(endpoint, path, params) {
+  return `${endpoint}/api/0.6${path}${buildQueryString(params)}`;
 }

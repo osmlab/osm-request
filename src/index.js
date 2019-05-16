@@ -313,7 +313,7 @@ export default class OsmRequest {
       tag: [],
       _type: 'node'
     };
-    if (id !== undefined) {
+    if (typeof id !== 'undefined') {
       node._id = id.toString();
     }
 
@@ -337,18 +337,16 @@ export default class OsmRequest {
   createWayElement(nodeOsmIds, tags = {}, id) {
     const way = {
       $: {},
-      nd: nodeOsmIds.map(id => {
-        return {
-          $: {
-            ref: findElementId(id)
-          }
-        };
-      }),
+      nd: nodeOsmIds.map(id => ({
+        $: {
+          ref: findElementId(id)
+        }
+      })),
       tag: [],
       _type: 'way'
     };
 
-    if (id !== undefined) {
+    if (typeof id !== 'undefined') {
       way._id = id.toString();
     }
 
@@ -379,7 +377,7 @@ export default class OsmRequest {
           type: elementType,
           ref: elementId
         };
-        if (role !== undefined) {
+        if (typeof role !== 'undefined') {
           elementObjectCopy.role = elementObject.role;
         }
         return {
@@ -390,7 +388,7 @@ export default class OsmRequest {
       _type: 'relation'
     };
 
-    if (id !== undefined) {
+    if (typeof id !== 'undefined') {
       relation._id = id.toString();
     }
 
@@ -462,13 +460,21 @@ export default class OsmRequest {
   }
 
   /**
+   * Use setTag instead. Will be removed in the future.
+   * @deprecated
+   */
+  setProperty(element, propertyName, propertyValue) {
+    return this.setTag(element, propertyName, propertyValue);
+  }
+
+  /**
    * Add or replace a tag in a given element
    * @param {Object} element
    * @param {string} tagName
    * @param {string} tagValue
    * @return {Object} A new version of the element
    */
-  setProperty(element, tagName, tagValue) {
+  setTag(element, tagName, tagValue) {
     const newElement = simpleObjectDeepClone(element);
     const filteredTags = newElement.tag
       ? newElement.tag.filter(tag => tag.$.k !== tagName.toString())
@@ -488,12 +494,20 @@ export default class OsmRequest {
   }
 
   /**
+   * Use setTags instead. Will be removed in the future.
+   * @deprecated
+   */
+  setProperties(element, properties) {
+    return this.setTags(element, properties);
+  }
+
+  /**
    * Add or replace several tags in a given element
    * @param {Object} element
    * @param {Object} tags
    * @return {Object} A new version of the element
    */
-  setProperties(element, tags) {
+  setTags(element, tags) {
     const newElement = simpleObjectDeepClone(element);
     const clonedTags = simpleObjectDeepClone(tags);
     const tagsName = Object.keys(clonedTags);
@@ -514,12 +528,20 @@ export default class OsmRequest {
   }
 
   /**
+   * Use removeTag instead. Will be removed in the future.
+   * @deprecated
+   */
+  removeProperty(element, propertyName) {
+    return this.removeTag(element, propertyName);
+  }
+
+  /**
    * Remove a tag from a given element
    * @param {Object} element
    * @param {string} tagName
    * @return {Object} A new version of the element
    */
-  removeProperty(element, tagName) {
+  removeTag(element, tagName) {
     const newElement = simpleObjectDeepClone(element);
     const filteredTags = newElement.tag.filter(tag => tag.$.k !== tagName);
 
@@ -560,13 +582,11 @@ export default class OsmRequest {
    */
   setNodeIdsForWay(way, nodeOsmIds) {
     const newWay = simpleObjectDeepClone(way);
-    newWay.nd = nodeOsmIds.map(id => {
-      return {
-        $: {
-          ref: findElementId(id)
-        }
-      };
-    });
+    newWay.nd = nodeOsmIds.map(id => ({
+      $: {
+        ref: findElementId(id)
+      }
+    }));
     return newWay;
   }
 
@@ -581,7 +601,7 @@ export default class OsmRequest {
       const elementObjectCopy = {
         id: `${type}/${ref}`
       };
-      if (role !== undefined) {
+      if (typeof role !== 'undefined') {
         elementObjectCopy.role = role;
       }
       return elementObjectCopy;
@@ -604,7 +624,7 @@ export default class OsmRequest {
         type: elementType,
         ref: elementId
       };
-      if (role !== undefined) {
+      if (typeof role !== 'undefined') {
         elementObjectCopy.role = elementObject.role;
       }
       return {
@@ -634,7 +654,7 @@ export default class OsmRequest {
    */
   setVersion(element, version) {
     const newElement = simpleObjectDeepClone(element);
-    newElement.$.version = parseInt(version).toString();
+    newElement.$.version = parseInt(version, 10).toString();
 
     return newElement;
   }

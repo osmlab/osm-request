@@ -112,36 +112,21 @@ export function convertElementXmlToJson(xml, elementType, elementId) {
  */
 export function cleanMapJson(osmMapJson) {
   const { bounds } = osmMapJson.osm;
+  const mapper = type => e => ({ ...e, _id: e['$'].id, _type: type });
+
   let way = [];
   if (osmMapJson.osm.way) {
-    way = osmMapJson.osm.way.map(w => {
-      return {
-        ...w,
-        _id: w['$'].id,
-        _type: 'way'
-      };
-    });
+    way = osmMapJson.osm.way.map(mapper('way'));
   }
   let node = [];
   if (osmMapJson.osm.node) {
-    node = osmMapJson.osm.node.map(n => {
-      return {
-        ...n,
-        _id: n['$'].id,
-        _type: 'node'
-      };
-    });
+    node = osmMapJson.osm.node.map(mapper('node'));
   }
   let relation = [];
   if (osmMapJson.osm.relation) {
-    relation = osmMapJson.osm.relation.map(r => {
-      return {
-        ...r,
-        _id: r['$'].id,
-        _type: 'relation'
-      };
-    });
+    relation = osmMapJson.osm.relation.map(mapper('relation'));
   }
+
   const newOsmObject = {};
   Object.entries({ node: node, way: way, relation: relation }).map(entry => {
     if (entry[0] in osmMapJson.osm) {
@@ -156,36 +141,20 @@ export function cleanMapJson(osmMapJson) {
 }
 
 /**
- * Convert a raw list of ways API response into a well formatted JSON object
+ * Convert a raw list of elements API response into a well formatted JSON object
  * @param {string} xml - The raw API response
+ * @param {string} type The OSM element type (node, way, relation)
  * @return {Promise}
  */
-export function convertWaysXmlToJson(xml) {
+export function convertElementsListXmlToJson(xml, type) {
   return xmlToJson(xml).then(result => {
-    return result.osm.way
-      ? result.osm.way.map(w => {
-          w._id = w.$.id;
-          w._type = 'way';
-          return w;
+    return result.osm[type]
+      ? result.osm[type].map(e => {
+          e._id = e.$.id;
+          e._type = type;
+          return e;
         })
       : [];
-  });
-}
-
-/**
- * Convert list of relations into a well formatted JSON object
- * @param {string} xml - The raw API response
- * @return {Promise}
- */
-export function convertRelationsXmlToJson(xml) {
-  return xmlToJson(xml).then(result => {
-    if (result.osm.relation) {
-      result.osm.relation.forEach(relation => {
-        relation._id = relation['$'].id;
-        relation._type = 'relation';
-      });
-    }
-    return Promise.resolve(result.osm.relation);
   });
 }
 
