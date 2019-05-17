@@ -4,7 +4,8 @@ import {
   buildQueryString,
   findElementType,
   findElementId,
-  buildApiUrl
+  buildApiUrl,
+  checkIdIsNegative
 } from '../utils';
 
 describe('Utils helpers', () => {
@@ -103,6 +104,22 @@ describe('Utils helpers', () => {
       const expected =
         'https://osm.org/api/0.6/node/1234?p=1&key=true&tag=value';
       expect(result).toBe(expected);
+    });
+    it('Should return valid URL with end slash', () => {
+      const result = buildApiUrl('https://osm.org/', '/node/1234');
+      const expected = 'https://osm.org/api/0.6/node/1234';
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('checkIdIsNegative', () => {
+    it('is true when ID is negative', () => {
+      const result = checkIdIsNegative('-1234');
+      expect(result).toBeTruthy();
+    });
+    it('is false when ID is not negative', () => {
+      const result = checkIdIsNegative('1234');
+      expect(result).not.toBeTruthy();
     });
   });
 });

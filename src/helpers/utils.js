@@ -44,7 +44,7 @@ export function findElementId(osmId) {
 
 /**
  * Check the OSM ID e.g -12 is negative
- * @param {string} id
+ * @param {string} id The ID (without type)
  * @return {boolean}
  */
 export function checkIdIsNegative(id) {
@@ -83,5 +83,7 @@ export function buildQueryString(params) {
  * @return {string} The complete URL
  */
 export function buildApiUrl(endpoint, path, params) {
-  return `${endpoint}/api/0.6${path}${buildQueryString(params)}`;
+  return `${removeTrailingSlashes(endpoint)}/api/0.6${path}${buildQueryString(
+    params
+  )}`;
 }

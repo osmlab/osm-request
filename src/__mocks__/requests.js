@@ -264,6 +264,156 @@ export const fetchNotesRequest = jest.fn().mockImplementation(() => [
   }
 ]);
 
+export const fetchNotesSearchRequest = jest.fn().mockImplementation(() => ({
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [18.9413056, 50.9155037]
+      },
+      properties: {
+        id: 1782041,
+        url: 'https://api.openstreetmap.org/api/0.6/notes/1782041.json',
+        comment_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1782041/comment.json',
+        close_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1782041/close.json',
+        date_created: '2019-05-17 12:19:30 UTC',
+        status: 'open',
+        comments: [
+          {
+            date: '2019-05-17 12:19:30 UTC',
+            uid: 6475221,
+            user: 'Dominik Kumiszczo',
+            user_url: 'https://api.openstreetmap.org/user/Dominik%20Kumiszczo',
+            action: 'opened',
+            text:
+              '"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\nThe place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
+            html:
+              '<p>"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\n<br />The place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
+          }
+        ]
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [22.9105161, 45.8820898]
+      },
+      properties: {
+        id: 1781930,
+        url: 'https://api.openstreetmap.org/api/0.6/notes/1781930.json',
+        comment_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1781930/comment.json',
+        close_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1781930/close.json',
+        date_created: '2019-05-17 09:49:13 UTC',
+        status: 'open',
+        comments: [
+          {
+            date: '2019-05-17 09:49:13 UTC',
+            uid: 9582846,
+            user: 'CrihanMircea',
+            user_url: 'https://api.openstreetmap.org/user/CrihanMircea',
+            action: 'opened',
+            text:
+              '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
+            html:
+              '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
+          }
+        ]
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [36.2521473, 54.5943915]
+      },
+      properties: {
+        id: 1781857,
+        url: 'https://api.openstreetmap.org/api/0.6/notes/1781857.json',
+        comment_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1781857/comment.json',
+        close_url:
+          'https://api.openstreetmap.org/api/0.6/notes/1781857/close.json',
+        date_created: '2019-05-17 08:40:50 UTC',
+        status: 'open',
+        comments: [
+          {
+            date: '2019-05-17 08:40:50 UTC',
+            uid: 9863039,
+            user: 'Муравей',
+            user_url:
+              'https://api.openstreetmap.org/user/%D0%9C%D1%83%D1%80%D0%B0%D0%B2%D0%B5%D0%B9',
+            action: 'opened',
+            text:
+              '"ПГ"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
+            html:
+              '<p>"ПГ"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
+          }
+        ]
+      }
+    }
+  ]
+}));
+
+export const fetchNoteByIdRequest = jest.fn().mockImplementation(() => ({
+  type: 'Feature',
+  geometry: {
+    type: 'Point',
+    coordinates: [22.9105161, 45.8820898]
+  },
+  properties: {
+    id: 1781930,
+    url: 'https://api.openstreetmap.org/api/0.6/notes/1781930.json',
+    comment_url:
+      'https://api.openstreetmap.org/api/0.6/notes/1781930/comment.json',
+    close_url: 'https://api.openstreetmap.org/api/0.6/notes/1781930/close.json',
+    date_created: '2019-05-17 09:49:13 UTC',
+    status: 'open',
+    comments: [
+      {
+        date: '2019-05-17 09:49:13 UTC',
+        uid: 9582846,
+        user: 'CrihanMircea',
+        user_url: 'https://api.openstreetmap.org/user/CrihanMircea',
+        action: 'opened',
+        text:
+          '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
+        html:
+          '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
+      }
+    ]
+  }
+}));
+
+export const createNoteRequest = jest.fn().mockImplementation(
+  () => `<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+<note lon="-0.456" lat="1.234">
+  <id>16341</id>
+  <url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341</url>
+  <comment_url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341/comment</comment_url>
+  <close_url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341/close</close_url>
+  <date_created>2019-05-17 13:14:21 UTC</date_created>
+  <status>open</status>
+  <comments>
+    <comment>
+      <date>2019-05-17 13:14:21 UTC</date>
+      <action>opened</action>
+      <text>there is a problem here</text>
+      <html>&lt;p&gt;there is a problem here&lt;/p&gt;</html>
+    </comment>
+  </comments>
+</note>
+</osm>
+`
+);
+
 export const fetchMapByBboxRequest = jest.fn().mockImplementation(() => ({
   osm: {
     $: {

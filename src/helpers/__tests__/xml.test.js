@@ -6,7 +6,12 @@ import {
   convertNotesXmlToJson,
   flattenAttributes,
   xmlToJson,
-  jsonToXml
+  jsonToXml,
+  encodeXML,
+  buildChangesetFromObjectXml,
+  buildPreferencesFromObjectXml,
+  cleanMapJson,
+  convertElementsListXmlToJson
 } from '../xml';
 
 const nodeSample = fs.readFileSync(
@@ -14,6 +19,9 @@ const nodeSample = fs.readFileSync(
 );
 const notesSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/notes.xml')
+);
+const wayFullSample = fs.readFileSync(
+  path.join(__dirname, '../../__mocks__/way_full.xml')
 );
 
 jest.mock('../../../package.json', () => ({
@@ -34,6 +42,37 @@ describe('XML helpers', () => {
     });
   });
 
+  describe('buildChangesetFromObjectXml', () => {
+    it('Should build a stringified OSM changeset', () => {
+      expect(
+        buildChangesetFromObjectXml(
+          { host: 'server.net', locale: 'fr' },
+          'me',
+          'my comment'
+        )
+      ).toMatchSnapshot();
+      expect(buildChangesetFromObjectXml()).toMatchSnapshot();
+    });
+
+    it('Should handle strings having double quotes', () => {
+      expect(
+        buildChangesetFromObjectXml(
+          { host: 'server.net', locale: 'fr' },
+          'My "app"',
+          'Doing some "weird" stuff'
+        )
+      ).toMatchSnapshot();
+    });
+  });
+
+  describe('buildPreferencesFromObjectXml', () => {
+    it('Should build stringified OSM preferences', () => {
+      expect(
+        buildPreferencesFromObjectXml({ locale: 'fr', color: 'red' })
+      ).toMatchSnapshot();
+    });
+  });
+
   describe('convertElementXmlToJson', () => {
     it('Should convert an Element XML string into a proper JSON object', async done => {
       const result = await convertElementXmlToJson(
@@ -41,6 +80,14 @@ describe('XML helpers', () => {
         'node',
         '3683625932'
       );
+      expect(result).toMatchSnapshot();
+      done();
+    });
+  });
+
+  describe('convertElementsListXmlToJson', () => {
+    it('Should convert a list of Elements XML string into a proper JSON object', async done => {
+      const result = await convertElementsListXmlToJson(wayFullSample, 'node');
       expect(result).toMatchSnapshot();
       done();
     });
@@ -99,6 +146,43 @@ describe('XML helpers', () => {
           }
         }
       });
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('encodeXML', () => {
+    it('works', () => {
+      const result = encodeXML("This is a <weird level='42'>parameter</weird>");
+      const expected =
+        'This is a &lt;weird level=&apos;42&apos;&gt;parameter&lt;/weird&gt;';
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('cleanMapJson', () => {
+    it('works', () => {
+      const mapjson = {
+        osm: {
+          node: [
+            {
+              $: { id: '1234', lat: '42.3', lon: '-1.3' },
+              tag: [{ $: { key: 'amenity', val: 'bicycle_parking' } }]
+            },
+            {
+              $: { id: '1235', lat: '41.3', lon: '-1.2' }
+            }
+          ],
+          way: [
+            {
+              $: { id: '456' },
+              tag: [{ $: { highway: 'unclassified' } }],
+              nd: [{ $: { ref: '1234' } }, { $: { ref: '1235' } }]
+            }
+          ],
+          relation: []
+        }
+      };
+      const result = cleanMapJson(mapjson);
       expect(result).toMatchSnapshot();
     });
   });

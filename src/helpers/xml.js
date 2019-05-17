@@ -52,7 +52,7 @@ export function buildChangesetXml(
  * @return {string}
  */
 export function buildChangesetFromObjectXml(
-  tags,
+  tags = {},
   createdBy = '',
   comment = ''
 ) {
@@ -73,11 +73,11 @@ export function buildChangesetFromObjectXml(
 
 /**
  * Build an OSM preferences XML from object keys values
- * @param {object}
+ * @param {Object} prefs The preferences values
  * @return {string}
  */
-export function buildPreferencesFromObjectXml(object) {
-  const preferences = Object.entries(object).map(entry => {
+export function buildPreferencesFromObjectXml(prefs) {
+  const preferences = Object.entries(prefs).map(entry => {
     return `<preference k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
   });
   return `

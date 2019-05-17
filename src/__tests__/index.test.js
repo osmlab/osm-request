@@ -645,11 +645,22 @@ describe('OsmRequest', () => {
     });
   });
   describe('setProperty', () => {
-    it('Should add a tag to an element', () => {
+    it('has the same behavior as setTag', () => {
       const osm = new OsmRequest();
       const tagName = 'weird_key';
       const tagValue = 'stuff';
       const element = osm.setProperty(sampleNode, tagName, tagValue);
+      const expected = osm.setTag(sampleNode, tagName, tagValue);
+
+      expect(element).toEqual(expected);
+    });
+  });
+  describe('setTag', () => {
+    it('Should add a tag to an element', () => {
+      const osm = new OsmRequest();
+      const tagName = 'weird_key';
+      const tagValue = 'stuff';
+      const element = osm.setTag(sampleNode, tagName, tagValue);
 
       expect(element).toMatchSnapshot();
     });
@@ -658,7 +669,7 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const tagName = 'weird_key';
       const tagValue = 'stuff';
-      const element = osm.setProperty(sampleNodeNoTags, tagName, tagValue);
+      const element = osm.setTag(sampleNodeNoTags, tagName, tagValue);
 
       expect(element).toMatchSnapshot();
     });
@@ -667,18 +678,32 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const tagName = 'amenity';
       const tagValue = 'stuff';
-      const element = osm.setProperty(sampleNode, tagName, tagValue);
+      const element = osm.setTag(sampleNode, tagName, tagValue);
 
       expect(element).toMatchSnapshot();
     });
   });
 
   describe('setProperties', () => {
-    it('Should add a tag to an element', () => {
+    it('Should have the same behavior as setTags', () => {
       const osm = new OsmRequest();
       const tagName = 'weird_key';
       const tagValue = 'stuff';
       const element = osm.setProperties(sampleNode, {
+        [tagName]: tagValue
+      });
+      const expected = osm.setTags(sampleNode, {
+        [tagName]: tagValue
+      });
+      expect(element).toEqual(expected);
+    });
+  });
+  describe('setTags', () => {
+    it('Should add a tag to an element', () => {
+      const osm = new OsmRequest();
+      const tagName = 'weird_key';
+      const tagValue = 'stuff';
+      const element = osm.setTags(sampleNode, {
         [tagName]: tagValue
       });
 
@@ -689,7 +714,7 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const tagName = 'amenity';
       const tagValue = 'stuff';
-      const element = osm.setProperties(sampleNode, {
+      const element = osm.setTags(sampleNode, {
         [tagName]: tagValue
       });
 
@@ -700,7 +725,7 @@ describe('OsmRequest', () => {
       const osm = new OsmRequest();
       const tagName = 'amenity';
       const tagValue = 'stuff';
-      const element = osm.setProperties(sampleNodeNoTags, {
+      const element = osm.setTags(sampleNodeNoTags, {
         [tagName]: tagValue
       });
 
@@ -712,7 +737,18 @@ describe('OsmRequest', () => {
     it('Should remove a tag from an element', () => {
       const osm = new OsmRequest();
       const tagName = 'amenity';
+      const expected = osm.removeTag(sampleNode, tagName);
       const element = osm.removeProperty(sampleNode, tagName);
+
+      expect(element).toEqual(expected);
+    });
+  });
+
+  describe('removeTag', () => {
+    it('Should remove a tag from an element', () => {
+      const osm = new OsmRequest();
+      const tagName = 'amenity';
+      const element = osm.removeTag(sampleNode, tagName);
 
       expect(element).toMatchSnapshot();
     });
@@ -771,6 +807,37 @@ describe('OsmRequest', () => {
       const notes = osm.fetchNotes(0, 0, 1, 1);
 
       expect(notes).toMatchSnapshot();
+    });
+  });
+
+  describe('fetchNotesSearch', () => {
+    it('Should fetch notes using text search', () => {
+      const osm = new OsmRequest();
+      const notes = osm.fetchNotesSearch('hydrant', 'json', 3);
+
+      expect(notes).toMatchSnapshot();
+    });
+  });
+
+  describe('fetchNote', () => {
+    it('Should fetch a single note by id', () => {
+      const osm = new OsmRequest();
+      const notes = osm.fetchNote('1781930', 'json');
+
+      expect(notes).toMatchSnapshot();
+    });
+  });
+
+  describe('createNote', () => {
+    it('Should return a new note XML', () => {
+      const lat = 1.234;
+      const lon = -0.456;
+      const text = 'there is a problem here';
+
+      const osm = new OsmRequest();
+      const newnote = osm.createNote(lat, lon, text);
+
+      expect(newnote).toMatchSnapshot();
     });
   });
 

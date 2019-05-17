@@ -152,7 +152,7 @@ Check the OSM ID e.g -12 is negative
 
 **Parameters**
 
--   `id` **[string][90]** 
+-   `id` **[string][90]** The ID (without type)
 
 Returns **[boolean][92]** 
 
@@ -204,7 +204,7 @@ Build an OSM changeset from keys values, intended for update
 
 **Parameters**
 
--   `tags` **[Object][91]** To set tags
+-   `tags` **[Object][91]** To set tags (optional, default `{}`)
 -   `createdBy` **[string][90]?**  (optional, default `''`)
 -   `comment` **[string][90]?**  (optional, default `''`)
 
@@ -216,7 +216,7 @@ Build an OSM preferences XML from object keys values
 
 **Parameters**
 
--   `object`  
+-   `prefs` **[Object][91]** The preferences values
 
 Returns **[string][90]** 
 

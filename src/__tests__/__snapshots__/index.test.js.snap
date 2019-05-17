@@ -35,6 +35,29 @@ Object {
 }
 `;
 
+exports[`OsmRequest createNote Should return a new note XML 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<osm version=\\"0.6\\" generator=\\"OpenStreetMap server\\" copyright=\\"OpenStreetMap and contributors\\" attribution=\\"http://www.openstreetmap.org/copyright\\" license=\\"http://opendatacommons.org/licenses/odbl/1-0/\\">
+<note lon=\\"-0.456\\" lat=\\"1.234\\">
+  <id>16341</id>
+  <url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341</url>
+  <comment_url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341/comment</comment_url>
+  <close_url>https://master.apis.dev.openstreetmap.org/api/0.6/notes/16341/close</close_url>
+  <date_created>2019-05-17 13:14:21 UTC</date_created>
+  <status>open</status>
+  <comments>
+    <comment>
+      <date>2019-05-17 13:14:21 UTC</date>
+      <action>opened</action>
+      <text>there is a problem here</text>
+      <html>&lt;p&gt;there is a problem here&lt;/p&gt;</html>
+    </comment>
+  </comments>
+</note>
+</osm>
+"
+`;
+
 exports[`OsmRequest createRelationElement Should return a new relation element 1`] = `
 Object {
   "$": Object {},
@@ -2876,6 +2899,46 @@ Object {
 }
 `;
 
+exports[`OsmRequest fetchNote Should fetch a single note by id 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      22.9105161,
+      45.8820898,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {
+    "close_url": "https://api.openstreetmap.org/api/0.6/notes/1781930/close.json",
+    "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1781930/comment.json",
+    "comments": Array [
+      Object {
+        "action": "opened",
+        "date": "2019-05-17 09:49:13 UTC",
+        "html": "<p>\\"Hidrant subteran tip B-B\\"
+<br />POI has no name
+<br />POI types: emergency-fire_hydrant
+<br />OSM data version: 2019-03-28T14:13:02Z
+<br /> #mapsme</p>",
+        "text": "\\"Hidrant subteran tip B-B\\"
+POI has no name
+POI types: emergency-fire_hydrant
+OSM data version: 2019-03-28T14:13:02Z
+ #mapsme",
+        "uid": 9582846,
+        "user": "CrihanMircea",
+        "user_url": "https://api.openstreetmap.org/user/CrihanMircea",
+      },
+    ],
+    "date_created": "2019-05-17 09:49:13 UTC",
+    "id": 1781930,
+    "status": "open",
+    "url": "https://api.openstreetmap.org/api/0.6/notes/1781930.json",
+  },
+  "type": "Feature",
+}
+`;
+
 exports[`OsmRequest fetchNotes Should fetch notes from a given bbox 1`] = `
 Array [
   Object {
@@ -3009,6 +3072,127 @@ Array [
 ]
 `;
 
+exports[`OsmRequest fetchNotesSearch Should fetch notes using text search 1`] = `
+Object {
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          18.9413056,
+          50.9155037,
+        ],
+        "type": "Point",
+      },
+      "properties": Object {
+        "close_url": "https://api.openstreetmap.org/api/0.6/notes/1782041/close.json",
+        "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1782041/comment.json",
+        "comments": Array [
+          Object {
+            "action": "opened",
+            "date": "2019-05-17 12:19:30 UTC",
+            "html": "<p>\\"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie\\"
+<br />The place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.
+<br />POI has no name
+<br />POI types: emergency-fire_hydrant
+<br />OSM data version: 2019-04-19T10:36:02Z
+<br /> #mapsme</p>",
+            "text": "\\"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie\\"
+The place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.
+POI has no name
+POI types: emergency-fire_hydrant
+OSM data version: 2019-04-19T10:36:02Z
+ #mapsme",
+            "uid": 6475221,
+            "user": "Dominik Kumiszczo",
+            "user_url": "https://api.openstreetmap.org/user/Dominik%20Kumiszczo",
+          },
+        ],
+        "date_created": "2019-05-17 12:19:30 UTC",
+        "id": 1782041,
+        "status": "open",
+        "url": "https://api.openstreetmap.org/api/0.6/notes/1782041.json",
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          22.9105161,
+          45.8820898,
+        ],
+        "type": "Point",
+      },
+      "properties": Object {
+        "close_url": "https://api.openstreetmap.org/api/0.6/notes/1781930/close.json",
+        "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1781930/comment.json",
+        "comments": Array [
+          Object {
+            "action": "opened",
+            "date": "2019-05-17 09:49:13 UTC",
+            "html": "<p>\\"Hidrant subteran tip B-B\\"
+<br />POI has no name
+<br />POI types: emergency-fire_hydrant
+<br />OSM data version: 2019-03-28T14:13:02Z
+<br /> #mapsme</p>",
+            "text": "\\"Hidrant subteran tip B-B\\"
+POI has no name
+POI types: emergency-fire_hydrant
+OSM data version: 2019-03-28T14:13:02Z
+ #mapsme",
+            "uid": 9582846,
+            "user": "CrihanMircea",
+            "user_url": "https://api.openstreetmap.org/user/CrihanMircea",
+          },
+        ],
+        "date_created": "2019-05-17 09:49:13 UTC",
+        "id": 1781930,
+        "status": "open",
+        "url": "https://api.openstreetmap.org/api/0.6/notes/1781930.json",
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          36.2521473,
+          54.5943915,
+        ],
+        "type": "Point",
+      },
+      "properties": Object {
+        "close_url": "https://api.openstreetmap.org/api/0.6/notes/1781857/close.json",
+        "comment_url": "https://api.openstreetmap.org/api/0.6/notes/1781857/comment.json",
+        "comments": Array [
+          Object {
+            "action": "opened",
+            "date": "2019-05-17 08:40:50 UTC",
+            "html": "<p>\\"ПГ\\"
+<br />POI has no name
+<br />POI types: emergency-fire_hydrant
+<br />OSM data version: 2019-04-19T10:36:02Z
+<br /> #mapsme</p>",
+            "text": "\\"ПГ\\"
+POI has no name
+POI types: emergency-fire_hydrant
+OSM data version: 2019-04-19T10:36:02Z
+ #mapsme",
+            "uid": 9863039,
+            "user": "Муравей",
+            "user_url": "https://api.openstreetmap.org/user/%D0%9C%D1%83%D1%80%D0%B0%D0%B2%D0%B5%D0%B9",
+          },
+        ],
+        "date_created": "2019-05-17 08:40:50 UTC",
+        "id": 1781857,
+        "status": "open",
+        "url": "https://api.openstreetmap.org/api/0.6/notes/1781857.json",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
 exports[`OsmRequest fetchWaysForNode Should fetch ways using this node and return their JSON representation 1`] = `
 Object {
   "_id": "536287533",
@@ -3108,7 +3292,7 @@ Object {
 }
 `;
 
-exports[`OsmRequest removeProperty Should remove a tag from an element 1`] = `
+exports[`OsmRequest removeTag Should remove a tag from an element 1`] = `
 Object {
   "$": Object {
     "changeset": "33150668",
@@ -3146,7 +3330,7 @@ Object {
 }
 `;
 
-exports[`OsmRequest setProperties Should add a tag to an element 1`] = `
+exports[`OsmRequest setTag Should add a tag to an element 1`] = `
 Object {
   "$": Object {
     "changeset": "33150668",
@@ -3172,7 +3356,33 @@ Object {
 }
 `;
 
-exports[`OsmRequest setProperties Should modify an element tag 1`] = `
+exports[`OsmRequest setTag Should add a tag to an element having no tag 1`] = `
+Object {
+  "$": Object {
+    "changeset": "33150668",
+    "id": "3683625932",
+    "lat": "-0.5936602",
+    "lon": "44.8331455",
+    "timestamp": "2015-08-06T09:49:47Z",
+    "uid": "2568974",
+    "user": "Vinber-Num&Lib",
+    "version": "1",
+    "visible": "true",
+  },
+  "_id": "3683625932",
+  "_type": "node",
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "weird_key",
+        "v": "stuff",
+      },
+    },
+  ],
+}
+`;
+
+exports[`OsmRequest setTag Should modify an element tag 1`] = `
 Object {
   "$": Object {
     "changeset": "33150668",
@@ -3198,7 +3408,33 @@ Object {
 }
 `;
 
-exports[`OsmRequest setProperties Should work with an element having no tags 1`] = `
+exports[`OsmRequest setTags Should add a tag to an element 1`] = `
+Object {
+  "$": Object {
+    "changeset": "33150668",
+    "id": "3683625932",
+    "lat": "-0.5936602",
+    "lon": "44.8331455",
+    "timestamp": "2015-08-06T09:49:47Z",
+    "uid": "2568974",
+    "user": "Vinber-Num&Lib",
+    "version": "1",
+    "visible": "true",
+  },
+  "_id": "3683625932",
+  "_type": "node",
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "weird_key",
+        "v": "stuff",
+      },
+    },
+  ],
+}
+`;
+
+exports[`OsmRequest setTags Should modify an element tag 1`] = `
 Object {
   "$": Object {
     "changeset": "33150668",
@@ -3224,59 +3460,7 @@ Object {
 }
 `;
 
-exports[`OsmRequest setProperty Should add a tag to an element 1`] = `
-Object {
-  "$": Object {
-    "changeset": "33150668",
-    "id": "3683625932",
-    "lat": "-0.5936602",
-    "lon": "44.8331455",
-    "timestamp": "2015-08-06T09:49:47Z",
-    "uid": "2568974",
-    "user": "Vinber-Num&Lib",
-    "version": "1",
-    "visible": "true",
-  },
-  "_id": "3683625932",
-  "_type": "node",
-  "tag": Array [
-    Object {
-      "$": Object {
-        "k": "weird_key",
-        "v": "stuff",
-      },
-    },
-  ],
-}
-`;
-
-exports[`OsmRequest setProperty Should add a tag to an element having no tag 1`] = `
-Object {
-  "$": Object {
-    "changeset": "33150668",
-    "id": "3683625932",
-    "lat": "-0.5936602",
-    "lon": "44.8331455",
-    "timestamp": "2015-08-06T09:49:47Z",
-    "uid": "2568974",
-    "user": "Vinber-Num&Lib",
-    "version": "1",
-    "visible": "true",
-  },
-  "_id": "3683625932",
-  "_type": "node",
-  "tag": Array [
-    Object {
-      "$": Object {
-        "k": "weird_key",
-        "v": "stuff",
-      },
-    },
-  ],
-}
-`;
-
-exports[`OsmRequest setProperty Should modify an element tag 1`] = `
+exports[`OsmRequest setTags Should work with an element having no tags 1`] = `
 Object {
   "$": Object {
     "changeset": "33150668",
