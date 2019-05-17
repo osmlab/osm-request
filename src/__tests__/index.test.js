@@ -792,6 +792,19 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('fetchMultipleElements', () => {
+    it('Should fetch several elements and return their JSON representations', () => {
+      const osm = new OsmRequest();
+      const element = osm.fetchMultipleElements([
+        'node/123',
+        'node/456',
+        'node/678'
+      ]);
+
+      expect(element).toMatchSnapshot();
+    });
+  });
+
   describe('fetchWaysForNode', () => {
     it('Should fetch ways using this node and return their JSON representation', () => {
       const osm = new OsmRequest();
@@ -852,6 +865,49 @@ describe('OsmRequest', () => {
       );
 
       expect(osmElements).toMatchSnapshot();
+    });
+  });
+
+  describe('createChangeset', () => {
+    it('Should return the changeset ID', () => {
+      const osm = new OsmRequest();
+      const changesetid = osm.createChangeset('my editor', 'some comment', {
+        tag: true
+      });
+
+      expect(changesetid).toBeGreaterThan(0);
+    });
+  });
+
+  describe('isChangesetStillOpen', () => {
+    it('Should return true if open', () => {
+      const osm = new OsmRequest();
+      const changesetid = osm.isChangesetStillOpen(1234);
+
+      expect(changesetid).toBeTruthy();
+    });
+  });
+
+  describe('fetchChangeset', () => {
+    it('Should return changeset details', () => {
+      const osm = new OsmRequest();
+      const changesetid = osm.fetchChangeset(1234);
+
+      expect(changesetid).toMatchSnapshot();
+    });
+  });
+
+  describe('fetchChangesets', () => {
+    it('Should return several changesets details', () => {
+      const osm = new OsmRequest();
+      const changesets = osm.fetchChangesets({
+        left: -1.7883789539337158,
+        bottom: 48.22059295273195,
+        right: -1.7867642641067505,
+        top: 48.221488262276665
+      });
+
+      expect(changesets).toMatchSnapshot();
     });
   });
 });

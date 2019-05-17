@@ -414,6 +414,45 @@ export const createNoteRequest = jest.fn().mockImplementation(
 `
 );
 
+export const createChangesetRequest = jest.fn().mockImplementation(() => 1234);
+export const changesetCheckRequest = jest.fn().mockImplementation(() => true);
+
+export const changesetGetRequest = jest.fn().mockImplementation(
+  () => `<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.6.1 (5071 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <changeset id="12345" created_at="2007-04-11T14:14:22Z" closed_at="2007-04-11T16:22:41Z" open="false" user="A_Larsson" uid="1684" min_lat="60.4468373" min_lon="14.1935007" max_lat="60.5287575" max_lon="14.2675181" comments_count="0"/>
+</osm>`
+);
+
+export const fetchChangesetsRequest = jest.fn().mockImplementation(
+  () => `<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+<changeset id="70354642" created_at="2019-05-17T12:20:23Z" open="false" comments_count="1" changes_count="13" closed_at="2019-05-17T12:20:24Z" min_lat="-21.2063652" min_lon="-113.7673331" max_lat="50.6916719" max_lon="55.5956610" uid="1737608" user="ForstEK">
+  <tag k="created_by" v="Level0 v1.2"/>
+  <tag k="comment" v="fix mistakes in street cabinets by taginfo statistics and according wiki (https://wiki.openstreetmap.org/wiki/Tag%3Aman_made%3Dstreet_cabinet)"/>
+</changeset>
+<changeset id="70352483" created_at="2019-05-17T11:19:16Z" open="false" comments_count="0" changes_count="2" closed_at="2019-05-17T11:19:21Z" min_lat="42.5759727" min_lon="-3.3780966" max_lat="48.8128754" max_lon="9.4613199" uid="7344022" user="Ikkibird">
+  <tag k="created_by" v="StreetComplete 12.0"/>
+  <tag k="source" v="survey"/>
+  <tag k="comment" v="Add road surfaces"/>
+  <tag k="StreetComplete:quest_type" v="AddRoadSurface"/>
+</changeset>
+<changeset id="70351263" created_at="2019-05-17T10:44:37Z" open="true" comments_count="0" changes_count="43" min_lat="43.0549671" min_lon="-76.1438390" max_lat="52.5100814" max_lon="13.4560026" uid="290680" user="wheelmap_visitor">
+  <tag k="created_by" v="rosemary v0.4.4"/>
+  <tag k="comment" v="Modified via wheelmap.org"/>
+</changeset>
+</osm>`
+);
+
+export const multiFetchElementsByTypeRequest = jest.fn().mockImplementation(
+  () => `<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.6.1 (9425 thorn-03.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="123" visible="true" version="8" changeset="38852974" timestamp="2016-04-25T10:30:27Z" user="Noen" uid="605010" lat="59.9503286" lon="10.7899198"/>
+ <node id="456" visible="true" version="2" changeset="54683425" timestamp="2017-12-16T15:58:37Z" user="Reitstoen_import" uid="3296383" lat="68.3744349" lon="16.5711354"/>
+ <node id="789" visible="true" version="6" changeset="336150" timestamp="2008-10-14T20:00:50Z" user="Wojak" uid="51161" lat="59.8925629" lon="10.5063028"/>
+</osm>`
+);
+
 export const fetchMapByBboxRequest = jest.fn().mockImplementation(() => ({
   osm: {
     $: {
