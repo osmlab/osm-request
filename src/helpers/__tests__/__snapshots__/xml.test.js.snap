@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`XML helpers buildChangesetFromObjectXml Should build a stringified OSM changeset 1`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"me\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"comment\\" v=\\"my comment\\"/>
+        <tag k=\\"host\\" v=\\"server.net\\"/>
+        <tag k=\\"locale\\" v=\\"fr\\"/>
+      </changeset>
+    </osm>
+  "
+`;
+
+exports[`XML helpers buildChangesetFromObjectXml Should build a stringified OSM changeset 2`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"comment\\" v=\\"\\"/>
+        
+      </changeset>
+    </osm>
+  "
+`;
+
+exports[`XML helpers buildChangesetFromObjectXml Should handle strings having double quotes 1`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
+        <tag k=\\"host\\" v=\\"server.net\\"/>
+        <tag k=\\"locale\\" v=\\"fr\\"/>
+      </changeset>
+    </osm>
+  "
+`;
+
 exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 1`] = `
 "
     <osm>
@@ -7,6 +48,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by\\" v=\\"me\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
+        
       </changeset>
     </osm>
   "
@@ -19,6 +61,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
         <tag k=\\"created_by\\" v=\\"\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
+        
       </changeset>
     </osm>
   "
@@ -31,48 +74,324 @@ exports[`XML helpers buildChangesetXml Should handle strings having double quote
         <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
         <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
         <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
+        
       </changeset>
     </osm>
   "
 `;
 
+exports[`XML helpers buildPreferencesFromObjectXml Should build stringified OSM preferences 1`] = `
+"
+    <osm>
+      <preferences>
+        <preference k=\\"locale\\" v=\\"fr\\"/>
+        <preference k=\\"color\\" v=\\"red\\"/>
+      </preferences>
+    </osm>
+  "
+`;
+
+exports[`XML helpers cleanMapJson works 1`] = `
+Object {
+  "node": Array [
+    Object {
+      "$": Object {
+        "id": "1234",
+        "lat": "42.3",
+        "lon": "-1.3",
+      },
+      "_id": "1234",
+      "_type": "node",
+      "tag": Array [
+        Object {
+          "$": Object {
+            "key": "amenity",
+            "val": "bicycle_parking",
+          },
+        },
+      ],
+    },
+    Object {
+      "$": Object {
+        "id": "1235",
+        "lat": "41.3",
+        "lon": "-1.2",
+      },
+      "_id": "1235",
+      "_type": "node",
+    },
+  ],
+  "relation": Array [],
+  "way": Array [
+    Object {
+      "$": Object {
+        "id": "456",
+      },
+      "_id": "456",
+      "_type": "way",
+      "nd": Array [
+        Object {
+          "$": Object {
+            "ref": "1234",
+          },
+        },
+        Object {
+          "$": Object {
+            "ref": "1235",
+          },
+        },
+      ],
+      "tag": Array [
+        Object {
+          "$": Object {
+            "highway": "unclassified",
+          },
+        },
+      ],
+    },
+  ],
+}
+`;
+
 exports[`XML helpers convertElementXmlToJson Should convert an Element XML string into a proper JSON object 1`] = `
 Object {
+  "$": Object {
+    "changeset": "33150668",
+    "id": "3683625932",
+    "lat": "44.8331455",
+    "lon": "-0.5936602",
+    "timestamp": "2015-08-06T09:49:47Z",
+    "uid": "2568974",
+    "user": "Vinber-Num&Lib",
+    "version": "1",
+    "visible": "true",
+  },
   "_id": "3683625932",
   "_type": "node",
-  "osm": Object {
-    "$": Object {
-      "attribution": "http://www.openstreetmap.org/copyright",
-      "copyright": "OpenStreetMap and contributors",
-      "generator": "CGImap 0.6.0 (8254 thorn-02.openstreetmap.org)",
-      "license": "http://opendatacommons.org/licenses/odbl/1-0/",
-      "version": "0.6",
-    },
-    "node": Array [
-      Object {
-        "$": Object {
-          "changeset": "33150668",
-          "id": "3683625932",
-          "lat": "44.8331455",
-          "lon": "-0.5936602",
-          "timestamp": "2015-08-06T09:49:47Z",
-          "uid": "2568974",
-          "user": "Vinber-Num&Lib",
-          "version": "1",
-          "visible": "true",
-        },
-        "tag": Array [
-          Object {
-            "$": Object {
-              "k": "amenity",
-              "v": "drinking_water",
-            },
-          },
-        ],
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "amenity",
+        "v": "drinking_water",
       },
-    ],
-  },
+    },
+  ],
 }
+`;
+
+exports[`XML helpers convertElementsListXmlToJson Should convert a list of Elements XML string into a proper JSON object 1`] = `
+Array [
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122358",
+      "lat": "48.2210040",
+      "lon": "-1.7884326",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122358",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122360",
+      "lat": "48.2210155",
+      "lon": "-1.7883932",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122360",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122361",
+      "lat": "48.2210386",
+      "lon": "-1.7883679",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122361",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122362",
+      "lat": "48.2210245",
+      "lon": "-1.7885098",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122362",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122366",
+      "lat": "48.2210793",
+      "lon": "-1.7885211",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122366",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122369",
+      "lat": "48.2210840",
+      "lon": "-1.7883719",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122369",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122371",
+      "lat": "48.2211072",
+      "lon": "-1.7884825",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122371",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "1531122372",
+      "lat": "48.2211118",
+      "lon": "-1.7884258",
+      "timestamp": "2018-06-24T10:47:29Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "2",
+      "visible": "true",
+    },
+    "_id": "1531122372",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015332",
+      "lat": "48.2210073",
+      "lon": "-1.7884753",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015332",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015333",
+      "lat": "48.2210508",
+      "lon": "-1.7885265",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015333",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015334",
+      "lat": "48.2210955",
+      "lon": "-1.7885055",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015334",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015335",
+      "lat": "48.2211129",
+      "lon": "-1.7884548",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015335",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015336",
+      "lat": "48.2210616",
+      "lon": "-1.7883625",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015336",
+    "_type": "node",
+  },
+  Object {
+    "$": Object {
+      "changeset": "60117678",
+      "id": "5715015337",
+      "lat": "48.2211018",
+      "lon": "-1.7883943",
+      "timestamp": "2018-06-24T10:47:23Z",
+      "uid": "214436",
+      "user": "PanierAvide",
+      "version": "1",
+      "visible": "true",
+    },
+    "_id": "5715015337",
+    "_type": "node",
+  },
+]
 `;
 
 exports[`XML helpers convertNotesXmlToJson Should convert a Notes XML string into a proper JSON object 1`] = `

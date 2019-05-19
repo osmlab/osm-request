@@ -21,16 +21,70 @@ export function encodeXML(str = '') {
  * Build a stringified OSM changeset
  * @param {string} [createdBy]
  * @param {string} [comment]
+ * @param {string} [optionalTags] Keys values to set tags
  * @return {string}
  */
-export function buildChangesetXml(createdBy = '', comment = '') {
+export function buildChangesetXml(
+  createdBy = '',
+  comment = '',
+  optionalTags = {}
+) {
+  const tags = Object.entries(optionalTags).map(entry => {
+    return `<tag k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
   return `
     <osm>
       <changeset>
         <tag k="created_by" v="${encodeXML(createdBy)}"/>
         <tag k="created_by:library" v="OSM Request ${osmRequestVersion}"/>
         <tag k="comment" v="${encodeXML(comment)}"/>
+        ${tags.join(`\n        `)}
       </changeset>
+    </osm>
+  `;
+}
+
+/**
+ * Build an OSM changeset from keys values, intended for update
+ * @param {Object} tags To set tags
+ * @param {string} [createdBy]
+ * @param {string} [comment]
+ * @return {string}
+ */
+export function buildChangesetFromObjectXml(
+  tags = {},
+  createdBy = '',
+  comment = ''
+) {
+  const tagsArray = Object.entries(tags).map(entry => {
+    return `<tag k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
+  return `
+    <osm>
+      <changeset>
+        <tag k="created_by" v="${encodeXML(createdBy)}"/>
+        <tag k="created_by:library" v="OSM Request ${osmRequestVersion}"/>
+        <tag k="comment" v="${encodeXML(comment)}"/>
+        ${tagsArray.join(`\n        `)}
+      </changeset>
+    </osm>
+  `;
+}
+
+/**
+ * Build an OSM preferences XML from object keys values
+ * @param {Object} prefs The preferences values
+ * @return {string}
+ */
+export function buildPreferencesFromObjectXml(prefs) {
+  const preferences = Object.entries(prefs).map(entry => {
+    return `<preference k="${entry[0]}" v="${encodeXML(String(entry[1]))}"/>`;
+  });
+  return `
+    <osm>
+      <preferences>
+        ${preferences.join(`\n        `)}
+      </preferences>
     </osm>
   `;
 }
@@ -43,26 +97,63 @@ export function buildChangesetXml(createdBy = '', comment = '') {
  * @return {Promise}
  */
 export function convertElementXmlToJson(xml, elementType, elementId) {
-  return xmlToJson(xml).then(result => ({
-    ...result,
-    _id: elementId,
-    _type: elementType
-  }));
+  return xmlToJson(xml).then(result => {
+    const element = result.osm[elementType][0];
+    element._id = elementId;
+    element._type = elementType;
+    return element;
+  });
 }
 
 /**
- * Convert a raw list of ways API response into a well formatted JSON object
+ * Convert a JSON object with OSM map features into a well formatted JSON object
+ * @param {Object} osmMapJson - The raw API response
+ * @return {Array}
+ */
+export function cleanMapJson(osmMapJson) {
+  const { bounds } = osmMapJson.osm;
+  const mapper = type => e => ({ ...e, _id: e['$'].id, _type: type });
+
+  let way = [];
+  if (osmMapJson.osm.way) {
+    way = osmMapJson.osm.way.map(mapper('way'));
+  }
+  let node = [];
+  if (osmMapJson.osm.node) {
+    node = osmMapJson.osm.node.map(mapper('node'));
+  }
+  let relation = [];
+  if (osmMapJson.osm.relation) {
+    relation = osmMapJson.osm.relation.map(mapper('relation'));
+  }
+
+  const newOsmObject = {};
+  Object.entries({ node: node, way: way, relation: relation }).map(entry => {
+    if (entry[0] in osmMapJson.osm) {
+      newOsmObject[entry[0]] = entry[1];
+    }
+  });
+
+  if (bounds) {
+    newOsmObject.bounds = bounds;
+  }
+  return newOsmObject;
+}
+
+/**
+ * Convert a raw list of elements API response into a well formatted JSON object
  * @param {string} xml - The raw API response
+ * @param {string} type The OSM element type (node, way, relation)
  * @return {Promise}
  */
-export function convertWaysXmlToJson(xml) {
+export function convertElementsListXmlToJson(xml, type) {
   return xmlToJson(xml).then(result => {
-    return result.osm.way
-      ? result.osm.way.map(w => ({
-          osm: { $: result.osm.$, way: [w] },
-          _id: w.$.id,
-          _type: 'way'
-        }))
+    return result.osm[type]
+      ? result.osm[type].map(e => {
+          e._id = e.$.id;
+          e._type = type;
+          return e;
+        })
       : [];
   });
 }
@@ -74,7 +165,13 @@ export function convertWaysXmlToJson(xml) {
  */
 export function convertNotesXmlToJson(xml) {
   return xmlToJson(xml)
-    .then(result => result.osm.note)
+    .then(result => {
+      if (result.osm.note) {
+        return result.osm.note;
+      } else {
+        return [];
+      }
+    })
     .then(notes =>
       notes.map(note => {
         const returnedNote = flattenAttributes(note);

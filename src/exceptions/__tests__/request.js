@@ -9,7 +9,7 @@ function failer() {
 describe('RequestException', () => {
   it('Should correctly throw', () => {
     expect(failer).toThrow();
-    expect(failer).toThrow(RequestException);
     expect(failer).toThrow(message);
+    expect(failer).toThrowError(new RequestException(message));
   });
 });

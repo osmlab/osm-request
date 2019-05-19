@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.6.1 (5086 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="1531122358" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210040" lon="-1.7884326"/>
+ <node id="1531122360" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210155" lon="-1.7883932"/>
+ <node id="1531122361" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210386" lon="-1.7883679"/>
+ <node id="1531122362" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210245" lon="-1.7885098"/>
+ <node id="1531122366" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210793" lon="-1.7885211"/>
+ <node id="1531122369" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2210840" lon="-1.7883719"/>
+ <node id="1531122371" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2211072" lon="-1.7884825"/>
+ <node id="1531122372" visible="true" version="2" changeset="60117678" timestamp="2018-06-24T10:47:29Z" user="PanierAvide" uid="214436" lat="48.2211118" lon="-1.7884258"/>
+ <node id="5715015332" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2210073" lon="-1.7884753"/>
+ <node id="5715015333" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2210508" lon="-1.7885265"/>
+ <node id="5715015334" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2210955" lon="-1.7885055"/>
+ <node id="5715015335" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2211129" lon="-1.7884548"/>
+ <node id="5715015336" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2210616" lon="-1.7883625"/>
+ <node id="5715015337" visible="true" version="1" changeset="60117678" timestamp="2018-06-24T10:47:23Z" user="PanierAvide" uid="214436" lat="48.2211018" lon="-1.7883943"/>
+ <way id="139712191" visible="true" version="8" changeset="60117678" timestamp="2018-06-24T10:47:33Z" user="PanierAvide" uid="214436">
+  <nd ref="1531122366"/>
+  <nd ref="5715015333"/>
+  <nd ref="1531122362"/>
+  <nd ref="5715015332"/>
+  <nd ref="1531122358"/>
+  <nd ref="1531122360"/>
+  <nd ref="1531122361"/>
+  <nd ref="5715015336"/>
+  <nd ref="1531122369"/>
+  <nd ref="5715015337"/>
+  <nd ref="1531122372"/>
+  <nd ref="5715015335"/>
+  <nd ref="1531122371"/>
+  <nd ref="5715015334"/>
+  <nd ref="1531122366"/>
+  <tag k="highway" v="secondary"/>
+  <tag k="junction" v="roundabout"/>
+  <tag k="name" v="Rue de Rennes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011"/>
+  <tag k="surface" v="asphalt"/>
+  <tag k="traffic" v="heavy"/>
+ </way>
+</osm>

@@ -43,10 +43,23 @@ export function findElementId(osmId) {
 }
 
 /**
+ * Check the OSM ID e.g -12 is negative
+ * @param {string} id The ID (without type)
+ * @return {boolean}
+ */
+export function checkIdIsNegative(id) {
+  return /^[-]\d+$/.test(id);
+}
+
+/**
  * @param {Object} params
  * @return {string}
  */
 export function buildQueryString(params) {
+  if (params === null || typeof params === 'undefined') {
+    return '';
+  }
+
   const builtParams = [];
 
   for (const paramName of Object.keys(params)) {
@@ -60,4 +73,17 @@ export function buildQueryString(params) {
   const queryString = builtParams.join('&');
 
   return `${questionMark}${queryString}`;
+}
+
+/**
+ * Constructs complete API URL
+ * @param {string} endpoint The endpoint URL
+ * @param {string} path The method you want to use (example: /node/1234)
+ * @param {Object} [params] The URL parameters
+ * @return {string} The complete URL
+ */
+export function buildApiUrl(endpoint, path, params) {
+  return `${removeTrailingSlashes(endpoint)}/api/0.6${path}${buildQueryString(
+    params
+  )}`;
 }

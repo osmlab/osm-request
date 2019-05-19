@@ -3,7 +3,9 @@ import {
   simpleObjectDeepClone,
   buildQueryString,
   findElementType,
-  findElementId
+  findElementId,
+  buildApiUrl,
+  checkIdIsNegative
 } from '../utils';
 
 describe('Utils helpers', () => {
@@ -81,6 +83,43 @@ describe('Utils helpers', () => {
       const expected = '?param1=stuff&param-2=stuff%202&param_3=stuff%203';
 
       expect(result).toBe(expected);
+    });
+    it('Should return empty string if null passed', () => {
+      expect(buildQueryString()).toBe('');
+    });
+  });
+
+  describe('buildApiUrl', () => {
+    it('Should return valid URL', () => {
+      const result = buildApiUrl('https://osm.org', '/node/1234');
+      const expected = 'https://osm.org/api/0.6/node/1234';
+      expect(result).toBe(expected);
+    });
+    it('Should return a valid URL with parameters', () => {
+      const result = buildApiUrl('https://osm.org', '/node/1234', {
+        p: 1,
+        key: true,
+        tag: 'value'
+      });
+      const expected =
+        'https://osm.org/api/0.6/node/1234?p=1&key=true&tag=value';
+      expect(result).toBe(expected);
+    });
+    it('Should return valid URL with end slash', () => {
+      const result = buildApiUrl('https://osm.org/', '/node/1234');
+      const expected = 'https://osm.org/api/0.6/node/1234';
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('checkIdIsNegative', () => {
+    it('is true when ID is negative', () => {
+      const result = checkIdIsNegative('-1234');
+      expect(result).toBeTruthy();
+    });
+    it('is false when ID is not negative', () => {
+      const result = checkIdIsNegative('1234');
+      expect(result).not.toBeTruthy();
     });
   });
 });
