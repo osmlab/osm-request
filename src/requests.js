@@ -466,10 +466,13 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
         if (err) {
           throw new RequestException('Changeset check request failed');
         }
-
-        const isOpened = xml
-          .getElementsByTagName('changeset')[0]
-          .getAttribute('open');
+        
+        let isOpened = 'false';
+        const changeset = xml.getElementsByTagName('changeset')[0];
+        
+        if (changeset) {  
+          isOpened = changeset.getAttribute('open');
+        }
 
         if (isOpened === 'false') {
           return reject(err);
