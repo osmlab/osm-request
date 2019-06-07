@@ -466,11 +466,11 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
         if (err) {
           throw new RequestException('Changeset check request failed');
         }
-        
+
         let isOpened = 'false';
         const changeset = xml.getElementsByTagName('changeset')[0];
-        
-        if (changeset) {  
+
+        if (changeset) {
           isOpened = changeset.getAttribute('open');
         }
 
@@ -784,10 +784,10 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
 
   const osmContent = {
     osm: {
-      $: {},
-      node: [copiedElement]
+      $: {}
     }
   };
+  osmContent.osm[elementType] = [copiedElement];
 
   const elementXml = jsonToXml(osmContent);
   const path = `/${elementType}/${elementId}`;
