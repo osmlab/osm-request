@@ -117,7 +117,7 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
       ? `/${elementType}/${elementId}`
       : `/${elementType}/create`;
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'PUT',
@@ -132,7 +132,7 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
       },
       (err, version) => {
         if (err) {
-          throw new RequestException('Element sending request failed');
+          reject(new RequestException('Element sending request failed'));
         }
 
         return resolve(parseInt(version, 10));
@@ -323,7 +323,7 @@ export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
  * @return {Promise}
  */
 export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'POST',
@@ -337,12 +337,14 @@ export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
       },
       (err, xml) => {
         if (err) {
-          throw new RequestException(
-            JSON.stringify({
-              message: `Note ${type} change failed`,
-              status: err.status,
-              statusText: err.statusText
-            })
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: `Note ${type} change failed`,
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
           );
         }
 
@@ -369,7 +371,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
     lon,
     text
   };
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'POST',
@@ -383,12 +385,14 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
       },
       (err, xml) => {
         if (err) {
-          throw new RequestException(
-            JSON.stringify({
-              message: 'Note creation failed',
-              status: err.status,
-              statusText: err.statusText
-            })
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: 'Note creation failed',
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
           );
         }
 
@@ -418,7 +422,7 @@ export function createChangesetRequest(
 ) {
   const changesetXml = buildChangesetXml(createdBy, comment, tags);
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'PUT',
@@ -433,7 +437,9 @@ export function createChangesetRequest(
       },
       (err, changesetId) => {
         if (err) {
-          throw new RequestException('Changeset creation request failed');
+          return reject(
+            new RequestException('Changeset creation request failed')
+          );
         }
 
         return resolve(parseInt(changesetId, 10));
@@ -464,7 +470,7 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
       },
       (err, xml) => {
         if (err) {
-          throw new RequestException('Changeset check request failed');
+          return reject(new RequestException('Changeset check request failed'));
         }
 
         let isOpened = 'false';
@@ -618,7 +624,7 @@ export function uploadChangesetOscRequest(
   changesetId,
   osmChangeContent
 ) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'POST',
@@ -633,8 +639,10 @@ export function uploadChangesetOscRequest(
       },
       (err, xml) => {
         if (err) {
-          throw new RequestException(
-            'Changeset OSC file content upload request failed'
+          return reject(
+            new RequestException(
+              'Changeset OSC file content upload request failed'
+            )
           );
         }
         return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
@@ -792,7 +800,7 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
   const elementXml = jsonToXml(osmContent);
   const path = `/${elementType}/${elementId}`;
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     auth.xhr(
       {
         method: 'DELETE',
@@ -807,7 +815,7 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
       },
       (err, version) => {
         if (err) {
-          throw new RequestException(err);
+          return reject(new RequestException(err));
         }
         return resolve(parseInt(version, 10));
       }
