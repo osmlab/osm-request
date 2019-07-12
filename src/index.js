@@ -528,6 +528,26 @@ export default class OsmRequest {
   }
 
   /**
+   * Completely replace tags of a given element
+   * @param {Object} element
+   * @param {Object} tags The tags that will replace completely current element tags
+   * @return {Object} A new version of the element
+   */
+  replaceTags(element, tags) {
+    const newElement = simpleObjectDeepClone(element);
+    const clonedTags = simpleObjectDeepClone(tags);
+    const formattedTags = Object.entries(clonedTags).map(kv => ({
+      $: {
+        k: kv[0].toString(),
+        v: kv[1].toString()
+      }
+    }));
+
+    newElement.tag = formattedTags;
+    return newElement;
+  }
+
+  /**
    * Use removeTag instead. Will be removed in the future.
    * @deprecated
    */

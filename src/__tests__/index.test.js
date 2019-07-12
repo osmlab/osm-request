@@ -733,6 +733,17 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('replaceTags', () => {
+    it('Should completely replace existing tags', () => {
+      const osm = new OsmRequest();
+      const element = osm.replaceTags(sampleWay, {
+        amenity: 'restaurant',
+        name: 'Best Sushi in Town'
+      });
+
+      expect(element).toMatchSnapshot();
+    });
+  });
   describe('removeProperty', () => {
     it('Should remove a tag from an element', () => {
       const osm = new OsmRequest();
