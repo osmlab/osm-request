@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch';
+import { fetch } from 'helpers/xhr';
 import {
   findElementType,
   findElementId,
@@ -23,69 +23,77 @@ import { RequestException } from 'exceptions/request';
  * Request to fetch an OSM element
  * @param {string} endpoint The API endpoint
  * @param {string} osmId
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
-export function fetchElementRequest(endpoint, osmId) {
+export function fetchElementRequest(endpoint, osmId, options = {}) {
   const elementType = findElementType(osmId);
   const elementId = findElementId(osmId);
 
-  return fetch(buildApiUrl(endpoint, `/${osmId}`))
-    .then(response => response.text())
-    .then(response =>
-      convertElementXmlToJson(response, elementType, elementId)
-    );
+  return fetch(buildApiUrl(endpoint, `/${osmId}`), options).then(response =>
+    convertElementXmlToJson(response, elementType, elementId)
+  );
 }
 
 /**
  * Request to fetch way or relation and all other elements referenced by it
  * @param {string} endpoint The API endpoint
  * @param {string} osmId Can only contain either a way or a relation
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise} Promise with well formatted JSON content
  */
-export function fetchElementRequestFull(endpoint, osmId) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/full`))
-    .then(response => response.text())
-    .then(response =>
+export function fetchElementRequestFull(endpoint, osmId, options = {}) {
+  return fetch(buildApiUrl(endpoint, `/${osmId}/full`), options).then(
+    response =>
       xmlToJson(response)
         .then(json => Promise.resolve(cleanMapJson(json)))
         .catch(error => {
           throw new RequestException(error);
         })
-    );
+  );
 }
 
 /**
  * Request to fetch an OSM element
  * @param {string} endpoint The API endpoint
  * @param {Array} osmIds Eg: ['node/12345', 'node/6789']. We do not support optional version e.g 'node/12345v2'
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function multiFetchElementsByTypeRequest(endpoint, osmIds) {
+export function multiFetchElementsByTypeRequest(
+  endpoint,
+  osmIds,
+  options = {}
+) {
   const elementType = findElementType(osmIds[0]);
   const ids = osmIds.map(osmId => findElementId(osmId));
   return fetch(
-    buildApiUrl(endpoint, `/${elementType}s?${elementType}s=${ids.join(',')}`)
-  )
-    .then(response => response.text())
-    .then(response =>
-      xmlToJson(response)
-        .then(json => Promise.resolve(cleanMapJson(json)))
-        .catch(error => {
-          throw new RequestException(error);
-        })
-    );
+    buildApiUrl(endpoint, `/${elementType}s?${elementType}s=${ids.join(',')}`),
+    options
+  ).then(response =>
+    xmlToJson(response)
+      .then(json => Promise.resolve(cleanMapJson(json)))
+      .catch(error => {
+        throw new RequestException(error);
+      })
+  );
 }
 
 /**
  * Request to fetch ways using the given OSM node
  * @param {string} endpoint The API endpoint
  * @param {string} osmId
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
-export function fetchWaysForNodeRequest(endpoint, osmId) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/ways`))
-    .then(response => response.text())
-    .then(response => convertElementsListXmlToJson(response, 'way'));
+export function fetchWaysForNodeRequest(endpoint, osmId, options = {}) {
+  return fetch(buildApiUrl(endpoint, `/${osmId}/ways`), options).then(
+    response => convertElementsListXmlToJson(response, 'way')
+  );
 }
 
 /**
@@ -150,6 +158,8 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
  * @param {number} top The maximal latitude (Y)
  * @param {number} [limit] The maximal amount of notes to retrieve (between 1 and 10000, defaults to 100)
  * @param {number} [closedDays] The amount of days a note needs to be closed to no longer be returned (defaults to 7, 0 means only opened notes are returned, and -1 means all notes are returned)
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
 export function fetchNotesRequest(
@@ -159,7 +169,8 @@ export function fetchNotesRequest(
   right,
   top,
   limit = null,
-  closedDays = null
+  closedDays = null,
+  options = {}
 ) {
   const params = {
     bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
@@ -173,19 +184,9 @@ export function fetchNotesRequest(
     params.closed = closedDays;
   }
 
-  return fetch(buildApiUrl(endpoint, '/notes', params))
-    .then(response => {
-      if (response.status !== 200) {
-        return response.text().then(message => Promise.reject(message));
-      }
-
-      return response;
-    })
-    .catch(error => {
-      throw new RequestException(error);
-    })
-    .then(response => response.text())
-    .then(response => convertNotesXmlToJson(response));
+  return fetch(buildApiUrl(endpoint, '/notes', params), options).then(
+    response => convertNotesXmlToJson(response)
+  );
 }
 
 /**
@@ -201,6 +202,8 @@ export function fetchNotesRequest(
  * @param {number} [user] Specifies the creator of the returned notes by using a valid id of the user. Does not work together with the display_name parameter
  * @param {number} [from] Specifies the beginning of a date range to search in for a note
  * @param {number} [to] Specifies the end of a date range to search in for a note. Today date is the default
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
 export function fetchNotesSearchRequest(
@@ -212,7 +215,8 @@ export function fetchNotesSearchRequest(
   display_name = null,
   user = null,
   from = null,
-  to = null
+  to = null,
+  options = {}
 ) {
   const params = {
     q
@@ -238,31 +242,13 @@ export function fetchNotesSearchRequest(
     }
   });
 
-  return fetch(buildApiUrl(endpoint, path, params))
-    .then(response => {
-      if (response.status !== 200) {
-        return response.text().then(message =>
-          Promise.reject({
-            message,
-            status: response.status,
-            statusText: response.statusText
-          })
-        );
-      }
-
-      return response;
-    })
-    .catch(error => {
-      throw new RequestException(error);
-    })
-    .then(response => response.text())
-    .then(text => {
-      if (format === 'xml') {
-        return convertNotesXmlToJson(text);
-      } else {
-        return text;
-      }
-    });
+  return fetch(buildApiUrl(endpoint, path, params), options).then(text => {
+    if (format === 'xml') {
+      return convertNotesXmlToJson(text);
+    } else {
+      return text;
+    }
+  });
 }
 
 /**
@@ -272,31 +258,21 @@ export function fetchNotesSearchRequest(
  * @param {string} format It can be 'xml' (default) to get OSM
  * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
  * return GeoJSON, 'gpx' to return GPX and 'rss' to return GeoRSS
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function fetchNoteByIdRequest(endpoint, noteId, format = 'xml') {
+export function fetchNoteByIdRequest(
+  endpoint,
+  noteId,
+  format = 'xml',
+  options = {}
+) {
   let path = `/notes/${noteId.toString()}.${format}`;
   if (format === 'raw') {
     path = `/notes/${noteId.toString()}`;
   }
-  return fetch(buildApiUrl(endpoint, path))
-    .then(response => {
-      if (response.status !== 200) {
-        return response.text().then(message =>
-          Promise.reject({
-            message,
-            status: response.status,
-            statusText: response.statusText
-          })
-        );
-      }
-
-      return response;
-    })
-    .catch(error => {
-      throw new RequestException(error);
-    })
-    .then(response => response.text())
+  return fetch(buildApiUrl(endpoint, path), options)
     .then(text => {
       if (format === 'xml') {
         return convertNotesXmlToJson(text);
@@ -494,26 +470,15 @@ export function changesetCheckRequest(auth, endpoint, changesetId) {
  * Get a changeset for a given id at OSM.
  * @param {string} endpoint The API endpoint
  * @param {number} changesetId
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function changesetGetRequest(endpoint, changesetId) {
-  return fetch(buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`))
-    .then(response => {
-      if (response.status !== 200) {
-        return response.text().then(message =>
-          Promise.reject({
-            message,
-            status: response.status,
-            statusText: response.statusText
-          })
-        );
-      }
-      return response.text();
-    })
-    .catch(error => {
-      throw new RequestException(error);
-    })
-    .then(response => xmlToJson(response));
+export function changesetGetRequest(endpoint, changesetId, options = {}) {
+  return fetch(
+    buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
+    options
+  ).then(response => xmlToJson(response));
 }
 /**
  * Update tags if a given changeset is still opened at OSM.
@@ -665,6 +630,7 @@ export function uploadChangesetOscRequest(
  * @param {number} [options.open] Only finds changesets that are still open but excludes changesets that are closed or have reached the element limit for a changeset (50.000 at the moment). Can be set to true
  * @param {number} [options.closed] Only finds changesets that are closed or have reached the element limit. Can be set to true
  * @param {number} [options.changesets] Finds changesets with the specified ids
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
 export function fetchChangesetsRequest(endpoint, options = {}) {
@@ -696,25 +662,9 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
     delete params.top;
   }
 
-  return fetch(buildApiUrl(endpoint, '/changesets', params))
-    .then(response => {
-      if (response.status !== 200) {
-        return response.text().then(message =>
-          Promise.reject({
-            message,
-            status: response.status,
-            statusText: response.statusText
-          })
-        );
-      }
-
-      return response;
-    })
-    .catch(error => {
-      throw new RequestException(error);
-    })
-    .then(response => response.text())
-    .then(text => xmlToJson(text));
+  return fetch(buildApiUrl(endpoint, '/changesets', params), {
+    auth: options.auth
+  }).then(text => xmlToJson(text));
 }
 
 /**
@@ -725,6 +675,8 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
  * @param {number} right The maximal longitude (X)
  * @param {number} top The maximal latitude (Y)
  * @param {string} mode The mode is json so output in the promise will be an object, otherwise, it will be an object and a XML string
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
 export function fetchMapByBboxRequest(
@@ -733,7 +685,8 @@ export function fetchMapByBboxRequest(
   bottom,
   right,
   top,
-  mode = 'json'
+  mode = 'json',
+  options = {}
 ) {
   const args = Array.from(arguments);
   if (args.length < 5 && args.some(arg => typeof arg === 'undefined')) {
@@ -743,17 +696,8 @@ export function fetchMapByBboxRequest(
       bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
     };
 
-    return fetch(buildApiUrl(endpoint, '/map', params))
-      .then(response => {
-        if (response.status !== 200) {
-          return response.text().then(message => Promise.reject(message));
-        }
-        return response.text();
-      })
-      .catch(error => {
-        throw new RequestException(error);
-      })
-      .then(response => {
+    return fetch(buildApiUrl(endpoint, '/map', params), options).then(
+      response => {
         if (mode !== 'json') {
           return Promise.all([
             xmlToJson(response)
@@ -770,7 +714,8 @@ export function fetchMapByBboxRequest(
               throw new RequestException(error);
             });
         }
-      });
+      }
+    );
   }
 }
 
@@ -826,12 +771,14 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
 /** Request to fetch relation(s) from an OSM element
  * @param {string} endpoint The API endpoint
  * @param {string} osmId
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function fetchRelationsForElementRequest(endpoint, osmId) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/relations`))
-    .then(response => response.text())
-    .then(response => convertElementsListXmlToJson(response, 'relation'));
+export function fetchRelationsForElementRequest(endpoint, osmId, options = {}) {
+  return fetch(buildApiUrl(endpoint, `/${osmId}/relations`), options).then(
+    response => convertElementsListXmlToJson(response, 'relation')
+  );
 }
 
 /**

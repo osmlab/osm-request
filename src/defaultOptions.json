@@ -3,5 +3,6 @@
   "oauthConsumerKey": "",
   "oauthSecret": "",
   "oauthUserToken": "",
-  "oauthUserTokenSecret": ""
+  "oauthUserTokenSecret": "",
+  "always_authenticated": false
 }
