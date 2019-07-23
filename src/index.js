@@ -43,6 +43,8 @@ export default class OsmRequest {
   /**
    * @access public
    * @param {Object} [options] Custom options to apply
+   * @param {string} [options.endpoint] URL of the OSM server to use (defaults to https://www.openstreetmap.org)
+   * @param {boolean} [options.always_authenticated] Set to true if every call to API should use your credentials, false for only requiring calls (defaults to false)
    */
   constructor(options = {}) {
     this._options = {
@@ -87,7 +89,8 @@ export default class OsmRequest {
       right,
       top,
       limit,
-      closedDays
+      closedDays,
+      this._options.always_authenticated ? { auth: this._auth } : {}
     );
   }
 
@@ -124,7 +127,8 @@ export default class OsmRequest {
       display_name,
       user,
       from,
-      to
+      to,
+      this._options.always_authenticated ? { auth: this._auth } : {}
     );
   }
 
@@ -137,7 +141,12 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchNote(noteId, format = 'xml') {
-    return fetchNoteByIdRequest(this.endpoint, noteId, format);
+    return fetchNoteByIdRequest(
+      this.endpoint,
+      noteId,
+      format,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
@@ -228,7 +237,11 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchChangeset(changesetId) {
-    return changesetGetRequest(this.endpoint, changesetId);
+    return changesetGetRequest(
+      this.endpoint,
+      changesetId,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
@@ -293,7 +306,10 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchChangesets(options) {
-    return fetchChangesetsRequest(this.endpoint, options);
+    return fetchChangesetsRequest(this.endpoint, {
+      auth: this._options.always_authenticated ? this._auth : null,
+      ...options
+    });
   }
 
   /**
@@ -411,9 +427,17 @@ export default class OsmRequest {
    */
   fetchElement(osmId, options) {
     if (options && options.full) {
-      return fetchElementRequestFull(this.endpoint, osmId);
+      return fetchElementRequestFull(
+        this.endpoint,
+        osmId,
+        this._options.always_authenticated ? { auth: this._auth } : {}
+      );
     } else {
-      return fetchElementRequest(this.endpoint, osmId);
+      return fetchElementRequest(
+        this.endpoint,
+        osmId,
+        this._options.always_authenticated ? { auth: this._auth } : {}
+      );
     }
   }
 
@@ -423,7 +447,11 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchMultipleElements(osmIds) {
-    return multiFetchElementsByTypeRequest(this.endpoint, osmIds);
+    return multiFetchElementsByTypeRequest(
+      this.endpoint,
+      osmIds,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
@@ -432,7 +460,11 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchRelationsForElement(osmId) {
-    return fetchRelationsForElementRequest(this.endpoint, osmId);
+    return fetchRelationsForElementRequest(
+      this.endpoint,
+      osmId,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
@@ -441,7 +473,11 @@ export default class OsmRequest {
    * @return {Promise} Resolve on ways array (each one can be used as an Element for all other functions)
    */
   fetchWaysForNode(osmId) {
-    return fetchWaysForNodeRequest(this.endpoint, osmId);
+    return fetchWaysForNodeRequest(
+      this.endpoint,
+      osmId,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
@@ -699,7 +735,15 @@ export default class OsmRequest {
    * @return {Promise}
    */
   fetchMapByBbox(left, bottom, right, top, mode = 'json') {
-    return fetchMapByBboxRequest(this.endpoint, left, bottom, right, top, mode);
+    return fetchMapByBboxRequest(
+      this.endpoint,
+      left,
+      bottom,
+      right,
+      top,
+      mode,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**
