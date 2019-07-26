@@ -644,6 +644,25 @@ describe('OsmRequest', () => {
       expect(elementWithoutTags).toMatchSnapshot();
     });
   });
+  describe('getTags', () => {
+    it('returns tags of node with tag property', () => {
+      const osm = new OsmRequest();
+      const tags = osm.getTags(sampleNode);
+      expect(tags).toMatchSnapshot();
+    });
+
+    it('returns tags of node without tag property', () => {
+      const osm = new OsmRequest();
+      const tags = osm.getTags(sampleNodeNoTags);
+      expect(tags).toMatchSnapshot();
+    });
+
+    it('returns tags of way with tag property', () => {
+      const osm = new OsmRequest();
+      const tags = osm.getTags(sampleWay);
+      expect(tags).toMatchSnapshot();
+    });
+  });
   describe('setProperty', () => {
     it('has the same behavior as setTag', () => {
       const osm = new OsmRequest();

@@ -496,6 +496,21 @@ export default class OsmRequest {
   }
 
   /**
+   * Get all tags of this element as an object
+   * @param {Object} element
+   * @return {Object} Tags of this element
+   */
+  getTags(element) {
+    const tags = {};
+    if (element && element.tag) {
+      element.tag.forEach(t => {
+        tags[t.$.k] = t.$.v;
+      });
+    }
+    return tags;
+  }
+
+  /**
    * Use setTag instead. Will be removed in the future.
    * @deprecated
    */

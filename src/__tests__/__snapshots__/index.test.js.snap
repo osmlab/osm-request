@@ -3328,6 +3328,20 @@ Object {
 }
 `;
 
+exports[`OsmRequest getTags returns tags of node with tag property 1`] = `Object {}`;
+
+exports[`OsmRequest getTags returns tags of node without tag property 1`] = `Object {}`;
+
+exports[`OsmRequest getTags returns tags of way with tag property 1`] = `
+Object {
+  "alt_name": "L'Estréniol",
+  "landuse": "retail",
+  "name": "Pôle commercial du Comtal Ouest",
+  "old_name": "Zone Commercial l'Astragale",
+  "wikipedia": "fr:Le Comtal (Sébazac-Concourès)",
+}
+`;
+
 exports[`OsmRequest removeTag Should remove a tag from an element 1`] = `
 Object {
   "$": Object {
