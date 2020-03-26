@@ -131,5 +131,9 @@ export function authxhr(opts, auth) {
         throw new RequestException(error);
       })
       .then(response => response.text());
+  } else {
+    throw new Error(
+      'Authenticated XHR needs either OAuth or Basic auth information'
+    );
   }
 }
