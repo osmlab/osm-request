@@ -264,21 +264,13 @@ export function fetchNoteByIdRequest(
   if (format === 'raw') {
     path = `/notes/${noteId.toString()}`;
   }
-  return fetch(buildApiUrl(endpoint, path), options)
-    .then(text => {
-      if (format === 'xml') {
-        return convertNotesXmlToJson(text);
-      } else {
-        return text;
-      }
-    })
-    .then(response => {
-      if (format === 'xml') {
-        return response.find(() => true);
-      } else {
-        return response;
-      }
-    });
+  return fetch(buildApiUrl(endpoint, path), options).then(text => {
+    if (format === 'xml') {
+      return convertNotesXmlToJson(text);
+    } else {
+      return text;
+    }
+  });
 }
 
 /**
@@ -304,9 +296,7 @@ export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
     },
     auth
   )
-    .then(xml =>
-      convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
-    )
+    .then(txt => convertNotesXmlToJson(txt))
     .then(arr => arr.find(() => true));
 }
 
@@ -338,9 +328,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
     },
     auth
   )
-    .then(xml =>
-      convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
-    )
+    .then(txt => convertNotesXmlToJson(txt))
     .then(arr => arr.find(() => true));
 }
 
@@ -461,7 +449,7 @@ export function updateChangesetTagsRequest(
       content: changesetXml
     },
     auth
-  ).then(xml => xmlToJson(new XMLSerializer().serializeToString(xml)));
+  ).then(txt => xmlToJson(txt));
 }
 
 /**
@@ -515,7 +503,7 @@ export function uploadChangesetOscRequest(
       content: osmChangeContent
     },
     auth
-  ).then(xml => xmlToJson(new XMLSerializer().serializeToString(xml)));
+  ).then(txt => xmlToJson(txt));
 }
 
 /**
@@ -696,7 +684,7 @@ export function getUserPreferencesRequest(auth, endpoint) {
       }
     },
     auth
-  ).then(xml => xmlToJson(new XMLSerializer().serializeToString(xml)));
+  ).then(txt => xmlToJson(txt));
 }
 
 /**

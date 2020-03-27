@@ -1,5 +1,5 @@
 import crossFetch from 'cross-fetch';
-import xmlsrz from 'xmlserializer';
+import serializer from 'xmlserializer';
 import { RequestException } from '../exceptions/request';
 
 /**
@@ -32,9 +32,7 @@ export function fetch(url, options = {}) {
             );
           } else {
             if (res instanceof XMLDocument) {
-              const mySerializer =
-                window && window.XMLSerializer ? new XMLSerializer() : xmlsrz;
-              return resolve(mySerializer.serializeToString(res));
+              return resolve(serializer.serializeToString(res));
             } else {
               return resolve(res);
             }
@@ -87,9 +85,7 @@ export function authxhr(opts, auth) {
           );
         } else {
           if (res instanceof XMLDocument) {
-            const mySerializer =
-              window && window.XMLSerializer ? new XMLSerializer() : xmlsrz;
-            return resolve(mySerializer.serializeToString(res));
+            return resolve(serializer.serializeToString(res));
           } else {
             return resolve(res);
           }
