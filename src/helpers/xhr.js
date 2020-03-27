@@ -1,5 +1,5 @@
 import crossFetch from 'cross-fetch';
-import xmlsrz from 'xmlserializer';
+import serializer from 'xmlserializer';
 import { RequestException } from '../exceptions/request';
 
 /**
@@ -32,9 +32,7 @@ export function fetch(url, options = {}) {
             );
           } else {
             if (res instanceof XMLDocument) {
-              const mySerializer =
-                window && window.XMLSerializer ? new XMLSerializer() : xmlsrz;
-              return resolve(mySerializer.serializeToString(res));
+              return resolve(serializer.serializeToString(res));
             } else {
               return resolve(res);
             }
@@ -61,5 +59,77 @@ export function fetch(url, options = {}) {
         throw new RequestException(error);
       })
       .then(response => response.text());
+  }
+}
+
+/**
+ * Wrapper for authenticated XmlHttpRequest
+ * Uses either basic authentication or osm-auth xhr function
+ * @param {Object} opts Options object
+ * @param {Object} auth Auth module to use
+ * @return {Promise} Resolves on response text, or rejects if any HTTP error occurs
+ */
+export function authxhr(opts, auth) {
+  if (auth.xhr) {
+    return new Promise((resolve, reject) => {
+      auth.xhr(opts, (err, res) => {
+        if (err) {
+          return reject(
+            new RequestException(
+              JSON.stringify({
+                message: `Request failed`,
+                status: err.status,
+                statusText: err.statusText
+              })
+            )
+          );
+        } else {
+          if (res instanceof XMLDocument) {
+            return resolve(serializer.serializeToString(res));
+          } else {
+            return resolve(res);
+          }
+        }
+      });
+    });
+  } else if (auth.basic) {
+    if (opts.content) {
+      opts.body = opts.content;
+    }
+
+    opts.headers = {};
+    if (opts.options && opts.options.header) {
+      opts.headers = opts.options.header;
+    }
+
+    opts.headers['Authorization'] =
+      'Basic ' + btoa(auth.basic.user + ':' + auth.basic.pass);
+
+    return crossFetch(opts.path, opts)
+      .then(response => {
+        if (response.status !== 200) {
+          return response.text().then(message =>
+            Promise.reject(
+              new RequestException(
+                JSON.stringify({
+                  message: message,
+                  status: response.status,
+                  statusText: response.statusText
+                })
+              )
+            )
+          );
+        }
+
+        return response;
+      })
+      .catch(error => {
+        throw new RequestException(error);
+      })
+      .then(response => response.text());
+  } else {
+    throw new Error(
+      'Authenticated XHR needs either OAuth or Basic auth information'
+    );
   }
 }

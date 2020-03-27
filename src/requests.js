@@ -1,4 +1,4 @@
-import { fetch } from 'helpers/xhr';
+import { fetch, authxhr } from 'helpers/xhr';
 import {
   findElementType,
   findElementId,
@@ -125,28 +125,20 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
       ? `/${elementType}/${elementId}`
       : `/${elementType}/create`;
 
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(endpoint, path),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: elementXml
-      },
-      (err, version) => {
-        if (err) {
-          reject(new RequestException('Element sending request failed'));
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, path),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-
-        return resolve(parseInt(version, 10));
-      }
-    );
-  });
+      },
+      content: elementXml
+    },
+    auth
+  ).then(version => parseInt(version, 10));
 }
 
 /**
@@ -272,21 +264,13 @@ export function fetchNoteByIdRequest(
   if (format === 'raw') {
     path = `/notes/${noteId.toString()}`;
   }
-  return fetch(buildApiUrl(endpoint, path), options)
-    .then(text => {
-      if (format === 'xml') {
-        return convertNotesXmlToJson(text);
-      } else {
-        return text;
-      }
-    })
-    .then(response => {
-      if (format === 'xml') {
-        return response.find(() => true);
-      } else {
-        return response;
-      }
-    });
+  return fetch(buildApiUrl(endpoint, path), options).then(text => {
+    if (format === 'xml') {
+      return convertNotesXmlToJson(text);
+    } else {
+      return text;
+    }
+  });
 }
 
 /**
@@ -299,37 +283,21 @@ export function fetchNoteByIdRequest(
  * @return {Promise}
  */
 export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'POST',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/notes/${noteId}/${type}`, { text }),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
+  return authxhr(
+    {
+      method: 'POST',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/notes/${noteId}/${type}`, { text }),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: `Note ${type} change failed`,
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        }
-
-        return resolve(
-          convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
-        );
       }
-    );
-  }).then(arr => arr.find(() => true));
+    },
+    auth
+  )
+    .then(txt => convertNotesXmlToJson(txt))
+    .then(arr => arr.find(() => true));
 }
 
 /**
@@ -347,37 +315,21 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
     lon,
     text
   };
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'POST',
-        prefix: false,
-        path: buildApiUrl(endpoint, '/notes', params),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
+  return authxhr(
+    {
+      method: 'POST',
+      prefix: false,
+      path: buildApiUrl(endpoint, '/notes', params),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'Note creation failed',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        }
-
-        return resolve(
-          convertNotesXmlToJson(new XMLSerializer().serializeToString(xml))
-        );
       }
-    );
-  }).then(arr => arr.find(() => true));
+    },
+    auth
+  )
+    .then(txt => convertNotesXmlToJson(txt))
+    .then(arr => arr.find(() => true));
 }
 
 /**
@@ -398,30 +350,20 @@ export function createChangesetRequest(
 ) {
   const changesetXml = buildChangesetXml(createdBy, comment, tags);
 
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(endpoint, '/changeset/create'),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: changesetXml
-      },
-      (err, changesetId) => {
-        if (err) {
-          return reject(
-            new RequestException('Changeset creation request failed')
-          );
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, '/changeset/create'),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-
-        return resolve(parseInt(changesetId, 10));
-      }
-    );
-  });
+      },
+      content: changesetXml
+    },
+    auth
+  ).then(changesetId => parseInt(changesetId, 10));
 }
 
 /**
@@ -432,37 +374,31 @@ export function createChangesetRequest(
  * @return {Promise}
  */
 export function changesetCheckRequest(auth, endpoint, changesetId) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'GET',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
+  return authxhr(
+    {
+      method: 'GET',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(new RequestException('Changeset check request failed'));
-        }
-
-        let isOpened = 'false';
-        const changeset = xml.getElementsByTagName('changeset')[0];
-
-        if (changeset) {
-          isOpened = changeset.getAttribute('open');
-        }
-
-        if (isOpened === 'false') {
-          return reject(err);
-        }
-
-        return resolve(changesetId);
       }
-    );
+    },
+    auth
+  ).then(xml => {
+    let isOpened = 'false';
+    const changeset = xml.getElementsByTagName('changeset')[0];
+
+    if (changeset) {
+      isOpened = changeset.getAttribute('open');
+    }
+
+    if (isOpened === 'false') {
+      throw new Error('Changeset not opened');
+    }
+
+    return changesetId;
   });
 }
 
@@ -500,36 +436,20 @@ export function updateChangesetTagsRequest(
   tags = {}
 ) {
   const changesetXml = buildChangesetFromObjectXml(tags, createdBy, comment);
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: changesetXml
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'Changeset update request failed',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        } else {
-          return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      }
-    );
-  });
+      },
+      content: changesetXml
+    },
+    auth
+  ).then(txt => xmlToJson(txt));
 }
 
 /**
@@ -541,38 +461,19 @@ export function updateChangesetTagsRequest(
  * @return {Promise} Empty string if it works
  */
 export function closeChangesetRequest(auth, endpoint, changesetId) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(
-          endpoint,
-          `/changeset/${changesetId.toString()}/close`
-        ),
-        options: {
-          header: {
-            'Content-Type': 'text/plain'
-          }
-        }
-      },
-      (err, text) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'Changeset close request failed',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        } else {
-          return resolve(text);
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}/close`),
+      options: {
+        header: {
+          'Content-Type': 'text/plain'
         }
       }
-    );
-  });
+    },
+    auth
+  );
 }
 
 /**
@@ -589,31 +490,20 @@ export function uploadChangesetOscRequest(
   changesetId,
   osmChangeContent
 ) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'POST',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/changeset/create`),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: osmChangeContent
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              'Changeset OSC file content upload request failed'
-            )
-          );
+  return authxhr(
+    {
+      method: 'POST',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/changeset/create`),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-        return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
-      }
-    );
-  });
+      },
+      content: osmChangeContent
+    },
+    auth
+  ).then(txt => xmlToJson(txt));
 }
 
 /**
@@ -745,27 +635,20 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
   const elementXml = jsonToXml(osmContent);
   const path = `/${elementType}/${elementId}`;
 
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'DELETE',
-        prefix: false,
-        path: buildApiUrl(endpoint, path),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: elementXml
-      },
-      (err, version) => {
-        if (err) {
-          return reject(new RequestException(err));
+  return authxhr(
+    {
+      method: 'DELETE',
+      prefix: false,
+      path: buildApiUrl(endpoint, path),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-        return resolve(parseInt(version, 10));
-      }
-    );
-  });
+      },
+      content: elementXml
+    },
+    auth
+  ).then(version => parseInt(version, 10));
 }
 
 /** Request to fetch relation(s) from an OSM element
@@ -789,34 +672,19 @@ export function fetchRelationsForElementRequest(endpoint, osmId, options = {}) {
  * @return {Promise} Promise with the value for the key
  */
 export function getUserPreferencesRequest(auth, endpoint) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'GET',
-        prefix: false,
-        path: buildApiUrl(endpoint, '/user/preferences'),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
+  return authxhr(
+    {
+      method: 'GET',
+      prefix: false,
+      path: buildApiUrl(endpoint, '/user/preferences'),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      },
-      (err, xml) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'Issue to get user preferences',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        }
-        return resolve(xmlToJson(new XMLSerializer().serializeToString(xml)));
       }
-    );
-  });
+    },
+    auth
+  ).then(txt => xmlToJson(txt));
 }
 
 /**
@@ -828,36 +696,20 @@ export function getUserPreferencesRequest(auth, endpoint) {
  */
 export function setUserPreferencesRequest(auth, endpoint, object) {
   const preferencesXml = buildPreferencesFromObjectXml(object);
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(endpoint, '/user/preferences'),
-        options: {
-          header: {
-            'Content-Type': 'text/xml'
-          }
-        },
-        content: preferencesXml
-      },
-      (err, text) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'User preferences update request failed',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        } else {
-          return resolve(text);
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, '/user/preferences'),
+      options: {
+        header: {
+          'Content-Type': 'text/xml'
         }
-      }
-    );
-  });
+      },
+      content: preferencesXml
+    },
+    auth
+  );
 }
 
 /**
@@ -869,29 +721,14 @@ export function setUserPreferencesRequest(auth, endpoint, object) {
  * @return {Promise} Promise with the value for the key
  */
 export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'GET',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/user/preferences/${key}`)
-      },
-      (err, text) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: 'Issue to get this user preference',
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        }
-        return resolve(text);
-      }
-    );
-  });
+  return authxhr(
+    {
+      method: 'GET',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/user/preferences/${key}`)
+    },
+    auth
+  );
 }
 
 /**
@@ -903,36 +740,20 @@ export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
  * @return {Promise} Promise
  */
 export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'PUT',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/user/preferences/${key}`),
-        options: {
-          header: {
-            'Content-Type': 'text/plain'
-          }
-        },
-        content: value
-      },
-      (err, text) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: `User preference update request failed for ${key}`,
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        } else {
-          return resolve(text);
+  return authxhr(
+    {
+      method: 'PUT',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/user/preferences/${key}`),
+      options: {
+        header: {
+          'Content-Type': 'text/plain'
         }
-      }
-    );
-  });
+      },
+      content: value
+    },
+    auth
+  );
 }
 
 /**
@@ -943,28 +764,12 @@ export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
  * @return {Promise} Promise
  */
 export function deleteUserPreferenceRequest(auth, endpoint, key) {
-  return new Promise((resolve, reject) => {
-    auth.xhr(
-      {
-        method: 'DELETE',
-        prefix: false,
-        path: buildApiUrl(endpoint, `/user/preferences/${key}`)
-      },
-      (err, text) => {
-        if (err) {
-          return reject(
-            new RequestException(
-              JSON.stringify({
-                message: `User preference deletion request failed for ${key}`,
-                status: err.status,
-                statusText: err.statusText
-              })
-            )
-          );
-        } else {
-          return resolve(text);
-        }
-      }
-    );
-  });
+  return authxhr(
+    {
+      method: 'DELETE',
+      prefix: false,
+      path: buildApiUrl(endpoint, `/user/preferences/${key}`)
+    },
+    auth
+  );
 }

@@ -45,6 +45,9 @@ export default class OsmRequest {
    * @param {Object} [options] Custom options to apply
    * @param {string} [options.endpoint] URL of the OSM server to use (defaults to https://www.openstreetmap.org)
    * @param {boolean} [options.always_authenticated] Set to true if every call to API should use your credentials, false for only requiring calls (defaults to false)
+   * @param {Object} [options.basicauth] Use basic authentication instead of OAuth (not safe)
+   * @param {string} [options.basicauth.user] Username
+   * @param {string} [options.basicauth.pass] Password
    */
   constructor(options = {}) {
     this._options = {
@@ -54,13 +57,17 @@ export default class OsmRequest {
 
     this._options.endpoint = removeTrailingSlashes(this._options.endpoint);
 
-    this._auth = osmAuth({
-      url: this._options.endpoint,
-      oauth_consumer_key: this._options.oauthConsumerKey,
-      oauth_secret: this._options.oauthSecret,
-      oauth_token: this._options.oauthUserToken,
-      oauth_token_secret: this._options.oauthUserTokenSecret
-    });
+    if (this._options.basicauth) {
+      this._auth = { basic: this._options.basicauth };
+    } else {
+      this._auth = osmAuth({
+        url: this._options.endpoint,
+        oauth_consumer_key: this._options.oauthConsumerKey,
+        oauth_secret: this._options.oauthSecret,
+        oauth_token: this._options.oauthUserToken,
+        oauth_token_secret: this._options.oauthUserTokenSecret
+      });
+    }
   }
 
   /**
