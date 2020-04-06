@@ -45,11 +45,13 @@ export function fetch(url, options = {}) {
       .then(response => {
         if (response.status !== 200) {
           return response.text().then(message =>
-            Promise.reject({
-              message,
-              status: response.status,
-              statusText: response.statusText
-            })
+            Promise.reject(
+              JSON.stringify({
+                message,
+                status: response.status,
+                statusText: response.statusText
+              })
+            )
           );
         }
 
@@ -110,13 +112,11 @@ export function authxhr(opts, auth) {
         if (response.status !== 200) {
           return response.text().then(message =>
             Promise.reject(
-              new RequestException(
-                JSON.stringify({
-                  message: message,
-                  status: response.status,
-                  statusText: response.statusText
-                })
-              )
+              JSON.stringify({
+                message: message,
+                status: response.status,
+                statusText: response.statusText
+              })
             )
           );
         }
