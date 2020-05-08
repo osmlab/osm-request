@@ -235,7 +235,11 @@ export default class OsmRequest {
    * @return {Promise}
    */
   isChangesetStillOpen(changesetId) {
-    return changesetCheckRequest(this._auth, this.endpoint, changesetId);
+    return changesetCheckRequest(
+      this.endpoint,
+      changesetId,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
   }
 
   /**

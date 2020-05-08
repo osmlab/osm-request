@@ -1060,9 +1060,10 @@ Checks if a given changeset is still opened at OSM.
 
 **Parameters**
 
--   `auth` **osmAuth** An instance of osm-auth
 -   `endpoint` **[string][94]** The API endpoint
 -   `changesetId` **[number][99]** 
+-   `options` **[Object][95]?** Options (optional, default `{}`)
+    -   `options.auth` **[Object][95]?** Auth XHR object to use instead of unauthenticated call
 
 Returns **[Promise][97]** 
 

@@ -368,33 +368,23 @@ export function createChangesetRequest(
 
 /**
  * Checks if a given changeset is still opened at OSM.
- * @param {osmAuth} auth An instance of osm-auth
  * @param {string} endpoint The API endpoint
  * @param {number} changesetId
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function changesetCheckRequest(auth, endpoint, changesetId) {
-  return authxhr(
-    {
-      method: 'GET',
-      prefix: false,
-      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
-      options: {
-        header: {
-          'Content-Type': 'text/xml'
-        }
-      }
-    },
-    auth
-  ).then(xml => {
-    let isOpened = 'false';
-    const changeset = xml.getElementsByTagName('changeset')[0];
+export function changesetCheckRequest(endpoint, changesetId, options = {}) {
+  return changesetGetRequest(endpoint, changesetId, options).then(res => {
+    let isOpened;
 
-    if (changeset) {
-      isOpened = changeset.getAttribute('open');
+    try {
+      isOpened = res.osm.changeset[0].$.open === 'true';
+    } catch (e) {
+      isOpened = false;
     }
 
-    if (isOpened === 'false') {
+    if (!isOpened) {
       throw new Error('Changeset not opened');
     }
 
