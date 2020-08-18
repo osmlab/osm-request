@@ -1,7 +1,7 @@
 {
   "name": "osm-request",
   "description": "Request the OSM API from Javascript, with promises :)",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "homepage": "https://github.com/osmlab/osm-request/",
   "repository": "https://github.com/osmlab/osm-request/",
   "bugs": "https://github.com/osmlab/osm-request/issues",
