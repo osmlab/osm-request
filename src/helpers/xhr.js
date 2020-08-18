@@ -94,7 +94,7 @@ export function authxhr(opts, auth) {
         }
       });
     });
-  } else if (auth.basic) {
+  } else if (auth.basic || auth.skip) {
     if (opts.content) {
       opts.body = opts.content;
     }
@@ -104,8 +104,10 @@ export function authxhr(opts, auth) {
       opts.headers = opts.options.header;
     }
 
-    opts.headers['Authorization'] =
-      'Basic ' + btoa(auth.basic.user + ':' + auth.basic.pass);
+    if (auth.basic) {
+      opts.headers['Authorization'] =
+        'Basic ' + btoa(auth.basic.user + ':' + auth.basic.pass);
+    }
 
     return crossFetch(opts.path, opts)
       .then(response => {

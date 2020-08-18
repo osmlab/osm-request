@@ -27,6 +27,14 @@ describe('XHR helpers', () => {
       expect(res).toBeTruthy();
     });
 
+    it('works with skipped auth', async () => {
+      const res = await authxhr(
+        { method: 'GET', path: 'https://whatev.er/file.json' },
+        { skip: true }
+      );
+      expect(res).toBeTruthy();
+    });
+
     it('works with OAuth', async () => {
       const res = await authxhr(
         { method: 'GET', path: 'https://whatev.er/file.json' },

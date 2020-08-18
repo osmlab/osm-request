@@ -344,6 +344,8 @@ Returns **[string][94]**
 
 OSM API request handler
 
+Type: [Object][95]
+
 **Parameters**
 
 -   `options` **[Object][95]?** Custom options to apply (optional, default `{}`)
