@@ -28,6 +28,7 @@ import {
   uploadChangesetOscRequest,
   fetchChangesetsRequest,
   deleteElementRequest,
+  fetchUserRequest,
   getUserPreferencesRequest,
   setUserPreferencesRequest,
   getUserPreferenceByKeyRequest,
@@ -786,6 +787,20 @@ export default class OsmRequest {
       changesetId
     );
   }
+
+  /**
+   * Get an user details
+   * @param {string} userId The user ID
+   * @return {Promise} Resolves on user details as JSON
+   */
+  fetchUser(userId) {
+    return fetchUserRequest(
+      this.endpoint,
+      userId,
+      this._options.always_authenticated ? { auth: this._auth } : {}
+    );
+  }
+
   /**
    * Get all preferences from connected user
    * @return {Promise} Promise with Well formatted JSON of user preferences

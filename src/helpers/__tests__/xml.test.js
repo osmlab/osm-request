@@ -11,7 +11,8 @@ import {
   buildChangesetFromObjectXml,
   buildPreferencesFromObjectXml,
   cleanMapJson,
-  convertElementsListXmlToJson
+  convertElementsListXmlToJson,
+  convertUserXmlToJson
 } from '../xml';
 
 const nodeSample = fs.readFileSync(
@@ -22,6 +23,9 @@ const notesSample = fs.readFileSync(
 );
 const wayFullSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/way_full.xml')
+);
+const userSample = fs.readFileSync(
+  path.join(__dirname, '../../__mocks__/user.xml')
 );
 
 jest.mock('../../../package.json', () => ({
@@ -96,6 +100,14 @@ describe('XML helpers', () => {
   describe('convertNotesXmlToJson', () => {
     it('Should convert a Notes XML string into a proper JSON object', async done => {
       const result = await convertNotesXmlToJson(notesSample);
+      expect(result).toMatchSnapshot();
+      done();
+    });
+  });
+
+  describe('convertUserXmlToJson', () => {
+    it('Should convert an User XML string into a proper JSON object', async done => {
+      const result = await convertUserXmlToJson(userSample);
       expect(result).toMatchSnapshot();
       done();
     });

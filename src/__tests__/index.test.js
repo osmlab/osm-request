@@ -898,6 +898,15 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('fetchUser', () => {
+    it('Should fetch a single user by id', () => {
+      const osm = new OsmRequest();
+      const user = osm.fetchUser('214436');
+
+      expect(user).toMatchSnapshot();
+    });
+  });
+
   describe('createChangeset', () => {
     it('Should return the changeset ID', () => {
       const osm = new OsmRequest();

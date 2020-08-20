@@ -414,6 +414,36 @@ export const createNoteRequest = jest.fn().mockImplementation(
 `
 );
 
+export const fetchUserRequest = jest.fn().mockImplementation(() => ({
+  account_created: '2010-01-02T13:40:42Z',
+  blocks: {
+    received: [
+      {
+        active: '0',
+        count: '1'
+      }
+    ]
+  },
+  changesets: {
+    count: '3616'
+  },
+  'contributor-terms': {
+    agreed: 'true'
+  },
+  description:
+    'OpenStreetMap passionate, I contribute mainly in the west of France on various subjects : indoor mapping, street equipment, advertisement...',
+  display_name: 'PanierAvide',
+  id: '214436',
+  img: {
+    href:
+      'https://www.openstreetmap.org/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBamNZIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--576881ff3e6c38ff381c9ecceff09761c61951db/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lOTVRBd2VERXdNRDRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--efdc66963555b7419037018ba117eb1fea762dc5/Tux_avatar.png'
+  },
+  roles: ' ',
+  traces: {
+    count: '95'
+  }
+}));
+
 export const createChangesetRequest = jest.fn().mockImplementation(() => 1234);
 export const changesetCheckRequest = jest.fn().mockImplementation(() => true);
 

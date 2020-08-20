@@ -188,6 +188,28 @@ export function convertNotesXmlToJson(xml) {
 }
 
 /**
+ * Convert a raw User API response into a well formatted JSON object
+ * @param {string} xml - The raw API response
+ * @return {Promise}
+ */
+export function convertUserXmlToJson(xml) {
+  return xmlToJson(xml).then(result => {
+    const user = flattenAttributes(result.osm.user[0]);
+    Object.entries(user)
+      .filter(e => e[1].$)
+      .forEach(e => {
+        user[e[0]] = flattenAttributes(e[1]);
+      });
+    if (user.blocks.received) {
+      user.blocks.received = user.blocks.received.map(b =>
+        flattenAttributes(b)
+      );
+    }
+    return user;
+  });
+}
+
+/**
  * XML converted with the xmlToJson function contain some weird objects
  * Eg:
  * {

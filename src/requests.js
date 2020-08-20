@@ -12,6 +12,7 @@ import {
   convertNotesXmlToJson,
   convertElementXmlToJson,
   convertElementsListXmlToJson,
+  convertUserXmlToJson,
   jsonToXml,
   xmlToJson,
   cleanMapJson,
@@ -91,9 +92,10 @@ export function multiFetchElementsByTypeRequest(
  * @return {Object}
  */
 export function fetchWaysForNodeRequest(endpoint, osmId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/ways`), options).then(
-    response => convertElementsListXmlToJson(response, 'way')
-  );
+  return fetch(
+    buildApiUrl(endpoint, `/${osmId}/ways`),
+    options
+  ).then(response => convertElementsListXmlToJson(response, 'way'));
 }
 
 /**
@@ -176,9 +178,10 @@ export function fetchNotesRequest(
     params.closed = closedDays;
   }
 
-  return fetch(buildApiUrl(endpoint, '/notes', params), options).then(
-    response => convertNotesXmlToJson(response)
-  );
+  return fetch(
+    buildApiUrl(endpoint, '/notes', params),
+    options
+  ).then(response => convertNotesXmlToJson(response));
 }
 
 /**
@@ -649,9 +652,25 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
  * @return {Promise}
  */
 export function fetchRelationsForElementRequest(endpoint, osmId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/relations`), options).then(
-    response => convertElementsListXmlToJson(response, 'relation')
-  );
+  return fetch(
+    buildApiUrl(endpoint, `/${osmId}/relations`),
+    options
+  ).then(response => convertElementsListXmlToJson(response, 'relation'));
+}
+
+/**
+ * Request to fetch an OSM user details
+ * @param {string} endpoint The API endpoint
+ * @param {string} userId The user ID
+ * @param {Object} [options] Options
+ * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
+ * @return {Object}
+ */
+export function fetchUserRequest(endpoint, userId, options = {}) {
+  return fetch(
+    buildApiUrl(endpoint, `/user/${userId}`),
+    options
+  ).then(response => convertUserXmlToJson(response));
 }
 
 /**
