@@ -36,13 +36,13 @@ const osm = new OsmRequest({
 
 async function start() {
   let element = await osm.fetchElement('node/3683625932');
-  element = osm.setProperty(element, 'key', 'value');
-  element = osm.setProperties(element, {
+  element = osm.setTag(element, 'key', 'value');
+  element = osm.setTags(element, {
     key1: 'value1',
     key2: 'value2',
     key3: 'value3',
   });
-  element = osm.removeProperty(element, 'key2');
+  element = osm.removeTag(element, 'key2');
   element = osm.setTimestampToNow(element);
   element = osm.setCoordinates(element, 1.234, 0.456);
 
@@ -91,4 +91,4 @@ $ git merge develop
 $ git push origin master
 ```
 
-`npm version` tests the code, builds it and updates the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commits the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.
+  `npm version` tests the code, builds it and updates the doc. Then it upgrades the package version number according to the used keyword (patch, minor or major) and commits the modifications in Git (with a proper version tag). Finally, it pushes it to repository with the tag.
