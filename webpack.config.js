@@ -1,21 +1,8 @@
-const webpack = require('webpack');
 const path = require('path');
 
-const plugins = [
-  new webpack.optimize.UglifyJsPlugin({
-    minimize: true,
-    mangle: true,
-    output: {
-      comments: false
-    },
-    compress: {
-      warnings: false
-    }
-  })
-];
-
 module.exports = {
-  plugins,
+  mode: 'development',
+  plugins: [],
   devtool: 'cheap-module-source-map',
   entry: {
     OsmRequest: path.join(__dirname, 'src/index.js')
