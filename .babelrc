@@ -1,13 +1,14 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "node": "current",
           "browsers": "> 1%"
         },
-        "useBuiltIns": true
+        "useBuiltIns": "entry",
+        "corejs": 3
       }
     ]
   ]
