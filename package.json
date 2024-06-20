@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "cross-fetch": "^3.0.5",
-    "osm-auth": "^1.1.0",
+    "osm-auth": "^1.1.2",
     "xml2js": "^0.4.23",
     "xmlserializer": "^0.6.1"
   }
