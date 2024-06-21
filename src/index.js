@@ -1,4 +1,4 @@
-import osmAuth from 'osm-auth';
+import { osmAuth } from 'osm-auth';
 import defaultOptions from './defaultOptions.json';
 import { getCurrentIsoTimestamp } from 'helpers/time';
 import {
@@ -44,11 +44,16 @@ export default class OsmRequest {
   /**
    * @access public
    * @param {Object} [options] Custom options to apply
-   * @param {string} [options.endpoint] URL of the OSM server to use (defaults to https://www.openstreetmap.org)
-   * @param {boolean} [options.always_authenticated] Set to true if every call to API should use your credentials, false for only requiring calls (defaults to false)
-   * @param {Object} [options.basicauth] Use basic authentication instead of OAuth (not safe)
-   * @param {string} [options.basicauth.user] Username
-   * @param {string} [options.basicauth.pass] Password
+   * @param {string} [options.scope] Scopes separated by a space, see https://wiki.openstreetmap.org/wiki/OAuth#OAuth_2.0 for all scopes (defaults to read_prefs write_prefs write_api write_notes)
+   * @param {string} [options.client_id] The Client ID of your app. To register an app, see https://wiki.openstreetmap.org/wiki/OAuth#OAuth_2.0_2
+   * @param {string} [options.redirect_uri] URL of your app (or url of app code) to rederict to after authentication.
+   * @param {string} [options.access_token] Optional. OAuth2 bearer token to pre-authorize your app.
+   * @param {string} [options.url] URL of the OSM server to use (defaults to https://openstreetmap.org)
+   * @param {string} [options.apiUrl] URL of the OSM API to use (defaults to https://api.openstreetmap.org)
+   * @param {boolean} [options.auto] If true, attempt to authenticate automatically when calling .xhr() or fetch() (default: false)
+   * @param {Object} [options.singlepage] If true, use page redirection instead of a popup (default: false)
+   * @param {string} [options.loading] Function called when auth-related xhr calls start
+   * @param {string} [options.done] Function called when auth-related xhr calls end
    */
   constructor(options = {}) {
     this._options = {
@@ -56,17 +61,24 @@ export default class OsmRequest {
       ...options
     };
 
-    this._options.endpoint = removeTrailingSlashes(this._options.endpoint);
+    this._options.url = removeTrailingSlashes(this._options.url);
+    this._options.apiUrl = removeTrailingSlashes(this._options.apiUrl);
 
     if (this._options.basicauth) {
       this._auth = { basic: this._options.basicauth };
     } else {
       this._auth = osmAuth({
-        url: this._options.endpoint,
-        oauth_consumer_key: this._options.oauthConsumerKey,
-        oauth_secret: this._options.oauthSecret,
-        oauth_token: this._options.oauthUserToken,
-        oauth_token_secret: this._options.oauthUserTokenSecret
+        scope: this._options.scope,
+        client_id: this._options.client_id,
+        url: this._options.url,
+        apiUrl: this._options.apiUrl,
+        redirect_uri: this._options.redirect_uri,
+        access_token: this._options.access_token,
+        auto: this._options.auto,
+        singlepage: this._options.singlepage,
+        loading: this._options.loading,
+        done: this._options.done,
+        locale: this._options.locale
       });
     }
   }

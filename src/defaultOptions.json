@@ -1,8 +1,13 @@
 {
-  "endpoint": "https://www.openstreetmap.org",
-  "oauthConsumerKey": "",
-  "oauthSecret": "",
-  "oauthUserToken": "",
-  "oauthUserTokenSecret": "",
-  "always_authenticated": false
+  "scope": "read_prefs write_prefs write_api write_notes",
+  "client_id": "",
+  "redirect_uri": "",
+  "access_token": "",
+  "url": "https://www.openstreetmap.org",
+  "apiUrl": "https://api.openstreetmap.org",
+  "auto": false,
+  "singlepage": false,
+  "loading": null,
+  "done": null,
+  "locale": ""
 }
