@@ -28,7 +28,7 @@
     "test": "cross-env NODE_PATH=src jest --env=jsdom",
     "test-watch": "npm test -- --coverage --watch",
     "test-ci": "npm test -- --ci --coverage",
-    "test-prettier": "prettier --single-quote --list-different \"src/**/*.{js,json}\"",
+    "test-prettier": "prettier --config .prettierrc --list-different \"src/**/*.{js,json}\"",
     "lint": "eslint \"src/**/*.{js,json}\"",
     "doc": "npm run doc:lint && documentation build ./src/* -f md > API.md",
     "doc:lint": "documentation lint ./src/*",
@@ -52,13 +52,9 @@
     "verbose": true,
     "testURL": "http://localhost/"
   },
-  "prettier": {
-    "semi": true,
-    "singleQuote": true
-  },
   "lint-staged": {
     "src/**/*.{js,json}": [
-      "prettier --single-quote --write",
+      "prettier --config .prettierrc --write",
       "eslint",
       "git add"
     ],
@@ -85,7 +81,7 @@
     "husky": "^9.0.11",
     "jest": "22.4.3",
     "lint-staged": "^7.3.0",
-    "prettier": "^1.19.1",
+    "prettier": "^3.3.2",
     "webpack": "^4.47.0",
     "webpack-cli": "^4.10.0"
   },

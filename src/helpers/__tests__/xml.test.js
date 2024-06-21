@@ -178,7 +178,14 @@ describe('XML helpers', () => {
           node: [
             {
               $: { id: '1234', lat: '42.3', lon: '-1.3' },
-              tag: [{ $: { key: 'amenity', val: 'bicycle_parking' } }]
+              tag: [
+                {
+                  $: {
+                    key: 'amenity',
+                    val: 'bicycle_parking'
+                  }
+                }
+              ]
             },
             {
               $: { id: '1235', lat: '41.3', lon: '-1.2' }
