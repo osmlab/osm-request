@@ -77,13 +77,13 @@ export function buildQueryString(params) {
 
 /**
  * Constructs complete API URL
- * @param {string} endpoint The endpoint URL
+ * @param {string} apiUrl The apiUrl URL
  * @param {string} path The method you want to use (example: /node/1234)
  * @param {Object} [params] The URL parameters
  * @return {string} The complete URL
  */
-export function buildApiUrl(endpoint, path, params) {
-  return `${removeTrailingSlashes(endpoint)}/api/0.6${path}${buildQueryString(
+export function buildApiUrl(apiUrl, path, params) {
+  return `${removeTrailingSlashes(apiUrl)}/api/0.6${path}${buildQueryString(
     params
   )}`;
 }

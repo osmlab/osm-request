@@ -22,57 +22,52 @@ import { RequestException } from 'exceptions/request';
 
 /**
  * Request to fetch an OSM element
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} osmId
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
-export function fetchElementRequest(endpoint, osmId, options = {}) {
+export function fetchElementRequest(apiUrl, osmId, options = {}) {
   const elementType = findElementType(osmId);
   const elementId = findElementId(osmId);
 
-  return fetch(buildApiUrl(endpoint, `/${osmId}`), options).then(response =>
+  return fetch(buildApiUrl(apiUrl, `/${osmId}`), options).then(response =>
     convertElementXmlToJson(response, elementType, elementId)
   );
 }
 
 /**
  * Request to fetch way or relation and all other elements referenced by it
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} osmId Can only contain either a way or a relation
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise} Promise with well formatted JSON content
  */
-export function fetchElementRequestFull(endpoint, osmId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/full`), options).then(
-    response =>
-      xmlToJson(response)
-        .then(json => Promise.resolve(cleanMapJson(json)))
-        .catch(error => {
-          throw new RequestException(error);
-        })
+export function fetchElementRequestFull(apiUrl, osmId, options = {}) {
+  return fetch(buildApiUrl(apiUrl, `/${osmId}/full`), options).then(response =>
+    xmlToJson(response)
+      .then(json => Promise.resolve(cleanMapJson(json)))
+      .catch(error => {
+        throw new RequestException(error);
+      })
   );
 }
 
 /**
  * Request to fetch an OSM element
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {Array} osmIds Eg: ['node/12345', 'node/6789']. We do not support optional version e.g 'node/12345v2'
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function multiFetchElementsByTypeRequest(
-  endpoint,
-  osmIds,
-  options = {}
-) {
+export function multiFetchElementsByTypeRequest(apiUrl, osmIds, options = {}) {
   const elementType = findElementType(osmIds[0]);
   const ids = osmIds.map(osmId => findElementId(osmId));
   return fetch(
-    buildApiUrl(endpoint, `/${elementType}s?${elementType}s=${ids.join(',')}`),
+    buildApiUrl(apiUrl, `/${elementType}s?${elementType}s=${ids.join(',')}`),
     options
   ).then(response =>
     xmlToJson(response)
@@ -85,27 +80,27 @@ export function multiFetchElementsByTypeRequest(
 
 /**
  * Request to fetch ways using the given OSM node
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} osmId
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
-export function fetchWaysForNodeRequest(endpoint, osmId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/ways`), options).then(
-    response => convertElementsListXmlToJson(response, 'way')
+export function fetchWaysForNodeRequest(apiUrl, osmId, options = {}) {
+  return fetch(buildApiUrl(apiUrl, `/${osmId}/ways`), options).then(response =>
+    convertElementsListXmlToJson(response, 'way')
   );
 }
 
 /**
  * Send an element to OSM
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {Object} element
  * @param {number} changesetId
  * @return {Promise}
  */
-export function sendElementRequest(auth, endpoint, element, changesetId) {
+export function sendElementRequest(auth, apiUrl, element, changesetId) {
   const copiedElement = simpleObjectDeepClone(element);
   const { _id: elementId, _type: elementType } = copiedElement;
   delete copiedElement._id;
@@ -130,7 +125,7 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, path),
+      path: buildApiUrl(apiUrl, path),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -144,7 +139,7 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
 
 /**
  * Request to fetch OSM notes
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} left The minimal longitude (X)
  * @param {number} bottom The minimal latitude (Y)
  * @param {number} right The maximal longitude (X)
@@ -156,7 +151,7 @@ export function sendElementRequest(auth, endpoint, element, changesetId) {
  * @return {Object}
  */
 export function fetchNotesRequest(
-  endpoint,
+  apiUrl,
   left,
   bottom,
   right,
@@ -177,14 +172,14 @@ export function fetchNotesRequest(
     params.closed = closedDays;
   }
 
-  return fetch(buildApiUrl(endpoint, '/notes', params), options).then(
-    response => convertNotesXmlToJson(response)
+  return fetch(buildApiUrl(apiUrl, '/notes', params), options).then(response =>
+    convertNotesXmlToJson(response)
   );
 }
 
 /**
  * Request to get OSM notes with textual search
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} q Specifies the search query
  * @param {string} [format] It can be 'xml' (default) to get OSM
  * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
@@ -200,7 +195,7 @@ export function fetchNotesRequest(
  * @return {Promise}
  */
 export function fetchNotesSearchRequest(
-  endpoint,
+  apiUrl,
   q,
   format = 'xml',
   limit = null,
@@ -235,7 +230,7 @@ export function fetchNotesSearchRequest(
     }
   });
 
-  return fetch(buildApiUrl(endpoint, path, params), options).then(text => {
+  return fetch(buildApiUrl(apiUrl, path, params), options).then(text => {
     if (format === 'xml') {
       return convertNotesXmlToJson(text);
     } else {
@@ -246,7 +241,7 @@ export function fetchNotesSearchRequest(
 
 /**
  * Request to fetch OSM note by id
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * param {number} noteId Identifier for the note
  * @param {string} format It can be 'xml' (default) to get OSM
  * and convert to JSON, 'raw' to return raw OSM XML, 'json' to
@@ -256,7 +251,7 @@ export function fetchNotesSearchRequest(
  * @return {Promise}
  */
 export function fetchNoteByIdRequest(
-  endpoint,
+  apiUrl,
   noteId,
   format = 'xml',
   options = {}
@@ -265,7 +260,7 @@ export function fetchNoteByIdRequest(
   if (format === 'raw') {
     path = `/notes/${noteId.toString()}`;
   }
-  return fetch(buildApiUrl(endpoint, path), options).then(text => {
+  return fetch(buildApiUrl(apiUrl, path), options).then(text => {
     if (format === 'xml') {
       return convertNotesXmlToJson(text);
     } else {
@@ -277,18 +272,18 @@ export function fetchNoteByIdRequest(
 /**
  * Request generic enough to manage all POST request for a particular note
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * param {number} noteId Identifier for the note
  * @param {string} text A mandatory text field with arbitrary text containing the note
  * @param {string} type Mandatory type. It can be 'comment', 'close' or 'reopen'
  * @return {Promise}
  */
-export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
+export function genericPostNoteRequest(auth, apiUrl, noteId, text, type) {
   return authxhr(
     {
       method: 'POST',
       prefix: false,
-      path: buildApiUrl(endpoint, `/notes/${noteId}/${type}`, { text }),
+      path: buildApiUrl(apiUrl, `/notes/${noteId}/${type}`, { text }),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -304,13 +299,13 @@ export function genericPostNoteRequest(auth, endpoint, noteId, text, type) {
 /**
  * Request to create a note
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} lat Specifies the latitude of the note
  * @param {number} lon Specifies the longitude of the note
  * @param {string} text A mandatory text field with arbitrary text containing the note
  * @return {Promise}
  */
-export function createNoteRequest(auth, endpoint, lat, lon, text) {
+export function createNoteRequest(auth, apiUrl, lat, lon, text) {
   const params = {
     lat,
     lon,
@@ -320,7 +315,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
     {
       method: 'POST',
       prefix: false,
-      path: buildApiUrl(endpoint, '/notes', params),
+      path: buildApiUrl(apiUrl, '/notes', params),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -336,7 +331,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
 /**
  * Request to create OSM changeset
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} [createdBy]
  * @param {string} [comment]
  * @param {string} [tags] An object with keys values to set to tags
@@ -344,7 +339,7 @@ export function createNoteRequest(auth, endpoint, lat, lon, text) {
  */
 export function createChangesetRequest(
   auth,
-  endpoint,
+  apiUrl,
   createdBy = '',
   comment = '',
   tags = {}
@@ -355,7 +350,7 @@ export function createChangesetRequest(
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, '/changeset/create'),
+      path: buildApiUrl(apiUrl, '/changeset/create'),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -369,14 +364,14 @@ export function createChangesetRequest(
 
 /**
  * Checks if a given changeset is still opened at OSM.
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} changesetId
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function changesetCheckRequest(endpoint, changesetId, options = {}) {
-  return changesetGetRequest(endpoint, changesetId, options).then(res => {
+export function changesetCheckRequest(apiUrl, changesetId, options = {}) {
+  return changesetGetRequest(apiUrl, changesetId, options).then(res => {
     let isOpened;
 
     try {
@@ -395,22 +390,22 @@ export function changesetCheckRequest(endpoint, changesetId, options = {}) {
 
 /**
  * Get a changeset for a given id at OSM.
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} changesetId
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function changesetGetRequest(endpoint, changesetId, options = {}) {
+export function changesetGetRequest(apiUrl, changesetId, options = {}) {
   return fetch(
-    buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
+    buildApiUrl(apiUrl, `/changeset/${changesetId.toString()}`),
     options
   ).then(response => xmlToJson(response));
 }
 /**
  * Update tags if a given changeset is still opened at OSM.
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} changesetId
  * @param {string} [createdBy]
  * @param {string} [comment]
@@ -420,7 +415,7 @@ export function changesetGetRequest(endpoint, changesetId, options = {}) {
  */
 export function updateChangesetTagsRequest(
   auth,
-  endpoint,
+  apiUrl,
   changesetId,
   createdBy = '',
   comment = '',
@@ -431,7 +426,7 @@ export function updateChangesetTagsRequest(
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}`),
+      path: buildApiUrl(apiUrl, `/changeset/${changesetId.toString()}`),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -446,17 +441,17 @@ export function updateChangesetTagsRequest(
 /**
  * Request to close changeset for a given id if still opened
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} changesetId
  * @throws Will throw an error for any request with http code 40x.
  * @return {Promise} Empty string if it works
  */
-export function closeChangesetRequest(auth, endpoint, changesetId) {
+export function closeChangesetRequest(auth, apiUrl, changesetId) {
   return authxhr(
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, `/changeset/${changesetId.toString()}/close`),
+      path: buildApiUrl(apiUrl, `/changeset/${changesetId.toString()}/close`),
       options: {
         header: {
           'Content-Type': 'text/plain'
@@ -470,14 +465,14 @@ export function closeChangesetRequest(auth, endpoint, changesetId) {
 /**
  * Request to upload an OSC file content conforming to the OsmChange specification OSM changeset
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} changesetId
  * @param {string} osmChangeContent OSC file content text
  * @return {Promise}
  */
 export function uploadChangesetOscRequest(
   auth,
-  endpoint,
+  apiUrl,
   changesetId,
   osmChangeContent
 ) {
@@ -485,7 +480,7 @@ export function uploadChangesetOscRequest(
     {
       method: 'POST',
       prefix: false,
-      path: buildApiUrl(endpoint, `/changeset/create`),
+      path: buildApiUrl(apiUrl, `/changeset/create`),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -499,7 +494,7 @@ export function uploadChangesetOscRequest(
 
 /**
  * Request to get changesets from OSM API
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {Object} options  Optional parameters
  * @param {number} [options.left] The minimal longitude (X)
  * @param {number} [options.bottom] The minimal latitude (Y)
@@ -514,7 +509,7 @@ export function uploadChangesetOscRequest(
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function fetchChangesetsRequest(endpoint, options = {}) {
+export function fetchChangesetsRequest(apiUrl, options = {}) {
   const keys = [
     'left',
     'bottom',
@@ -543,14 +538,14 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
     delete params.top;
   }
 
-  return fetch(buildApiUrl(endpoint, '/changesets', params), {
+  return fetch(buildApiUrl(apiUrl, '/changesets', params), {
     auth: options.auth
   }).then(text => xmlToJson(text));
 }
 
 /**
  * Request to fetch all OSM elements within a bbox extent
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {number} left The minimal longitude (X)
  * @param {number} bottom The minimal latitude (Y)
  * @param {number} right The maximal longitude (X)
@@ -561,7 +556,7 @@ export function fetchChangesetsRequest(endpoint, options = {}) {
  * @return {Promise}
  */
 export function fetchMapByBboxRequest(
-  endpoint,
+  apiUrl,
   left,
   bottom,
   right,
@@ -577,7 +572,7 @@ export function fetchMapByBboxRequest(
       bbox: `${left.toString()},${bottom.toString()},${right.toString()},${top.toString()}`
     };
 
-    return fetch(buildApiUrl(endpoint, '/map', params), options).then(
+    return fetch(buildApiUrl(apiUrl, '/map', params), options).then(
       response => {
         if (mode !== 'json') {
           return Promise.all([
@@ -603,12 +598,12 @@ export function fetchMapByBboxRequest(
 /**
  * Delete an OSM element
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {Object} element
  * @param {number} changesetId
  * @return {Promise} Promise with the new version number due to deletion
  */
-export function deleteElementRequest(auth, endpoint, element, changesetId) {
+export function deleteElementRequest(auth, apiUrl, element, changesetId) {
   const copiedElement = simpleObjectDeepClone(element);
   const { _id: elementId, _type: elementType } = copiedElement;
   delete copiedElement._id;
@@ -630,7 +625,7 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
     {
       method: 'DELETE',
       prefix: false,
-      path: buildApiUrl(endpoint, path),
+      path: buildApiUrl(apiUrl, path),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -643,45 +638,45 @@ export function deleteElementRequest(auth, endpoint, element, changesetId) {
 }
 
 /** Request to fetch relation(s) from an OSM element
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} osmId
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Promise}
  */
-export function fetchRelationsForElementRequest(endpoint, osmId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/${osmId}/relations`), options).then(
+export function fetchRelationsForElementRequest(apiUrl, osmId, options = {}) {
+  return fetch(buildApiUrl(apiUrl, `/${osmId}/relations`), options).then(
     response => convertElementsListXmlToJson(response, 'relation')
   );
 }
 
 /**
  * Request to fetch an OSM user details
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} userId The user ID
  * @param {Object} [options] Options
  * @param {Object} [options.auth] Auth XHR object to use instead of unauthenticated call
  * @return {Object}
  */
-export function fetchUserRequest(endpoint, userId, options = {}) {
-  return fetch(buildApiUrl(endpoint, `/user/${userId}`), options).then(
-    response => convertUserXmlToJson(response)
+export function fetchUserRequest(apiUrl, userId, options = {}) {
+  return fetch(buildApiUrl(apiUrl, `/user/${userId}`), options).then(response =>
+    convertUserXmlToJson(response)
   );
 }
 
 /**
  * Request to fetch preferences for the connected user
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @throws Will throw an error for any request with http code 40x.
  * @return {Promise} Promise with the value for the key
  */
-export function getUserPreferencesRequest(auth, endpoint) {
+export function getUserPreferencesRequest(auth, apiUrl) {
   return authxhr(
     {
       method: 'GET',
       prefix: false,
-      path: buildApiUrl(endpoint, '/user/preferences'),
+      path: buildApiUrl(apiUrl, '/user/preferences'),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -695,17 +690,17 @@ export function getUserPreferencesRequest(auth, endpoint) {
 /**
  * Request to set all preferences for a connected user
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {Object} object An object to provide keys values to create XML preferences
  * @return {Promise} Promise
  */
-export function setUserPreferencesRequest(auth, endpoint, object) {
+export function setUserPreferencesRequest(auth, apiUrl, object) {
   const preferencesXml = buildPreferencesFromObjectXml(object);
   return authxhr(
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, '/user/preferences'),
+      path: buildApiUrl(apiUrl, '/user/preferences'),
       options: {
         header: {
           'Content-Type': 'text/xml'
@@ -720,17 +715,17 @@ export function setUserPreferencesRequest(auth, endpoint, object) {
 /**
  * Request to fetch a preference from a key for the connected user
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} key The key to retrieve
  * @throws Will throw an error for any request with http code 40x.
  * @return {Promise} Promise with the value for the key
  */
-export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
+export function getUserPreferenceByKeyRequest(auth, apiUrl, key) {
   return authxhr(
     {
       method: 'GET',
       prefix: false,
-      path: buildApiUrl(endpoint, `/user/preferences/${key}`)
+      path: buildApiUrl(apiUrl, `/user/preferences/${key}`)
     },
     auth
   );
@@ -739,17 +734,17 @@ export function getUserPreferenceByKeyRequest(auth, endpoint, key) {
 /**
  * Request to set a preference from a key for the connected user
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} key The key to set
  * @param {string} value The value to set. Overwrite existing value if key exists
  * @return {Promise} Promise
  */
-export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
+export function setUserPreferenceByKeyRequest(auth, apiUrl, key, value) {
   return authxhr(
     {
       method: 'PUT',
       prefix: false,
-      path: buildApiUrl(endpoint, `/user/preferences/${key}`),
+      path: buildApiUrl(apiUrl, `/user/preferences/${key}`),
       options: {
         header: {
           'Content-Type': 'text/plain'
@@ -764,16 +759,16 @@ export function setUserPreferenceByKeyRequest(auth, endpoint, key, value) {
 /**
  * Request to delete a preference from a key for the connected user
  * @param {osmAuth} auth An instance of osm-auth
- * @param {string} endpoint The API endpoint
+ * @param {string} apiUrl The API URL
  * @param {string} key The key to use
  * @return {Promise} Promise
  */
-export function deleteUserPreferenceRequest(auth, endpoint, key) {
+export function deleteUserPreferenceRequest(auth, apiUrl, key) {
   return authxhr(
     {
       method: 'DELETE',
       prefix: false,
-      path: buildApiUrl(endpoint, `/user/preferences/${key}`)
+      path: buildApiUrl(apiUrl, `/user/preferences/${key}`)
     },
     auth
   );

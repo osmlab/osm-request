@@ -27,7 +27,7 @@ The full documentation of osm-request API is detailed in [the API documentation]
 import OsmRequest from 'osm-request';
 
 const osm = new OsmRequest({
-  endpoint: 'https://www.openstreetmap.org',
+  apiUrl: 'https://www.openstreetmap.org',
   oauthConsumerKey: '...',
   oauthSecret: '...',
   oauthUserToken: '...',
@@ -55,7 +55,7 @@ async function start() {
 start();
 ```
 
-For the OSM dev instance, use that endpoint: https://api06.dev.openstreetmap.org
+For the OSM dev instance, use that apiUrl: https://api06.dev.openstreetmap.org
 
 
 ## Contribute

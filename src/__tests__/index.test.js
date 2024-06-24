@@ -439,15 +439,15 @@ delete sampleRelationNoTags.tag;
 
 describe('OsmRequest', () => {
   describe('Getters', () => {
-    it('Should return a default endpoint', () => {
+    it('Should return a default apiUrl', () => {
       const osm = new OsmRequest();
-      expect(osm.endpoint).toBe(defaultOptions.endpoint);
+      expect(osm.apiUrl).toBe(defaultOptions.apiUrl);
     });
 
-    it('Should return a custom endpoint', () => {
-      const customEndpoint = 'https://my-custom-endpoint/api/0.6';
-      const osm = new OsmRequest({ endpoint: customEndpoint });
-      expect(osm.endpoint).toBe(customEndpoint);
+    it('Should return a custom apiUrl', () => {
+      const customApiUrl = 'https://my-custom-apiUrl/api/0.6';
+      const osm = new OsmRequest({ apiUrl: customApiUrl });
+      expect(osm.apiUrl).toBe(customApiUrl);
     });
   });
 
