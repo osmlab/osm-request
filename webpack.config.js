@@ -18,7 +18,12 @@ module.exports = {
     modules: [
       'node_modules',
       process.env.NODE_PATH
-    ]
+    ],
+    fallback: {
+      "stream": false,
+      "timers": false,
+      "buffer": false
+    }
   },
   module: {
     rules: [
