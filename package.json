@@ -25,7 +25,7 @@
     "watch": "cross-env NODE_PATH=src webpack -w --progress",
     "build": "cross-env NODE_ENV=production NODE_PATH=src webpack --progress",
     "precommit": "lint-staged",
-    "test": "cross-env NODE_PATH=src jest --env=jsdom",
+    "test": "cross-env NODE_PATH=src jest",
     "test-watch": "npm test -- --coverage --watch",
     "test-ci": "npm test -- --ci --coverage",
     "test-prettier": "prettier --config .prettierrc --list-different \"src/**/*.{js,json}\"",
@@ -34,29 +34,6 @@
     "doc:lint": "documentation lint ./src/*",
     "preversion": "npm run test-ci && npm run build",
     "postversion": "git push && git push --tags"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!<rootDir>/node_modules/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/requests.js",
-      "<rootDir>/src/helpers/time.js",
-      "<rootDir>/node_modules/"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "verbose": true,
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    },
-    "snapshotFormat": {
-      "escapeString": true,
-      "printBasicPrototype": true
-    }
   },
   "lint-staged": {
     "src/**/*.{js,json}": [
