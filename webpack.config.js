@@ -22,7 +22,8 @@ module.exports = {
     fallback: {
       "stream": false,
       "timers": false,
-      "buffer": false
+      "buffer": false,
+      "string_decoder": false,
     }
   },
   module: {
