@@ -35,18 +35,6 @@
     "preversion": "npm run test-ci && npm run build",
     "postversion": "git push && git push --tags"
   },
-  "lint-staged": {
-    "src/**/*.{js,json}": [
-      "prettier --config .prettierrc --write",
-      "eslint",
-      "git add"
-    ],
-    "src/**/*.js": [
-      "npm run test-ci -- --findRelatedTests",
-      "npm run doc",
-      "git add API.md"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/eslint-parser": "^7.24.7",
@@ -65,7 +53,7 @@
     "husky": "^9.0.11",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
-    "lint-staged": "^7.3.0",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
