@@ -66,7 +66,7 @@ export function fetch(url, options = {}) {
 
 /**
  * Wrapper for authenticated XmlHttpRequest
- * Uses either basic authentication or osm-auth xhr function
+ * Uses osm-auth xhr function
  * @param {Object} opts Options object
  * @param {Object} auth Auth module to use
  * @return {Promise} Resolves on response text, or rejects if any HTTP error occurs
@@ -94,7 +94,7 @@ export function authxhr(opts, auth) {
         }
       });
     });
-  } else if (auth.basic || auth.skip) {
+  } else if (auth.skip) {
     if (opts.content) {
       opts.body = opts.content;
     }
@@ -102,11 +102,6 @@ export function authxhr(opts, auth) {
     opts.headers = {};
     if (opts.options && opts.options.header) {
       opts.headers = opts.options.header;
-    }
-
-    if (auth.basic) {
-      opts.headers['Authorization'] =
-        'Basic ' + btoa(auth.basic.user + ':' + auth.basic.pass);
     }
 
     return crossFetch(opts.path, opts)
@@ -130,8 +125,6 @@ export function authxhr(opts, auth) {
       })
       .then(response => response.text());
   } else {
-    throw new Error(
-      'Authenticated XHR needs either OAuth or Basic auth information'
-    );
+    throw new Error('Authenticated XHR needs OAuth information');
   }
 }

@@ -1,11 +1,11 @@
 {
-    "src/**/*.{js,json}": [
-        "prettier --config .prettierrc --write",
-        "eslint"
-    ],
-    "src/**/*.js": [
-        "npm run test-ci -- --findRelatedTests",
-        "npm run doc",
-        "git add API.md"
-    ]
+  "src/**/*.{js,json}": [
+    "prettier --config .prettierrc --write",
+    "eslint"
+  ],
+  "src/**/*.js": [
+    "npm run test-ci -- --findRelatedTests",
+    "npm run doc",
+    "git add API.md"
+  ]
 }

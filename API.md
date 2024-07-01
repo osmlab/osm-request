@@ -195,7 +195,7 @@ Uses either simple fetch or authenticated xhr according to specified options.###
 *   `options` **[Object][191]?** Options object (optional, default `{}`)
 
     *   `options.auth` **[boolean][192]?** If auth XHR object is passed, it will be used instead of a simple fetchReturns **[Promise][193]** Resolves on response text, or rejects if any HTTP error occurs## authxhrWrapper for authenticated XmlHttpRequest
-Uses either basic authentication or osm-auth xhr function### Parameters*   `opts` **[Object][191]** Options object
+Uses osm-auth xhr function### Parameters*   `opts` **[Object][191]** Options object
 *   `auth` **[Object][191]** Auth module to useReturns **[Promise][193]** Resolves on response text, or rejects if any HTTP error occurs## encodeXMLEscape a string to make it XML parameter-safe### Parameters*   `str` **[string][190]**  (optional, default `''`)Returns **[string][190]** ## buildChangesetXmlBuild a stringified OSM changeset### Parameters*   `createdBy` **[string][190]?**  (optional, default `''`)
 *   `comment` **[string][190]?**  (optional, default `''`)
 *   `optionalTags` **[string][190]?** Keys values to set tags (optional, default `{}`)Returns **[string][190]** ## buildChangesetFromObjectXmlBuild an OSM changeset from keys values, intended for update### Parameters*   `tags` **[Object][191]** To set tags (optional, default `{}`)
