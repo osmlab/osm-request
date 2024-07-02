@@ -44,6 +44,14 @@ describe('XML helpers', () => {
         buildChangesetXml('My "app"', 'Doing some "weird" stuff')
       ).toMatchSnapshot();
     });
+
+    it('Should handle optional tags', () => {
+      expect(
+        buildChangesetXml('My app', 'Doing some stuff', {
+          key_example: 'value example'
+        })
+      ).toMatchSnapshot();
+    });
   });
 
   describe('buildChangesetFromObjectXml', () => {
