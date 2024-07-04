@@ -44,6 +44,14 @@ describe('XML helpers', () => {
         buildChangesetXml('My "app"', 'Doing some "weird" stuff')
       ).toMatchSnapshot();
     });
+
+    it('Should handle optional tags', () => {
+      expect(
+        buildChangesetXml('My app', 'Doing some stuff', {
+          key_example: 'value example'
+        })
+      ).toMatchSnapshot();
+    });
   });
 
   describe('buildChangesetFromObjectXml', () => {
@@ -78,38 +86,34 @@ describe('XML helpers', () => {
   });
 
   describe('convertElementXmlToJson', () => {
-    it('Should convert an Element XML string into a proper JSON object', async done => {
+    it('Should convert an Element XML string into a proper JSON object', async () => {
       const result = await convertElementXmlToJson(
         nodeSample,
         'node',
         '3683625932'
       );
       expect(result).toMatchSnapshot();
-      done();
     });
   });
 
   describe('convertElementsListXmlToJson', () => {
-    it('Should convert a list of Elements XML string into a proper JSON object', async done => {
+    it('Should convert a list of Elements XML string into a proper JSON object', async () => {
       const result = await convertElementsListXmlToJson(wayFullSample, 'node');
       expect(result).toMatchSnapshot();
-      done();
     });
   });
 
   describe('convertNotesXmlToJson', () => {
-    it('Should convert a Notes XML string into a proper JSON object', async done => {
+    it('Should convert a Notes XML string into a proper JSON object', async () => {
       const result = await convertNotesXmlToJson(notesSample);
       expect(result).toMatchSnapshot();
-      done();
     });
   });
 
   describe('convertUserXmlToJson', () => {
-    it('Should convert an User XML string into a proper JSON object', async done => {
+    it('Should convert an User XML string into a proper JSON object', async () => {
       const result = await convertUserXmlToJson(userSample);
       expect(result).toMatchSnapshot();
-      done();
     });
   });
 
@@ -137,10 +141,9 @@ describe('XML helpers', () => {
   });
 
   describe('xmlToJson', () => {
-    it('Should convert an XML string into a JSON object', async done => {
+    it('Should convert an XML string into a JSON object', async () => {
       const result = await xmlToJson(notesSample);
       expect(result).toMatchSnapshot();
-      done();
     });
   });
 
@@ -178,7 +181,14 @@ describe('XML helpers', () => {
           node: [
             {
               $: { id: '1234', lat: '42.3', lon: '-1.3' },
-              tag: [{ $: { key: 'amenity', val: 'bicycle_parking' } }]
+              tag: [
+                {
+                  $: {
+                    key: 'amenity',
+                    val: 'bicycle_parking'
+                  }
+                }
+              ]
             },
             {
               $: { id: '1235', lat: '41.3', lon: '-1.2' }

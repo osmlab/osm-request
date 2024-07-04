@@ -80,6 +80,19 @@ exports[`XML helpers buildChangesetXml Should handle strings having double quote
   "
 `;
 
+exports[`XML helpers buildChangesetXml Should handle optional tags 1`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"My app\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"comment\\" v=\\"Doing some stuff\\"/>
+        <tag k=\\"key_example\\" v=\\"value example\\"/>
+      </changeset>
+    </osm>
+  "
+`;
+
 exports[`XML helpers buildPreferencesFromObjectXml Should build stringified OSM preferences 1`] = `
 "
     <osm>

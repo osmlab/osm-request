@@ -152,10 +152,8 @@ export const fetchNotesRequest = jest.fn().mockImplementation(() => [
       {
         date: '2018-04-22 17:57:56 UTC',
         action: 'commented',
-        text:
-          "c'est quoi ? une note personnelle ou le nom d'un établissement ?",
-        html:
-          "<p>c'est quoi ? une note personnelle ou le nom d'un établissement ?</p>"
+        text: "c'est quoi ? une note personnelle ou le nom d'un établissement ?",
+        html: "<p>c'est quoi ? une note personnelle ou le nom d'un établissement ?</p>"
       }
     ]
   },
@@ -248,8 +246,7 @@ export const fetchNotesRequest = jest.fn().mockImplementation(() => [
         user_url: 'https://api.openstreetmap.org/user/opline',
         action: 'commented',
         text: 'Monplaisir ou les carbonnières ? Vous nous proposez deux noms',
-        html:
-          '<p>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</p>'
+        html: '<p>Monplaisir ou les carbonnières ? Vous nous proposez deux noms</p>'
       },
       {
         date: '2018-04-08 19:35:56 UTC',
@@ -289,10 +286,8 @@ export const fetchNotesSearchRequest = jest.fn().mockImplementation(() => ({
             user: 'Dominik Kumiszczo',
             user_url: 'https://api.openstreetmap.org/user/Dominik%20Kumiszczo',
             action: 'opened',
-            text:
-              '"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\nThe place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
-            html:
-              '<p>"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\n<br />The place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
+            text: '"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\nThe place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
+            html: '<p>"Tu nie ma hydrantu, potwierdzenie na google street view, ja widzialem osobiscie"\n<br />The place has gone or never existed. This is an auto-generated note from MAPS.ME application: a user reports a POI that is visible on a map (which can be outdated), but cannot be found on the ground.\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
           }
         ]
       }
@@ -319,10 +314,8 @@ export const fetchNotesSearchRequest = jest.fn().mockImplementation(() => ({
             user: 'CrihanMircea',
             user_url: 'https://api.openstreetmap.org/user/CrihanMircea',
             action: 'opened',
-            text:
-              '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
-            html:
-              '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
+            text: '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
+            html: '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
           }
         ]
       }
@@ -350,10 +343,8 @@ export const fetchNotesSearchRequest = jest.fn().mockImplementation(() => ({
             user_url:
               'https://api.openstreetmap.org/user/%D0%9C%D1%83%D1%80%D0%B0%D0%B2%D0%B5%D0%B9',
             action: 'opened',
-            text:
-              '"ПГ"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
-            html:
-              '<p>"ПГ"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
+            text: '"ПГ"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-04-19T10:36:02Z\n #mapsme',
+            html: '<p>"ПГ"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-04-19T10:36:02Z\n<br /> #mapsme</p>'
           }
         ]
       }
@@ -382,10 +373,8 @@ export const fetchNoteByIdRequest = jest.fn().mockImplementation(() => ({
         user: 'CrihanMircea',
         user_url: 'https://api.openstreetmap.org/user/CrihanMircea',
         action: 'opened',
-        text:
-          '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
-        html:
-          '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
+        text: '"Hidrant subteran tip B-B"\nPOI has no name\nPOI types: emergency-fire_hydrant\nOSM data version: 2019-03-28T14:13:02Z\n #mapsme',
+        html: '<p>"Hidrant subteran tip B-B"\n<br />POI has no name\n<br />POI types: emergency-fire_hydrant\n<br />OSM data version: 2019-03-28T14:13:02Z\n<br /> #mapsme</p>'
       }
     ]
   }
@@ -435,8 +424,7 @@ export const fetchUserRequest = jest.fn().mockImplementation(() => ({
   display_name: 'PanierAvide',
   id: '214436',
   img: {
-    href:
-      'https://www.openstreetmap.org/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBamNZIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--576881ff3e6c38ff381c9ecceff09761c61951db/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lOTVRBd2VERXdNRDRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--efdc66963555b7419037018ba117eb1fea762dc5/Tux_avatar.png'
+    href: 'https://www.openstreetmap.org/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBamNZIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--576881ff3e6c38ff381c9ecceff09761c61951db/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lOTVRBd2VERXdNRDRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--efdc66963555b7419037018ba117eb1fea762dc5/Tux_avatar.png'
   },
   roles: ' ',
   traces: {
