@@ -5,7 +5,7 @@ exports[`XML helpers buildChangesetFromObjectXml Should build a stringified OSM 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"me\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
         <tag k=\\"host\\" v=\\"server.net\\"/>
         <tag k=\\"locale\\" v=\\"fr\\"/>
@@ -19,7 +19,7 @@ exports[`XML helpers buildChangesetFromObjectXml Should build a stringified OSM 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
         
       </changeset>
@@ -32,7 +32,7 @@ exports[`XML helpers buildChangesetFromObjectXml Should handle strings having do
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
         <tag k=\\"host\\" v=\\"server.net\\"/>
         <tag k=\\"locale\\" v=\\"fr\\"/>
@@ -46,7 +46,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"me\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"my comment\\"/>
         
       </changeset>
@@ -59,7 +59,7 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"\\"/>
         
       </changeset>
@@ -72,7 +72,7 @@ exports[`XML helpers buildChangesetXml Should handle strings having double quote
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
         
       </changeset>
@@ -85,7 +85,7 @@ exports[`XML helpers buildChangesetXml Should handle optional tags 1`] = `
     <osm>
       <changeset>
         <tag k=\\"created_by\\" v=\\"My app\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 1.2.3\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"Doing some stuff\\"/>
         <tag k=\\"key_example\\" v=\\"value example\\"/>
       </changeset>

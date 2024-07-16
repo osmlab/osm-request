@@ -29,7 +29,7 @@ const userSample = fs.readFileSync(
 );
 
 jest.mock('../../../package.json', () => ({
-  version: '1.2.3'
+  version: '2.0.0'
 }));
 
 describe('XML helpers', () => {
