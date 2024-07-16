@@ -34,3 +34,6 @@ jobs:
 
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
+
+    - name: Purge README
+      uses: wow-actions/purge-readme@v1.0.0
