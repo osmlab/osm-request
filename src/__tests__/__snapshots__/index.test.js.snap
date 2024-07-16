@@ -3358,6 +3358,127 @@ Object {
 }
 `;
 
+exports[`OsmRequest getRelationMembers Should return the members of a relation 1`] = `
+Array [
+  Object {
+    "id": "way/27847742",
+    "role": "street",
+  },
+  Object {
+    "id": "node/1659643084",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643085",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643086",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643099",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643103",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643107",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643114",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643117",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643121",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643124",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643129",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643132",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643138",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643143",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643152",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643156",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643160",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643162",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643165",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643169",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643172",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643176",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643180",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643183",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643187",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643191",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643192",
+    "role": "house",
+  },
+  Object {
+    "id": "node/1659643196",
+    "role": "house",
+  },
+]
+`;
+
 exports[`OsmRequest getTags returns tags of node with tag property 1`] = `Object {}`;
 
 exports[`OsmRequest getTags returns tags of node without tag property 1`] = `Object {}`;

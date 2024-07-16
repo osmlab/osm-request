@@ -795,6 +795,15 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('getRelationMembers', () => {
+    it('Should return the members of a relation', () => {
+      const osm = new OsmRequest();
+      const members = osm.getRelationMembers(sampleRelation);
+
+      expect(members).toMatchSnapshot();
+    });
+  });
+
   describe('setTimestampToNow', () => {
     it('Should update the timestamp of an element', () => {
       const osm = new OsmRequest();
