@@ -804,6 +804,25 @@ describe('OsmRequest', () => {
     });
   });
 
+  describe('setRelationMembers', () => {
+    it('Should update the members of a relation', () => {
+      const osm = new OsmRequest();
+      const members = [
+        {
+          role: 'street',
+          id: 'way/27847742'
+        },
+        {
+          role: 'house',
+          id: 'node/1659643084'
+        }
+      ];
+      const element = osm.setRelationMembers(sampleRelation, members);
+
+      expect(element).toMatchSnapshot();
+    });
+  });
+
   describe('setTimestampToNow', () => {
     it('Should update the timestamp of an element', () => {
       const osm = new OsmRequest();

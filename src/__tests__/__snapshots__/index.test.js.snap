@@ -3683,6 +3683,58 @@ Object {
 }
 `;
 
+exports[`OsmRequest setRelationMembers Should update the members of a relation 1`] = `
+Object {
+  "$": Object {
+    "changeset": "14958524",
+    "id": "2068206",
+    "timestamp": "2013-02-08T18:11:06Z",
+    "uid": "1220754",
+    "user": "isnogoud_bot",
+    "version": "2",
+    "visible": "true",
+  },
+  "_id": "2068206",
+  "_type": "relation",
+  "member": Array [
+    Object {
+      "$": Object {
+        "ref": "27847742",
+        "role": "street",
+        "type": "way",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643084",
+        "role": "house",
+        "type": "node",
+      },
+    },
+  ],
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "name",
+        "v": "Rue de Belleville",
+      },
+    },
+    Object {
+      "$": Object {
+        "k": "ref:FR:FANTOIR",
+        "v": "728",
+      },
+    },
+    Object {
+      "$": Object {
+        "k": "type",
+        "v": "associatedStreet",
+      },
+    },
+  ],
+}
+`;
+
 exports[`OsmRequest setTag Should add a tag to an element 1`] = `
 Object {
   "$": Object {
