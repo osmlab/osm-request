@@ -432,6 +432,33 @@ export const fetchUserRequest = jest.fn().mockImplementation(() => ({
   }
 }));
 
+let preferences = {
+  "locale": "en"
+};
+
+export const setUserPreferencesRequest = jest.fn((auth, apiUrl, object) => {
+  preferences = object;
+  return ""; // Empty string
+});
+
+export const getUserPreferencesRequest = jest.fn(() => {
+  return preferences;
+});
+
+export const setUserPreferenceByKeyRequest = jest.fn((auth, apiUrl, key, value) => {
+  preferences[key] = value;
+  return ""; // Empty string
+});
+
+export const getUserPreferenceByKeyRequest = jest.fn((auth, apiUrl, key) => {
+  return preferences[key];
+});
+
+export const deleteUserPreferenceRequest = jest.fn((auth, apiUrl, key) => {
+  delete preferences[key];
+  return ""; // Empty string
+});
+
 export const createChangesetRequest = jest.fn().mockImplementation(() => 1234);
 export const changesetCheckRequest = jest.fn().mockImplementation(() => true);
 

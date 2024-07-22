@@ -770,6 +770,17 @@ Object {
 }
 `;
 
+exports[`OsmRequest deleteUserPreference Should delete a single user preference by key 1`] = `"some-value"`;
+
+exports[`OsmRequest deleteUserPreference Should delete a single user preference by key 2`] = `""`;
+
+exports[`OsmRequest deleteUserPreference Should delete a single user preference by key 3`] = `
+Object {
+  "some-pref-1": "some-value-1",
+  "some-pref-2": "some-value-2",
+}
+`;
+
 exports[`OsmRequest fetchChangeset Should return changeset details 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <osm version=\\"0.6\\" generator=\\"CGImap 0.6.1 (5071 thorn-01.openstreetmap.org)\\" copyright=\\"OpenStreetMap and contributors\\" attribution=\\"http://www.openstreetmap.org/copyright\\" license=\\"http://opendatacommons.org/licenses/odbl/1-0/\\">
@@ -3357,6 +3368,19 @@ Object {
   },
 }
 `;
+
+exports[`OsmRequest getAndSetAllUserPreferences Should set then get user preferences 1`] = `""`;
+
+exports[`OsmRequest getAndSetAllUserPreferences Should set then get user preferences 2`] = `
+Object {
+  "some-pref-1": "some-value-1",
+  "some-pref-2": "some-value-2",
+}
+`;
+
+exports[`OsmRequest getAndSetUserPreferenceByKey Should fetch a single user preference by key 1`] = `""`;
+
+exports[`OsmRequest getAndSetUserPreferenceByKey Should fetch a single user preference by key 2`] = `"some-value"`;
 
 exports[`OsmRequest getRelationMembers Should return the members of a relation 1`] = `
 Array [

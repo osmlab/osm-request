@@ -437,6 +437,11 @@ const sampleRelation = {
 const sampleRelationNoTags = JSON.parse(JSON.stringify(sampleRelation));
 delete sampleRelationNoTags.tag;
 
+const sampleUserPrefs = {
+  "some-pref-1": "some-value-1",
+  "some-pref-2": "some-value-2"
+};
+
 describe('OsmRequest', () => {
   describe('Getters', () => {
     it('Should return a default apiUrl', () => {
@@ -932,6 +937,38 @@ describe('OsmRequest', () => {
       const user = osm.fetchUser('214436');
 
       expect(user).toMatchSnapshot();
+    });
+  });
+
+  describe('getAndSetAllUserPreferences', () => {
+    it('Should set then get user preferences', () => {
+      const osm = new OsmRequest();
+      const res = osm.setUserPreferences(sampleUserPrefs);
+      expect(res).toMatchSnapshot();
+      const prefs = osm.getUserPreferences();
+      expect(prefs).toMatchSnapshot();
+    });
+  });
+
+  describe('getAndSetUserPreferenceByKey', () => {
+    it('Should fetch a single user preference by key', () => {
+      const osm = new OsmRequest();
+      const res = osm.setUserPreferenceByKey('some-test-preference', 'some-value');
+      expect(res).toMatchSnapshot();
+      const pref = osm.getUserPreferenceByKey('some-test-preference');
+      expect(pref).toMatchSnapshot();
+    });
+  });
+
+  describe('deleteUserPreference', () => {
+    it('Should delete a single user preference by key', () => {
+      const osm = new OsmRequest();
+      const pref = osm.getUserPreferenceByKey('some-test-preference');
+      expect(pref).toMatchSnapshot();
+      const res = osm.deleteUserPreference('some-test-preference');
+      expect(res).toMatchSnapshot();
+      const prefs = osm.getUserPreferences();
+      expect(prefs).toMatchSnapshot();
     });
   });
 
