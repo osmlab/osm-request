@@ -15,11 +15,17 @@ import {
   convertUserXmlToJson
 } from '../xml';
 
+const notValidXmlSample = fs.readFileSync(
+  path.join(__dirname, '../../__mocks__/not_valid_xml.xml')
+);
 const nodeSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/node.xml')
 );
 const notesSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/notes.xml')
+);
+const noNoteSample = fs.readFileSync(
+  path.join(__dirname, '../../__mocks__/no_note.xml')
 );
 const wayFullSample = fs.readFileSync(
   path.join(__dirname, '../../__mocks__/way_full.xml')
@@ -108,6 +114,11 @@ describe('XML helpers', () => {
       const result = await convertNotesXmlToJson(notesSample);
       expect(result).toMatchSnapshot();
     });
+
+    it('Should return an empty array if no note in the XML string', async () => {
+      const result = await convertNotesXmlToJson(noNoteSample);
+      expect(result).toMatchSnapshot();
+    });
   });
 
   describe('convertUserXmlToJson', () => {
@@ -145,6 +156,10 @@ describe('XML helpers', () => {
       const result = await xmlToJson(notesSample);
       expect(result).toMatchSnapshot();
     });
+
+    it('Should return an error if the string is not a valid XML string', async () => {
+      await expect(xmlToJson(notValidXmlSample)).rejects.toThrow();
+    });
   });
 
   describe('jsonToXml', () => {
@@ -174,37 +189,56 @@ describe('XML helpers', () => {
     });
   });
 
-  describe('cleanMapJson', () => {
-    it('works', () => {
-      const mapjson = {
-        osm: {
-          node: [
+  const mapjson = {
+    osm: {
+      node: [
+        {
+          $: { id: '1234', lat: '42.3', lon: '-1.3' },
+          tag: [
             {
-              $: { id: '1234', lat: '42.3', lon: '-1.3' },
-              tag: [
-                {
-                  $: {
-                    key: 'amenity',
-                    val: 'bicycle_parking'
-                  }
-                }
-              ]
-            },
-            {
-              $: { id: '1235', lat: '41.3', lon: '-1.2' }
+              $: {
+                key: 'amenity',
+                val: 'bicycle_parking'
+              }
             }
-          ],
-          way: [
-            {
-              $: { id: '456' },
-              tag: [{ $: { highway: 'unclassified' } }],
-              nd: [{ $: { ref: '1234' } }, { $: { ref: '1235' } }]
-            }
-          ],
-          relation: []
+          ]
+        },
+        {
+          $: { id: '1235', lat: '41.3', lon: '-1.2' }
         }
-      };
+      ],
+      way: [
+        {
+          $: { id: '456' },
+          tag: [{ $: { highway: 'unclassified' } }],
+          nd: [{ $: { ref: '1234' } }, { $: { ref: '1235' } }]
+        }
+      ],
+      relation: []
+    }
+  };
+
+  describe('cleanMapJson', () => {
+    it('works without bounds', () => {
       const result = cleanMapJson(mapjson);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('works with bounds', () => {
+      const bounds = [
+        {
+          $: {
+            minlat: '47.2135900',
+            minlon: '-1.5565400',
+            maxlat: '47.2145300',
+            maxlon: '-1.5540400'
+          }
+        }
+      ]
+      let mapjsonWithBounds = {...mapjson};
+      mapjsonWithBounds.osm.bounds = bounds;
+
+      const result = cleanMapJson(mapjsonWithBounds);
       expect(result).toMatchSnapshot();
     });
   });

@@ -1,6 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OsmRequest createNodeElement Should return a new element 1`] = `
+exports[`OsmRequest createNodeElement Should return a new element with id if provided 1`] = `
+Object {
+  "$": Object {
+    "lat": 1.234,
+    "lon": -0.456,
+  },
+  "_id": "123",
+  "_type": "node",
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "aze",
+        "v": "rty",
+      },
+    },
+    Object {
+      "$": Object {
+        "k": "uio",
+        "v": "pqs",
+      },
+    },
+  ],
+}
+`;
+
+exports[`OsmRequest createNodeElement Should return a new element without id if not provided 1`] = `
 Object {
   "$": Object {
     "lat": 1.234,
@@ -21,17 +46,6 @@ Object {
       },
     },
   ],
-}
-`;
-
-exports[`OsmRequest createNodeElement Should return a new element 2`] = `
-Object {
-  "$": Object {
-    "lat": 1.234,
-    "lon": -0.456,
-  },
-  "_type": "node",
-  "tag": Array [],
 }
 `;
 
@@ -58,7 +72,234 @@ exports[`OsmRequest createNote Should return a new note XML 1`] = `
 "
 `;
 
-exports[`OsmRequest createRelationElement Should return a new relation element 1`] = `
+exports[`OsmRequest createRelationElement Should return a new relation element with id if provided 1`] = `
+Object {
+  "$": Object {},
+  "_id": "123",
+  "_type": "relation",
+  "member": Array [
+    Object {
+      "$": Object {
+        "ref": "27847742",
+        "role": "street",
+        "type": "way",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643084",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643085",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643086",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643099",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643103",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643107",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643114",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643117",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643121",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643124",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643129",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643132",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643138",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643143",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643152",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643156",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643160",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643162",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643165",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643169",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643172",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643176",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643180",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643183",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643187",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643191",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643192",
+        "role": "house",
+        "type": "node",
+      },
+    },
+    Object {
+      "$": Object {
+        "ref": "1659643196",
+        "role": "house",
+        "type": "node",
+      },
+    },
+  ],
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "aze",
+        "v": "rty",
+      },
+    },
+    Object {
+      "$": Object {
+        "k": "uio",
+        "v": "pqs",
+      },
+    },
+  ],
+}
+`;
+
+exports[`OsmRequest createRelationElement Should return a new relation element without id if not provided 1`] = `
 Object {
   "$": Object {},
   "_type": "relation",
@@ -284,222 +525,10 @@ Object {
 }
 `;
 
-exports[`OsmRequest createRelationElement Should return a new relation element 2`] = `
+exports[`OsmRequest createWayElement Should return a new way element with id if provided 1`] = `
 Object {
   "$": Object {},
-  "_type": "relation",
-  "member": Array [
-    Object {
-      "$": Object {
-        "ref": "27847742",
-        "role": "street",
-        "type": "way",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643084",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643085",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643086",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643099",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643103",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643107",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643114",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643117",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643121",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643124",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643129",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643132",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643138",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643143",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643152",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643156",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643160",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643162",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643165",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643169",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643172",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643176",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643180",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643183",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643187",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643191",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643192",
-        "role": "house",
-        "type": "node",
-      },
-    },
-    Object {
-      "$": Object {
-        "ref": "1659643196",
-        "role": "house",
-        "type": "node",
-      },
-    },
-  ],
-  "tag": Array [],
-}
-`;
-
-exports[`OsmRequest createWayElement Should return a new way element 1`] = `
-Object {
-  "$": Object {},
+  "_id": "123",
   "_type": "way",
   "nd": Array [
     Object {
@@ -640,7 +669,7 @@ Object {
 }
 `;
 
-exports[`OsmRequest createWayElement Should return a new way element 2`] = `
+exports[`OsmRequest createWayElement Should return a new way element without id if not provided 1`] = `
 Object {
   "$": Object {},
   "_type": "way",
@@ -766,7 +795,20 @@ Object {
       },
     },
   ],
-  "tag": Array [],
+  "tag": Array [
+    Object {
+      "$": Object {
+        "k": "aze",
+        "v": "rty",
+      },
+    },
+    Object {
+      "$": Object {
+        "k": "uio",
+        "v": "pqs",
+      },
+    },
+  ],
 }
 `;
 
@@ -808,7 +850,85 @@ exports[`OsmRequest fetchChangesets Should return several changesets details 1`]
 </osm>"
 `;
 
-exports[`OsmRequest fetchElement Should fetch an element and returned its JSON representation 1`] = `
+exports[`OsmRequest fetchElement Should fetch an element with full representation if options.full is true 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {
+      "attribution": "http://www.openstreetmap.org/copyright",
+      "copyright": "OpenStreetMap and contributors",
+      "generator": "CGImap 0.6.0 (9711 thorn-01.openstreetmap.org)",
+      "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+      "version": "0.6",
+    },
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "44.8331455",
+          "lon": "-0.5936602",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "drinking_water",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest fetchElement Should fetch an element with minimal representation if options is not provided 1`] = `
+Object {
+  "_id": "3683625932",
+  "_type": "node",
+  "osm": Object {
+    "$": Object {
+      "attribution": "http://www.openstreetmap.org/copyright",
+      "copyright": "OpenStreetMap and contributors",
+      "generator": "CGImap 0.6.0 (9711 thorn-01.openstreetmap.org)",
+      "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+      "version": "0.6",
+    },
+    "node": Array [
+      Object {
+        "$": Object {
+          "changeset": "33150668",
+          "id": "3683625932",
+          "lat": "44.8331455",
+          "lon": "-0.5936602",
+          "timestamp": "2015-08-06T09:49:47Z",
+          "uid": "2568974",
+          "user": "Vinber-Num&Lib",
+          "version": "1",
+          "visible": "true",
+        },
+        "tag": Array [
+          Object {
+            "$": Object {
+              "k": "amenity",
+              "v": "drinking_water",
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`OsmRequest fetchElement Should fetch an element with minimal representation if options.full is false or not provided 1`] = `
 Object {
   "_id": "3683625932",
   "_type": "node",

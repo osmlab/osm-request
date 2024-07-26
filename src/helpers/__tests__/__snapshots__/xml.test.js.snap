@@ -67,19 +67,6 @@ exports[`XML helpers buildChangesetXml Should build a stringified OSM changeset 
   "
 `;
 
-exports[`XML helpers buildChangesetXml Should handle strings having double quotes 1`] = `
-"
-    <osm>
-      <changeset>
-        <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
-        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
-        <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
-        
-      </changeset>
-    </osm>
-  "
-`;
-
 exports[`XML helpers buildChangesetXml Should handle optional tags 1`] = `
 "
     <osm>
@@ -88,6 +75,19 @@ exports[`XML helpers buildChangesetXml Should handle optional tags 1`] = `
         <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
         <tag k=\\"comment\\" v=\\"Doing some stuff\\"/>
         <tag k=\\"key_example\\" v=\\"value example\\"/>
+      </changeset>
+    </osm>
+  "
+`;
+
+exports[`XML helpers buildChangesetXml Should handle strings having double quotes 1`] = `
+"
+    <osm>
+      <changeset>
+        <tag k=\\"created_by\\" v=\\"My &quot;app&quot;\\"/>
+        <tag k=\\"created_by:library\\" v=\\"OSM Request 2.0.0\\"/>
+        <tag k=\\"comment\\" v=\\"Doing some &quot;weird&quot; stuff\\"/>
+        
       </changeset>
     </osm>
   "
@@ -104,7 +104,79 @@ exports[`XML helpers buildPreferencesFromObjectXml Should build stringified OSM 
   "
 `;
 
-exports[`XML helpers cleanMapJson works 1`] = `
+exports[`XML helpers cleanMapJson works with bounds 1`] = `
+Object {
+  "bounds": Array [
+    Object {
+      "$": Object {
+        "maxlat": "47.2145300",
+        "maxlon": "-1.5540400",
+        "minlat": "47.2135900",
+        "minlon": "-1.5565400",
+      },
+    },
+  ],
+  "node": Array [
+    Object {
+      "$": Object {
+        "id": "1234",
+        "lat": "42.3",
+        "lon": "-1.3",
+      },
+      "_id": "1234",
+      "_type": "node",
+      "tag": Array [
+        Object {
+          "$": Object {
+            "key": "amenity",
+            "val": "bicycle_parking",
+          },
+        },
+      ],
+    },
+    Object {
+      "$": Object {
+        "id": "1235",
+        "lat": "41.3",
+        "lon": "-1.2",
+      },
+      "_id": "1235",
+      "_type": "node",
+    },
+  ],
+  "relation": Array [],
+  "way": Array [
+    Object {
+      "$": Object {
+        "id": "456",
+      },
+      "_id": "456",
+      "_type": "way",
+      "nd": Array [
+        Object {
+          "$": Object {
+            "ref": "1234",
+          },
+        },
+        Object {
+          "$": Object {
+            "ref": "1235",
+          },
+        },
+      ],
+      "tag": Array [
+        Object {
+          "$": Object {
+            "highway": "unclassified",
+          },
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`XML helpers cleanMapJson works without bounds 1`] = `
 Object {
   "node": Array [
     Object {
@@ -521,6 +593,8 @@ Array [
   },
 ]
 `;
+
+exports[`XML helpers convertNotesXmlToJson Should return an empty array if no note in the XML string 1`] = `Array []`;
 
 exports[`XML helpers convertUserXmlToJson Should convert an User XML string into a proper JSON object 1`] = `
 Object {

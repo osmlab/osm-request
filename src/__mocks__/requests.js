@@ -35,6 +35,8 @@ export const fetchElementRequest = jest.fn().mockImplementation(() => ({
   _type: 'node'
 }));
 
+export const fetchElementRequestFull = fetchElementRequest;
+
 export const fetchWaysForNodeRequest = jest.fn().mockImplementation(() => ({
   _id: '536287533',
   _type: 'way',

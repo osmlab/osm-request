@@ -457,7 +457,22 @@ describe('OsmRequest', () => {
   });
 
   describe('createNodeElement', () => {
-    it('Should return a new element', () => {
+    it('Should return a new element with id if provided', () => {
+      const lat = 1.234;
+      const lon = -0.456;
+      const tags = {
+        aze: 'rty',
+        uio: 'pqs'
+      };
+      const id = 123;
+      const osm = new OsmRequest();
+      const elementWithId = osm.createNodeElement(lat, lon, tags, id);
+  
+      expect(elementWithId).toMatchSnapshot();
+      expect(elementWithId._id).toEqual(id.toString());
+    });
+  
+    it('Should return a new element without id if not provided', () => {
       const lat = 1.234;
       const lon = -0.456;
       const tags = {
@@ -465,190 +480,207 @@ describe('OsmRequest', () => {
         uio: 'pqs'
       };
       const osm = new OsmRequest();
-      const elementWithTags = osm.createNodeElement(lat, lon, tags);
-      const elementWithoutTags = osm.createNodeElement(lat, lon);
-
-      expect(elementWithTags).toMatchSnapshot();
-      expect(elementWithoutTags).toMatchSnapshot();
+      const elementWithoutId = osm.createNodeElement(lat, lon, tags);
+  
+      expect(elementWithoutId).toMatchSnapshot();
+      expect(elementWithoutId._id).toBeUndefined();
     });
   });
+  
 
   describe('createWayElement', () => {
-    it('Should return a new way element', () => {
-      const nodeIds = [
-        'node/2213384362',
-        'node/2179769628',
-        'node/2179769632',
-        'node/511563694',
-        'node/511563688',
-        'node/511563666',
-        'node/511563658',
-        'node/511563655',
-        'node/511563646',
-        'node/1425983435',
-        'node/5370456212',
-        'node/2032716031',
-        'node/2032716064',
-        'node/2032716087',
-        'node/2894299077',
-        'node/2357342688',
-        'node/2173133206',
-        'node/2173133198',
-        'node/1979037083',
-        'node/1979037078',
-        'node/6106498823',
-        'node/1979037077',
-        'node/2179769629',
-        'node/2213384362'
-      ];
-      const tags = {
-        aze: 'rty',
-        uio: 'pqs'
-      };
-      const osm = new OsmRequest();
-      const elementWithTags = osm.createWayElement(nodeIds, tags);
-      const elementWithoutTags = osm.createWayElement(nodeIds);
 
-      expect(elementWithTags).toMatchSnapshot();
-      expect(elementWithoutTags).toMatchSnapshot();
+    const nodeIds = [
+      'node/2213384362',
+      'node/2179769628',
+      'node/2179769632',
+      'node/511563694',
+      'node/511563688',
+      'node/511563666',
+      'node/511563658',
+      'node/511563655',
+      'node/511563646',
+      'node/1425983435',
+      'node/5370456212',
+      'node/2032716031',
+      'node/2032716064',
+      'node/2032716087',
+      'node/2894299077',
+      'node/2357342688',
+      'node/2173133206',
+      'node/2173133198',
+      'node/1979037083',
+      'node/1979037078',
+      'node/6106498823',
+      'node/1979037077',
+      'node/2179769629',
+      'node/2213384362'
+    ];
+    const tags = {
+      aze: 'rty',
+      uio: 'pqs'
+    };
+
+    it('Should return a new way element with id if provided', () => {
+      const id = 123;
+      const osm = new OsmRequest();
+      const elementWithId = osm.createWayElement(nodeIds, tags, id);
+  
+      expect(elementWithId).toMatchSnapshot();
+      expect(elementWithId._id).toEqual(id.toString());
+    });
+  
+    it('Should return a new way element without id if not provided', () => {
+      const osm = new OsmRequest();
+      const elementWithoutId = osm.createWayElement(nodeIds, tags);
+  
+      expect(elementWithoutId).toMatchSnapshot();
+      expect(elementWithoutId._id).toBeUndefined();
     });
   });
 
   describe('createRelationElement', () => {
-    it('Should return a new relation element', () => {
-      const osmElementObjects = [
-        {
-          role: 'street',
-          id: 'way/27847742'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643084'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643085'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643086'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643099'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643103'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643107'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643114'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643117'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643121'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643124'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643129'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643132'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643138'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643143'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643152'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643156'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643160'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643162'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643165'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643169'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643172'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643176'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643180'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643183'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643187'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643191'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643192'
-        },
-        {
-          role: 'house',
-          id: 'node/1659643196'
-        }
-      ];
-      const tags = {
-        aze: 'rty',
-        uio: 'pqs'
-      };
-      const osm = new OsmRequest();
-      const elementWithTags = osm.createRelationElement(
-        osmElementObjects,
-        tags
-      );
-      const elementWithoutTags = osm.createRelationElement(osmElementObjects);
+    const osmElementObjects = [
+      {
+        role: 'street',
+        id: 'way/27847742'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643084'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643085'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643086'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643099'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643103'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643107'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643114'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643117'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643121'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643124'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643129'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643132'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643138'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643143'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643152'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643156'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643160'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643162'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643165'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643169'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643172'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643176'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643180'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643183'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643187'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643191'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643192'
+      },
+      {
+        role: 'house',
+        id: 'node/1659643196'
+      }
+    ];
+    const tags = {
+      aze: 'rty',
+      uio: 'pqs'
+    };
 
-      expect(elementWithTags).toMatchSnapshot();
-      expect(elementWithoutTags).toMatchSnapshot();
+    it('Should return a new relation element with id if provided', () => {
+      const id = 123;
+      const osm = new OsmRequest();
+      const elementWithId = osm.createRelationElement(osmElementObjects, tags, id);
+  
+      expect(elementWithId).toMatchSnapshot();
+      expect(elementWithId._id).toEqual(id.toString());
+    });
+  
+    it('Should return a new relation element without id if not provided', () => {
+      const osm = new OsmRequest();
+      const elementWithoutId = osm.createRelationElement(osmElementObjects, tags);
+  
+      expect(elementWithoutId).toMatchSnapshot();
+      expect(elementWithoutId._id).toBeUndefined();
     });
   });
+
   describe('getTags', () => {
     it('returns tags of node with tag property', () => {
       const osm = new OsmRequest();
@@ -679,6 +711,7 @@ describe('OsmRequest', () => {
       expect(element).toEqual(expected);
     });
   });
+
   describe('setTag', () => {
     it('Should add a tag to an element', () => {
       const osm = new OsmRequest();
@@ -706,6 +739,29 @@ describe('OsmRequest', () => {
 
       expect(element).toMatchSnapshot();
     });
+
+    it('Should remove existing tag with the same name before adding new tag', () => {
+      const osm = new OsmRequest();
+      const tagName = 'amenity';
+      const tagValue = 'stuff';
+      const elementWithExistingTag = {
+        ...sampleNode,
+        tag: [
+          ...sampleNode.tag,
+          {
+            $: {
+              k: tagName.toString(),
+              v: 'old value'
+            }
+          }
+        ]
+      };
+      const element = osm.setTag(elementWithExistingTag, tagName, tagValue);
+    
+      expect(element.tag.filter(tag => tag.$.k === tagName.toString())).toHaveLength(1);
+      expect(element.tag.find(tag => tag.$.k === tagName.toString()).$.v).toEqual(tagValue.toString());
+    });
+    
   });
 
   describe('setProperties', () => {
@@ -722,6 +778,7 @@ describe('OsmRequest', () => {
       expect(element).toEqual(expected);
     });
   });
+
   describe('setTags', () => {
     it('Should add a tag to an element', () => {
       const osm = new OsmRequest();
@@ -755,6 +812,37 @@ describe('OsmRequest', () => {
 
       expect(element).toMatchSnapshot();
     });
+
+    it('Should remove existing tags that are not in the new tags object', () => {
+      const osm = new OsmRequest();
+      const tags = {
+        amenity: 'restaurant',
+        cuisine: 'italian'
+      };
+      const elementWithExistingTags = {
+        ...sampleNode,
+        tag: [
+          ...sampleNode.tag,
+          {
+            $: {
+              k: 'name',
+              v: 'Old Name'
+            }
+          },
+          {
+            $: {
+              k: 'amenity',
+              v: 'cafe'
+            }
+          }
+        ]
+      };
+      const element = osm.setTags(elementWithExistingTags, tags);
+    
+      expect(element.tag.filter(tag => tag.$.k === 'name')).toHaveLength(1);
+      expect(element.tag.find(tag => tag.$.k === 'amenity').$.v).toEqual(tags.amenity.toString());
+      expect(element.tag.find(tag => tag.$.k === 'cuisine').$.v).toEqual(tags.cuisine.toString());
+    });
   });
 
   describe('replaceTags', () => {
@@ -787,6 +875,26 @@ describe('OsmRequest', () => {
 
       expect(element).toMatchSnapshot();
     });
+
+    it('Should remove the tag from the element if it exists', () => {
+      const osm = new OsmRequest();
+      const tagName = 'amenity';
+      const elementWithTag = {
+        ...sampleNode,
+        tag: [
+          ...sampleNode.tag,
+          {
+            $: {
+              k: tagName,
+              v: 'restaurant'
+            }
+          }
+        ]
+      };
+      const element = osm.removeTag(elementWithTag, tagName);
+    
+      expect(element.tag.find(tag => tag.$.k === tagName)).toBeUndefined();
+    });       
   });
 
   describe('setCoordinates', () => {
@@ -797,6 +905,123 @@ describe('OsmRequest', () => {
       const element = osm.setCoordinates(sampleNode, lat, lon);
 
       expect(element).toMatchSnapshot();
+    });
+  });
+
+  describe('getNodeIdsForWay', () => {
+    it('Should return the node IDs for the way', () => {
+      const way = {
+        $: {},
+        nd: [
+          {
+            $: {
+              ref: '123'
+            }
+          },
+          {
+            $: {
+              ref: '456'
+            }
+          }
+        ]
+      };
+      const osm = new OsmRequest();
+      const nodeIds = osm.getNodeIdsForWay(way);
+  
+      expect(nodeIds).toEqual(['node/123', 'node/456']);
+    });
+  
+    it('Should handle a way with no node IDs', () => {
+      const way = {
+        $: {},
+        nd: []
+      };
+      const osm = new OsmRequest();
+      const nodeIds = osm.getNodeIdsForWay(way);
+  
+      expect(nodeIds).toEqual([]);
+    });
+  });
+
+  describe('setNodeIdsForWay', () => {
+    it('Should set the node IDs for the way', () => {
+      const way = {
+        $: {},
+        nd: [
+          {
+            $: {
+              ref: '123'
+            }
+          },
+          {
+            $: {
+              ref: '456'
+            }
+          }
+        ]
+      };
+      const nodeOsmIds = ['node/789', 'node/012'];
+      const osm = new OsmRequest();
+      const newWay = osm.setNodeIdsForWay(way, nodeOsmIds);
+  
+      expect(newWay.nd).toEqual([
+        {
+          $: {
+            ref: '789'
+          }
+        },
+        {
+          $: {
+            ref: '012'
+          }
+        }
+      ]);
+    });
+  
+    it('Should handle an empty nodeOsmIds array', () => {
+      const way = {
+        $: {},
+        nd: [
+          {
+            $: {
+              ref: '123'
+            }
+          },
+          {
+            $: {
+              ref: '456'
+            }
+          }
+        ]
+      };
+      const nodeOsmIds = [];
+      const osm = new OsmRequest();
+      const newWay = osm.setNodeIdsForWay(way, nodeOsmIds);
+  
+      expect(newWay.nd).toEqual([]);
+    });
+  
+    it('Should handle a way with no existing node IDs', () => {
+      const way = {
+        $: {},
+        nd: []
+      };
+      const nodeOsmIds = ['node/789', 'node/012'];
+      const osm = new OsmRequest();
+      const newWay = osm.setNodeIdsForWay(way, nodeOsmIds);
+  
+      expect(newWay.nd).toEqual([
+        {
+          $: {
+            ref: '789'
+          }
+        },
+        {
+          $: {
+            ref: '012'
+          }
+        }
+      ]);
     });
   });
 
@@ -847,13 +1072,24 @@ describe('OsmRequest', () => {
   });
 
   describe('fetchElement', () => {
-    it('Should fetch an element and returned its JSON representation', () => {
+    it('Should fetch an element with full representation if options.full is true', async () => {
       const osm = new OsmRequest();
-      const element = osm.fetchElement(1234);
-
+      const element = await osm.fetchElement(1234, { full: true });
       expect(element).toMatchSnapshot();
     });
-  });
+  
+    it('Should fetch an element with minimal representation if options.full is false or not provided', async () => {
+      const osm = new OsmRequest();
+      const element = await osm.fetchElement(1234, { full: false });
+      expect(element).toMatchSnapshot();
+    });
+  
+    it('Should fetch an element with minimal representation if options is not provided', async () => {
+      const osm = new OsmRequest();
+      const element = await osm.fetchElement(1234);
+      expect(element).toMatchSnapshot();
+    });
+  });  
 
   describe('fetchMultipleElements', () => {
     it('Should fetch several elements and return their JSON representations', () => {
@@ -874,6 +1110,59 @@ describe('OsmRequest', () => {
       const ways = osm.fetchWaysForNode('node/5336441517');
 
       expect(ways).toMatchSnapshot();
+    });
+  });
+
+  describe('findElementWithinOSMCollection', () => {
+    it('Should return the element if it exists in the collection', () => {
+      const json = {
+        node: [
+          { $: { id: '123' } },
+          { $: { id: '456' } }
+        ],
+        way: [
+          { $: { id: '789' } }
+        ]
+      };
+      const osmId = 'node/123';
+      const osm = new OsmRequest();
+      const element = osm.findElementWithinOSMCollection(json, osmId);
+  
+      expect(element).toEqual({ $: { id: '123' } });
+    });
+  
+    it('Should return undefined if the element does not exist in the collection', () => {
+      const json = {
+        node: [
+          { $: { id: '123' } },
+          { $: { id: '456' } }
+        ],
+        way: [
+          { $: { id: '789' } }
+        ]
+      };
+      const osmId = 'node/999';
+      const osm = new OsmRequest();
+      const element = osm.findElementWithinOSMCollection(json, osmId);
+  
+      expect(element).toBeUndefined();
+    });
+  
+    it('Should return undefined if the element type does not exist in the collection', () => {
+      const json = {
+        node: [
+          { $: { id: '123' } },
+          { $: { id: '456' } }
+        ],
+        way: [
+          { $: { id: '789' } }
+        ]
+      };
+      const osmId = 'relation/123';
+      const osm = new OsmRequest();
+      const element = osm.findElementWithinOSMCollection(json, osmId);
+  
+      expect(element).toBeUndefined();
     });
   });
 
